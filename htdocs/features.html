@@ -1,73 +1,187 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
             "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html>
-  <head>
-    <title>Abora Features</title>
-  </head>
 
-  <body>
+  <html>
+
+    <head>
+      <meta	http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	  <title>Abora Features</title>
+    </head>
+
+    <body>
 <!-- abora:header -->
 
-    <h1>Abora Features</h1>
+      <h1>Abora Features</h1>
 
-    <p>This is primarily a collection of <b>future</b> features for Abora that is culled
-      from my understanding of Xanadu, Udanax-Gold and other pieces on hypertext systems.</p>
+      <p>At its simplest Abora could be seen as just another custom
+      web site content-management system. Such systems are a dime a
+      dozen, so what makes Abora interesting? The following gives a
+	brief summary of some of the tasks and requirements that Abora
+	will be able to help with:</p>
 
-     <p>The intent of this list is to both help with an overview of what the final implementati.on
-    of Abora may grow into, and also to act as an indication of the current location on this road.</p>
+	<ul>
+	  <li>Heavy re-working of documents - flexible version support,
+	  visualization of changes and inclusion of shared content</li>
+	  <li>Peer review of documents - 
+	  categorised discussions on specific sections of content with user
+	  filtering for manageability.</li>
+			<li>Informal working groups - notification of document changes and new
+				links enables spontaneous groups to form around specific
+				documents as needed.</li>
+	<li>Richly related documents - sophisticated linking and sharing of
+				content between documents and versions enables a literature of
+				works to be written and used.</li>
+	<li>Distributed deployments - Multiple servers allows
+	  documents to be replicated for performance, confidence and
+	  easier access.
+	<li>Secure and controlled document access - user and groups enable
+	  flexible access to documents and integrated cryptography
+	  improves confidence to authorship and uncorrupted contents.</li>
+	<li>Long lived documents - document identity, sponsorship and
+	  distributed garbage collection keeps documents in the system
+	  as long as required which can continue to be found even after day-to-day modification.</li>
+	  <li>Beyond text support - all the above capabilities can apply
+	    to images, sound, movies and other arbitrary types of content.</li>
+      </ul>
 
-    <p>. = Not Started<br />
-      - = Started but not visible in the release<br />
-      I = Initial implementation<br />
-      O = Reasonable implementation<br />
-      X = Finished</p>
+      <h3>Xanadu and Udanax-Gold</h3>
 
-    <ul>
-      <li>Links<ul>
-	  <li>Fine Grained [I] - links can be specified down to individual character or position</li>
-	  <li>Typed [I] - for example Author, Refute, </li>
-	  <li>2 Way [I] - find all pages that link to you</li>
-	  <li>External to source document [.] - anyone can create a link to/from a document that do not own assuming it is visible</li>
-	  <li>Overlapping [I] - no limitations on the number of links to from the same content, unlike html where a single character can only be in the source of a single link</li>
-	  <li>Links to links [.] - in addition to linking to content, links can also be connected to existing links</li>
-	  <li>Non-contiguous [I] - source of a link could be the five most important important sentences of a document, even if they occurred thoughout the document.</li>
-	  <li>Filtering [I] - user filtering of links to focus attention and hide chaff</li>
-	  <li>Version survivability [I] - links continue to point to any of the original text that exists in later versions</li>
-	  <li>Complex media [.] - in addition to text contents, links can be made to image pixels and other spaces</li>
+      <p>This project is strongly based on the ideas of <a href="http://ted.hyperland.com/">Ted Nelson</a>'s <a href="http://www.xanadu.com">Xanadu</a> and in particular the design
+	and architecture of <a href="http://www.udanax.com/gold/">Udanax-Gold</a> by <a href="http://www.udanax.com/">XOC</a>
+	which was released as open-source in 1999.</p>
+
+      <p>The author originally started working with the Udanax-Gold code
+      released by XOC but found the missing components, overall complexity
+      and lack of documentation to form too high a barrier for my
+      available time. What I did find was a fascinating tree-based
+      structure, The Ent, for storing versioned data and a series of
+      interesting techniques for implementing transclusions, links,
+      server loops, promises and other goodies.  Throwing caution to
+      the wind I decide to start over from scratch as a learning
+      exercise and to provide a base for the system that I had wanted
+      for some time now. I was originally focused on a short holiday
+      project to learn some more about a xanalogical system and what
+      it would enable in comparison to the web, wiki-wiki and other
+      systems, but I must confess that I have now been fully sucked
+      into the vortex. </p>
+      
+      <p>The primary intention of Abora is to release an open-source
+      version of a xanalogical server with cross-platform and language
+      independent API which can support a Xanadu like Front-End/UI. I
+      will continue releasing my own renditions of a Front-End,
+      though I fear it will turn away from a suitable UI for
+      most. Hopefully others will step in to fill the gap.</p>
+
+      <h3>Xanalogical Features</h3>
+      
+      <p>The Abora core features are inspired by Xanadu and derive
+      from the capabilities of the underlying Ent data
+      structure as present in Udanax-Gold.</p>
+
+      <ul>
+	<li><b>Transclusions</b> or virtual-copies can be seen as a
+	form of copying-and-pasting except that the pasted form is
+	connected back to the original text so it is always possible
+	to find the original author of any character of text, and all
+	other documents that share the same content. This helps
+	against the problems of quoting out-of-context, and taking
+	benefit from some-one elses work without proper
+	acknowledgement.</li>
+
+	<li>Implemented on top of this is support for <b>fine-grained
+	links</b> that are typed and can be navigated in both
+	directions. Links can be stored separate from the content
+	itself which enables anyone to annotate any other document
+	that they can view. In combination with typed links this
+	enables low-overhead commenting of original text and
+	structured responses such as refutations, agreements,
+	acknowledgements. Links can also be filtered by users to focus
+	on comments from respected or specific viewpoints. This will
+	be a critical feature once hundreds or thousands of links have
+	been attached to a document.</li>
+
+	<li><b>Coordinate space</b> mechanism allows content elements
+	to be mapped over more sophisticated spaces than that of text
+	or uncompressed audio. One possibility is the two dimensions
+	of an image. This enables transclusions and links to work
+	across these numerous spaces, for example just the eye of an
+	image of a face could be transcluded into a separate document,
+	and a destination of a link could be to a few seconds of a
+	sound sample.</li>
+
+	<li><b>Sensors</b> or detectors can be attached to objects to learn
+	  when certain actions occur. Some examples includes detecting
+	  when a new link is added to an interesting document, or when
+	  a new edition of a document is made. This can enable the
+	  spontaneous grouping of interested parties around a central
+	  document that acts as focus for the work.</li>
+
+	<li>These features are all tied into a <b>version system</b>
+	that ensures links stay connected to their original content
+	and transcluded text stays available. Modifications to
+	documents are stored at the level of changes by the user, so
+	between editions changes can be copying and moving in addition
+	to the more primitive deletes and inserts that systems such as
+	CVS would break changes down to.</li>
+
+	<li>A significant force that shaped the Udanax-Gold design was
+	the need for an implementation that could expand up to a
+	<b>distributed system</b> comparable to todays
+	World-Wide-Web. There is an interesting mix of mutable and
+	immutable state that enables replication of data, together
+	with idea of sponsors of documents and a distributed garbage
+	collection system to enable that documents are only jettisoned
+	when they aren't referenced anymore or no-one is prepared to
+	provide sufficient space for it.</li>
+      </ul>
+	
+      <h3>Downsides</h3>
+
+      <p>The features summary lists a series of very interesting
+	differences against the standard WWW and even the innumerable
+	custom web-site implementations. Given all this good news,
+	where should one be concerned?</p>
+
+      <ul>
+	<li><b>Complexity</b> of the implementation is significantly
+	higher than was found during the birth of the WWW. This has
+	implications both to the time it will take to write a
+	production-grade version of the server, and on to the
+	complexity and level of knowledge required by programmers that
+	are interested in writing additional clients. Where as any
+	programmer could wrestle up HTTP clients and servers, just
+	writing a compatible Abora client will be a significant
+	undertaking. Once the project has stabalized, producing well
+	documented versions of the API with ample examples will be an
+	important force on the greater success of the project.</li>
+
+	<li><b>Server reliance</b> is a constraint on the use of
+	clients. A client needs to be in relatively frequent
+	communication with a server, both to find content, but also
+	during modification of content as the server essentially acts
+	as a repository and needs to be informed of higher level
+	actions such as copying text between two locations. Contrast
+	this to the use of CVS and a text editor; a CVS client is used
+	to download a text document from the CVS repository, but then
+	the text editor can make as many changes as it likes before
+	eventually committing the new revision of the document back to
+	the CVS server. It is only at this point that the server
+	attempts to calculate the users changes, which will be encoded
+	up as primitive actions such as inserts and deletes. The
+	frequent Abora communication with server can be mitigated by
+	running a server on each machine. The other effect though is
+	that clients have to understand the Abora protocol, whereas
+	the text editor knows nothing of CVS, as far as it is
+	concerned it is just opening and saving text documents from
+	the local filing text, and is obviously to the CVS client
+	which moves files in and out of the external CVS server. An
+	Abora client does have to know about Abora, and even with efforts to
+	ease this communication with well documented APIs this will be
+	a significant challenge to the uptake of the software.</li>
+
 	</ul>
-      </li>
-      <li>Transclusion - or virtual copies of content<ul>
-	  <li>Core Transclusion [I] -</li>
-	  <li>Differences [O] - Find and show similarity between content</li>
-	  </ul>
-	</li>
-      <li>WWW compatability<ul>
-	  <li>Outgoing links [I] - Links to external URLs from an Abora document</li>
-	  <li>Read-Only webserver [.] - integration with a webserver supplying read-only HTML translations of Abora pages</li>
-	  <li>In-Browser editing [.] - Access full Abora functionality from within an WWW browser, by either plugin or heroic scripting</li>
-	</ul>
-      </li>
-      <li>Infrastructure<ul>
-	  <li>Client-Server [I] - Access a single server from one or more client applications</li>
-	  <li>Server-Server [.] - Distributed network of servers so support client access to more data than held by the immediately accessible server</li>
-	  <li>Client API [.] - Cross platform and language independent client API for communication with the server</li>
-	  <li>Secure comms [.] - SSL like support for communication between machines</li>
-	  <li>Payment Scheme [.] - Support secure payment scheme</li>
-	  <li>Sponsored Docs [.] - Multiple locations can sponsor a document to ensure it isn't lost</li>
-	  <li>Garbage Collection [.] - Documents and sub-parts are only removed from the system if they aren't being used</li>
-	  <li>Sensors [.] - Learn when a new edition of a work is made, or a new link is made to an edition.</li>
-	  <li>History of editions [.] - </li>
-	</ul>
-      </li>
-      <li>Administration<ul>
-	  <li>Backup [.] - </li>
-	  <li>User Management [.] -</li>
-	  <li>Data Recovery [.] -</li>
-	  <li>DB export [.] - For peace of mind export contents of Abora DB into a format such as XML</li>
-	</ul>
-      </li>
-    </ul>
-    
+
+
 <!-- abora:footer -->
-  </body>
-</html>
+    </body>
+  </html>
