@@ -36,6 +36,7 @@
 	<target name="replacetemplate" depends="init">
 	<replace dir="${htdocs}">
 		<include name="**/*.html"/>
+		<exclude name="**/api/**"/>
 		<replacetoken><![CDATA[<!-- abora:header -->]]></replacetoken>
 		<replacevalue><![CDATA[
       <table width="100%" bgcolor="antiquewhite">
@@ -81,7 +82,8 @@
 	  		<a href="/abora-white/junit/html/index.html">JUnit&nbsp;Report</a><br>
 	  	</td></tr>
 	  	<tr><td>
-	  		<b>ugold2Java</b><br>
+	  		<b>UGold2Java</b><br>
+	  		<a href="/udanax-gold2java/index.html">Overviw</a><br>
 	  		<a href="/udanax-gold2java/abora-gold/api/index.html">Gold&nbsp;JavaDoc</a><br>
 	  		</tr></td>
 		</table>
@@ -93,6 +95,7 @@
 
 	<replace dir="${htdocs}">
 		<include name="**/*.html"/>
+		<exclude name="**/api/**"/>
 		<replacetoken><![CDATA[<!-- abora:footer -->]]></replacetoken>
 		<replacevalue><![CDATA[
 		</td></tr>
@@ -115,7 +118,7 @@
 
   </target>
 
-  <target name="dist" depends="clean, compile, collect, replacetemplate"
+  <target name="dist" depends="compile, collect, replacetemplate"
         description="generate the distribution" >
   </target>
   
