@@ -1,8 +1,11 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+
   <html>
 
     <head>
       <meta	http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-	<meta	name=keywords content="Abora,Xanadu,Udana-Gold,Hypertext,Smalltalk,Dolphin Smalltalk">
+	<meta	name=keywords content="Abora,Xanadu,Xanalogical,Udana-Gold,Hypertext,Smalltalk,Dolphin Smalltalk">
 	  <title>Abora Hypertext System</title>
     </head>
 
@@ -14,7 +17,7 @@
 	      SourceForge - <a href="http://sourceforge.net/projects/abora/">Project Summary</a> - <a href="http://sourceforge.net/news/?group_id=64700">News</a> - <a href="http://sourceforge.net/project/showfiles.php?group_id=64700">Downloads</a> 
 	  </td>
 	  <td align="right"><a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=64700&amp;type=1" width="88" height="31" border="0" alt="SourceForge.net Logo"></a></td>
-	</td></tr>
+	   </tr>
       </table>
 
       <h1>Abora Hypertext System</h1>
@@ -28,9 +31,42 @@
       the MS Windows platform is available.</p>
 
       <p>It should be made clear up front that the Abora project is
-	still in it's <b>early days</b>, and even though there are executable
+	still in its <b>early days</b>, and even though there are executable
 	demos it is probably in the order of six months before first
-	pass versions of the bulk of the following features are implemented.</p>
+	pass versions of the bulk of the following features will be
+	implemented. The well defined nature of the final feature set
+	is courtesy of the forty years of research and development
+	of the Xanadu system that this project is able to build on.</p>
+
+      <h3>Why this might be interesting</h3>
+
+      <p>At its simplest Abora could be seen as just another custom
+      web site content-management system. Such systems are a dime a
+      dozen, so what makes Abora interesting? The following gives a
+	brief summary of some of the tasks and requirements that Abora
+	will be able to help with:</p>
+
+	<ul>
+	  <li>Heavy re-working of documents - flexible versioning,
+	  visualization of changes and inclusion of content</li>
+	  <li>Peer review of documents - 
+	  categorised discussions on specific document content with user
+	  filtering for manageability.</li>
+	<li>Richly related documents - sophisticated linking between
+	  document content and sharing content between documents and
+	  versions enables a rich literature to be built.</li>
+	<li>Distributed deployments - Multiple servers allows
+	  documents to be replicated for performance, confidence and
+	  easier access.
+	<li>Secure and controlled document access - user and groups enable
+	  flexible access to documents and integrated cryptography
+	  improves confidence to authorship and uncorrupted contents.</li>
+	<li>Long lived documents - document identity, sponsorship and
+	  distributed garbage collection keeps documents in the system
+	  as long as required which can continue to be found even after day-to-day modification.</li>
+	  <li>Beyond text support - all the above capabilities can apply
+	    to images, sound, movies and other arbitrary types of content.</li>
+      </ul>
 
       <h3>Xanadu and Udanax-Gold</h3>
 
@@ -89,7 +125,7 @@
 	been attached to a document.</li>
 
 	<li><b>Coordinate space</b> mechanism allows content elements
-	to be mapped over more spohisticated spaces than that of text
+	to be mapped over more sophisticated spaces than that of text
 	or uncompressed audio. One possibility is the two dimensions
 	of an image. This enables transclusions and links to work
 	across these numerous spaces, for example just the eye of an
@@ -112,7 +148,7 @@
 	to the more primitive deletes and inserts that systems such as
 	CVS would break changes down to.</li>
 
-	<li>A significant force that shaped the Udana-Gold design was
+	<li>A significant force that shaped the Udanax-Gold design was
 	the need for an implementation that could expand up to a
 	<b>distributed system</b> comparable to todays
 	World-Wide-Web. There is an interesting mix of mutable and
@@ -139,7 +175,7 @@
 	are interested in writing additional clients. Where as any
 	programmer could wrestle up HTTP clients and servers, just
 	writing a compatible Abora client will be a significant
-	undertaking. Once the project has stablized, producing well
+	undertaking. Once the project has stabalized, producing well
 	documented versions of the API with ample examples will be an
 	important force on the greater success of the project.</li>
 
@@ -148,9 +184,9 @@
 	communication with a server, both to find content, but also
 	during modification of content as the server essentially acts
 	as a repository and needs to be informed of higher level
-	actions such as copying text between two locations. Constrast
+	actions such as copying text between two locations. Contrast
 	this to the use of CVS and a text editor; a CVS client is used
-	to download a text document from the CVS repositoy, but then
+	to download a text document from the CVS repository, but then
 	the text editor can make as many changes as it likes before
 	eventually committing the new revision of the document back to
 	the CVS server. It is only at this point that the server
@@ -189,7 +225,7 @@
       flavour of VisualWorks. A second avenue may be to a language
       such as Java.</p>
 
-      <p>Beyond the server will be a langugae independent API for
+      <p>Beyond the server will be a language independent API for
       clients to communicate with the server. The intention is to
       include support for the Smalltalk and Java languages with the
       main release, and hopefully interested parties may donate Perl,
