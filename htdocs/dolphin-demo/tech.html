@@ -949,6 +949,11 @@
 
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
+<h3>Clubs</h3>
+</td></tr></table>
+
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Editions</h3>
 </td></tr></table>
 
@@ -1041,11 +1046,11 @@
 		<p>Once returned to the UI, the steps required to show this to the
 		user by painting is relatively simple.</p>
 
+		<p>TODO: show screen shot of demos rendering</p>
+
 		<p>For the case of painting a different background colour, it's
 		just a case of walking the mappings and a sequence of alternative
 		colours, and just painting them.</p>
-
-		<P>TODO: show example</p>
 
 		<p>The thin vertical mapping window that draws a connections
 		between the individual characters of the two editions has an
@@ -1128,9 +1133,30 @@
 		kept. The Endorsement class is a simple information holder holding
 		a pair of IDs.</p>
 
-		<p>TODO: transclusionsFilteredBy </p>
+		<p>Endorsements are also used to filter out results of requests,
+		specifically <code>transclusionsFilteredBy:</code> and related
+		methods. This method returns a collection of the content elements
+		that are transcluded by this edition, which are then filtered
+		according to the supplied list of endorsements. This operation can
+		be useful to find all the hyperlinks referencing this document for
+		example.</p>
 
-		<p>TODO: Recording revokes, signing endorsements</p>
+<h4>Issues</h4>
+
+		<p>Pretty early on in the authors research on Udanax-Gold the idea
+		arose that endorsements were cryptographically strong statements
+		by an author. This could be used to sign a document or comments
+		written by the author. In practice on the surface that this is not
+		the case, as the endorsement is simply a club and ID pair, and
+		seems to be primarily used as a type system for filtering.
+		Thinking on the fly, it could still be possible that the
+		endorsement links to an edition, by its ID, that could then be a
+		cryptographic signature calculated from the contents of the
+		document at the time.</p>
+
+		<p>A second issue is with revoking an endorsement. Udanax-Gold
+		seems to simply remove the reference, though there is a note that
+		something better should be attempted in the future.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
@@ -1155,8 +1181,51 @@
 		implemented using transclusions. I find this particularly
 		interesting.</p>
 
+		<p>There are a number of aspects of hyperlinks as present in
+		Udanax-Gold, and mostly implemented in the demo, that prove to be
+		interesting in comparison with the standard implementation as
+		supported by html.</p>
+
+		<ul>
+
+			<li>Fine grained links, that apply down to single
+				characters</li>
+
+			<li>Typed links</li>
+
+			<li>Links external to original document</li>
+
+			<li>Links accurately survive document versions</li>
+
+			<li>Links apply to coordinate-spaces (not in demo)</li>
+
+			<li>TODO: more</li>
+
+		</ul>
+
+<h4>API</h4>
+
+		<p>Hyperlinks are used from clients and are implemented as edition
+			wrappers.</p>
+
+		<p>As an example, imagine that we want to write a comment that
+			corrects a mistake in a document that was written by someone
+			else.</p>
+ 
+		<p>TODO: schematic diagram</p>
+
+<h4>Implementation</h4>
+
+
 		<p>TODO: show implementation</p>
 
+<h4>Udanax-Gold implementation</h4>
+
+		<p>TODO: MultiRefs.</p>
+
+		<p>TODO: use of named items rather than fixed locations</p>
+
+		<p>TODO: supports multiple/inherited types</p>
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Document structures</h3>
@@ -1170,11 +1239,9 @@
 <h3>Network</h3>
 </td></tr></table>
 
-
-<table bgcolor="antiquewhite" width="100%"><tr><td>
-<h3>Client Caching</h3>
-</td></tr></table>
-
+		<p>TODO: Server loop</p>
+		<p>TODO: FrontEnd/BackEnd object split</p>
+		<p>TODO: Client caching</p>
 
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
