@@ -166,7 +166,7 @@
 
 	<target name="index" depends="init">
 		<exec executable="ssh" failonerror="true">
-			<arg line="${sourceforge.user}@${sourceforge.server} /home/groups/a/ab/abora/cgi-bin/ksearch/indexer.pl" />
+			<arg line="${sourceforge.user}@${sourceforge.server} cd /home/groups/a/ab/abora/cgi-bin/ksearch; ./indexer.pl" />
 		</exec>
 	</target>
 
