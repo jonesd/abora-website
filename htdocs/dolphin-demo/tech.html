@@ -30,6 +30,7 @@
 
 		<ul>
 			<li><a href="#introduction">Introduction</a></li>
+
 			<li><a href="#ent-tree">Ent tree</a>
 				<ul>
 					<li><a href="#ent_base-implementation">Base Implementation</a></li>
@@ -38,19 +39,28 @@
 					<li><a href="#ent_tree-balancing-by-splaying">Tree Balancing by Splaying</a></li>
 					<li><a href="#ent_insert-and-delete-algorithm">Insert and Delete algorithm</a></li>
 					<li><a href="#ent_transclusions">Transclusions</a></li>
+					<li><a href="#ent_entnode-class-hierarchy">EntNode class hierarchy</a></li>
 				</ul>
-			<li><a href="#entnode-class-hierarchy">EntNode class hierarchy</a></li>
-			<li><a href="#becontentelement-class-hierarchy">BeContentElement class hierarchy</a></li>
-			<li><a href="#works">Works</a></li>
-			<li><a href="#clubs">Clubs</a></li>
-			<li><a href="#editions">Editions</a></li>
+
+			<li><a href="#content-element">Content Elements</a>
+				<ul>
+					<li><a href="#content-element_works">Works</a></li>
+					<li><a href="#content-element_clubs">Clubs</a></li>
+					<li><a href="#content-element_editions">Editions</a></li>
+					<li><a
+								 href="#content-element_becontentelement-class-hierarchy">BeContentElement class hierarchy</a></li>
+				</ul>
+			</li>
+
 			<li><a href="#differences">Differences</a></li>
 			<li><a href="#endorsements">Endorsements</a></li>
 			<li><a href="#hyperlinks">Hyperlinks</a></li>
-			<li>Document structures</li>
 			<li><a href="#ids">Ids</a></li>
 			<li><a href="#persistence">Persistence</a></li>
-			<li>Network</li>
+
+			<li><a href="#network">Network</a></li>
+			<li><a href="#document-structures">Document structures</a></li>
+			<li><a href="#programmers-api">Programmers API</a></li>
 		</ul>
 
 
@@ -188,7 +198,7 @@
 
 
 <a name="ent_base-implementation"></a>
-<h3>Base Implementation</h3>
+<h3><a href="#ent-tree">Ent</a> &gt; Base Implementation</h3>
 
 		<p>The contents of a document and the structure defining the
 		different versions and links between their content are split into
@@ -320,7 +330,7 @@
 
 
 <a name="ent_element-positions"></a>
-<h3>Element Positions</h3>
+<h3><a href="#ent-tree">Ent</a> &gt; Element Positions</h3>
 
 		<p>One issue that we have only briefly dwelled on is how to use
 		the data structure that we have built up. The single case we have
@@ -439,7 +449,7 @@
 
 
 <a name="ent_version-support"></a>
-<h3>Version support</h3>
+<h3><a href="#ent-tree">Ent</a> &gt; Version support</h3>
 
 		<p>We ended off the above description of walking the nodes of a
 		revision tree leaf-wards, with the issue of instead walking from a
@@ -518,7 +528,7 @@
 
 
 <a name="ent_tree-balancing-by-splaying"></a>
-<h3>Tree Balancing by Splaying</h3>
+<h3><a href="#ent-tree">Ent</a> &gt; Tree Balancing by Splaying</h3>
 
 		<p>The advantage of a tree as a search data structure is that the
 		height of the tree is O(logN), where N is the number of nodes in
@@ -749,12 +759,12 @@
 
 
 <a name="ent_insert-and-delete-algorithm"></a>
-<h3>Insert and Delete algorithm</h3>
+<h3><a href="#ent-tree">Ent</a> &gt; Insert and Delete algorithm</h3>
 
 		<p>The earlier discussions over the use of the tree data structure
 		for sharing content between revisions glossed over the mechanisms
-		for deciding what nodes need to be created and to whom they connect
-		to.</p>
+		for deciding what nodes need to be created and to whom they
+		connect.</p>
 
 		<p>The insert and delete algorithms both rely on the splaying
 		operation to pull the nearest node root-wards to one of a small
@@ -763,10 +773,89 @@
 
 <h4>Insert operation</h4>
 
+		<p>First the existing leaf node that the new content is going to
+		be inserted before or in the middle of is found, and its parent is
+		splayed towards the top of the tree.</p>
+
+		<img src="insert-before.png" alt="Insert before first node in tree">
+
+		<p>If the existing leaf node happens to be the first leaf node in
+		the tree and the new content is going to be inserted before it,
+		then a simplified insert mechanism can be used. This creates a
+		single split node as a child of the revisions new root, the left
+		child of the split is connected to the leaf representing the new
+		content, and the right child to the child of the previous root
+		node.</p>
+
+		<img src="insert-after.png" alt="Insert after last node in tree">
+
+		<p>A similar simplified strategy can also be used if the new
+		content is good to be appended to the end of the tree. This
+		creates a single split node as a child of the revisions new root,
+		the left child of the split is connected to child of the previous
+		root node, and the right child is connected to the leaf
+		representing the new content.</p>
+
+		<p>In the case of the CollectionLeaf which is an optimisation for
+		representing an array of primitive values, if the insert operation
+		is found to apply to a position within its content, then the leaf
+		will have to be split into two new leafs, with the start of the
+		second leaf matching the position at which the new content will be
+		inserted. A new split node will take the place of the existing
+		collection loaf node, and will connect to the new leaf nodes. This
+		operation will modify the nodes used in existing revisions, but it
+		preserves the existing semantics. Once this splitting is
+		completed, the insert operation continues against the new right
+		leaf.</p>
+
+		<p>The final case is the insert immediately before an existing
+		leaf, and that leaf is neither the first or last in the entire
+		tree for that revision. There may be two patterns of node
+		structure at this point. The node which we will insert before is
+		either the left child of the parent or the right. For simplicity
+		we re-splay in the case of being the right child. The end result
+		is that we can be confident of the pattern of nodes which we are
+		going to be inserting into.</p>
+
+		<img src="insert-normal.png" alt="Standard insert operation in tree">
+
+		<p>In this case you can see from the diagram above that two new
+		split nodes are created to allow the insert of the new leaf, and a
+		tie in with nodes.</p>
+
 <h4>Delete operation</h4>
 
-		<p>TODO: rotating around target node to top to match a small
-		number of recognised patterns that could then be modified.</p>
+		<p>First the parent of the leaf node that is to be deleted is
+		splayed towards the top of the tree.</p>
+
+		<p>Similar to the insert operation, for simplicity the standard
+		delete operation has only been implemented for one side of the
+		tree. If the node to be deleted is a right child of its, parent
+		then a second splaying occurs to force the child to be a left
+		child.</p>
+
+		<img src="delete-normal.png" alt="Standard delete operation in tree">
+
+		<p>The parent node and all nodes to the root are then duplicated,
+		before updating the connections to remove the desired leaf node.
+		For example in the diagram, the parent of the Two leaf to be
+		deleted, would be duplicated together with its parent the 4 split
+		node. These node would still reference the same leaf nodes, and so
+		would effectively produce a parallel parent chain from the Two
+		leaf.</p>
+
+		<p>Again optimisations may be made for deleting the first and
+		last nodes in the tree.</p>
+
+		<p>The standard case at this point would just involve replacing
+		the duplicated split node with the sibling of the deleted node,
+		and then updating the split information to take into account the
+		deleted content. Back to the diagram we see that the duplicated 7
+		split node is removed, and replaced by a reference to the original
+		Three leaf, which is the sibling of the delete Two leaf. Finally
+		the displacement values for the duplicated 4 split node is updated
+		to take into account the missing content from the new
+		revision.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
@@ -775,7 +864,7 @@
 
 
 <a name="ent_transclusions"></a>
-<h3>Transclusions</h3>
+<h3><a href="#ent-tree">Ent</a> &gt; Transclusions</h3>
 
 		<p>Transclusion enables the sharing of content by quoting from the
 		original source. Transclusion is a primitive function of the
@@ -863,8 +952,8 @@
 		moment.</p>
 
 
-<a name="entnode-class-hierarchy"></a>
-<h3>EntNode class hierarchy</h3>
+<a name="ent_entnode-class-hierarchy"></a>
+<h3><a href="#ent-tree">Ent</a> &gt; EntNode class hierarchy</h3>
 
 		<p>The class hierarchy for the tree nodes is strongly inspired by
 			the Udanax-Gold implementation but includes some
@@ -924,115 +1013,23 @@
 		</ul>
 
 
-<a name="becontentelement-class-hierarchy"></a>
-<h3>BeContentElement class hierarchy</h3>
+<a name="content-element"></a>
+<h3>Content Elements</h3>
 
-		<p>The BeContentElement class hierarchy is a subset of the content
-			classes supported by Udanax-Gold. An instances of this class
-			specify the content of documents.</p>
-
-		<ul>
-			<li><b>BeContentElement</b> - Abstract super class of content
-				elements.<br>&nbsp;&nbsp;parents - un-ordered collection of
-				ent leaf nodes that represent this element as their content.
-			<ul>
-			<li><b>BeCollectionHolder</b> - Holder of multiple elements,
-				each of which is a primitive data
-				element.<br>&nbsp;&nbsp;collection - ordered collection of
-				primitive data elements</li>
-			<li><b>BeDataHolder</b> - Holder of a single primitive data
-				element.<br>&nbsp;&nbsp;value - primitive data element.</li>
-			<li><b>BeEdition</b> - Represents the contents of a single
-				edition of a work. References a single RootNode which is the
-				root of the ent tree that holds its actual
-				contents.<br>&nbsp;&nbsp;root - the RootNode that holds the
-				edition contents.<br>&nbsp;&nbsp;branch - the revision number
-				used to tag its own tree nodes.<br>&nbsp;&nbsp;works - BeWorks
-			that have this edition as their contents.<br>&nbsp;&nbsp;...more...</li>
-			<li><b>BeWork</b> - identity of a document, and also the point
-				of access control to the content.<br>&nbsp;&nbsp;edition -
-				single BeEdition that holds the works content.<br>&nbsp;&nbsp;...more...
-			<ul>
-			<li><b>BeClub</b> - work that defines the members of group with
-				access to a work.</li>
-			</ul>
-		</li>
-		</ul>
-		</li>
-		</ul>
+		<p>Content elements are the elements of the content held by
+		editions. We have covered the holders of primitive data and
+		collections in the discussion of what ent leafs represent. There
+		are a number of more interesting examples of these elements,
+		including the edition content element which enables composite
+		contents to be built up.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
-		<p>The demo implementation is closely modelled after that of
-			Udanax-Gold.</p>
-
-		<ul>
-
-			<li>Udanax-Gold uses the term BeRangeElements rather than
-			BeContentElements. Content seems a little better
-			description.</li>
-
-			<li>Missing BePlaceholder class. The implementation of the Demo
-			simply hasn't progressed far enough to make use of this. A place
-			holder is very interesting idea and is a critical enabler of
-			some of the interesting features of Gold. It acts as a stand in
-			for a future content element that currently isn't available yet.
-			For example the actual element hasn't been returned yet as the
-			result of a search, or may not even exist yet for long running
-			searches.</li>
-
-		</ul>
+		<p>These classes are known as range elements in Udanax-Gold.</p>
 
 
-<h3>Extra Ent Udanax-Gold features</h3>
-
-		<p>The Demo implementation is focused on a simple domain of
-		contiguous integers starting from 1. The UG implementation extends
-		the supported domain into a far more generalised coordinate-space
-		system. The demo split-integer is instead a generic region of
-		inclusive positions.</p>
-
-		<p>The Demo includes no separation between the document node tree
-		and revision identity of those nodes. The nodes includes a
-		revision number that indicates when that node was created. The up
-		side of this is the simplicity and directness of the
-		implementation. The down side is highlighted by the alternative
-		path that UG took. The UG document nodes do not contain a revision
-		identity, instead there is a concept of canopies that associates
-		nodes within revisions. Additionally there does not appear to be
-		the concept of a revision number, which has a problem with
-		distributed generation, and instead seems to be based on the
-		uniqueness of IDs associated with works together with works
-		holding a list of previous revisions (? this might be a level
-		apart and so not relevant to this ?).</p>
-
-		<p>The Demo probably has problems with Garbage Collection, and
-		loosing references to document revisions and editions that are not
-		being used. This is apparently handled by UG.</p>
-
-		<p>UG Ent has a different set of set of leave nodes that connect
-		to content. The Demo does not follow the actual UG implementation
-		due to a lack of understanding of its semantics and constraints on
-		it.</p>
-
-		<p>TODO: Placeholders</p>
-
-
-<h3>API Level Objects</h3>
-
-		<p>TODO: Move this to a better place</p>
-
-		<p>Attention needs to be drawn to the visibility of objects and
-			structures in the system from the point of view of a consumer of
-			the programming API. The programmer of a front-end application
-			that uses the demo API talks in terms of content elements,
-			endorsements and objects of that ilk. Under the covers that are
-			entirely oblivious to the Ent data structure and things such as
-			ContentLeafs.</p>
-
-
-<a name="works"></a>
-<h3>Works</h3>
+<a name="content-element-works"></a>
+<h3><a href="#content-element">Content Elements</a> &gt; Works</h3>
 
 		<p>Works define the identity for a document, and its edition
 		provides its contents.</p>
@@ -1119,11 +1116,11 @@
 		</ul>
 
 
-<a name="clubs"></a>
-<h3>Clubs</h3>
+<a name="content-element-clubs"></a>
+<h3><a href="#content-element">Content Elements</a> &gt; Clubs</h3>
 
 		<p>Clubs enable the classification of users and agents for
-			authorisation purposes.</p>
+		authorisation purposes.</p>
 
 		<p>Clubs are implemented as subclasses of Works. The demo makes no
 		use of clubs other than in association with endorsements, and then
@@ -1134,8 +1131,8 @@
 		<p>TODO</p>
 
 
-<a name="editions"></a>
-<h3>Editions</h3>
+<a name="content-element-editions"></a>
+<h3><a href="#content-element">Content Elements</a> &gt; Editions</h3>
 
 		<p>An edition forms effectively an immutable object, and
 		modifications to its contents will result in a new edition
@@ -1151,6 +1148,66 @@
 			respond with the next valid revision number after itself. It
 			records the highest revision number it has given out so that it
 			can properly generate subsequent revision numbers.</p>
+
+
+<a name="content-element-becontentelement-class-hierarchy"></a>
+<h3><a href="#content-element">Content Elements</a> &gt; BeContentElement class hierarchy</h3>
+
+		<p>The BeContentElement class hierarchy is a subset of the content
+			classes supported by Udanax-Gold. An instances of this class
+			specify the content of documents.</p>
+
+		<ul>
+			<li><b>BeContentElement</b> - Abstract super class of content
+				elements.<br>&nbsp;&nbsp;parents - un-ordered collection of
+				ent leaf nodes that represent this element as their content.
+			<ul>
+			<li><b>BeCollectionHolder</b> - Holder of multiple elements,
+				each of which is a primitive data
+				element.<br>&nbsp;&nbsp;collection - ordered collection of
+				primitive data elements</li>
+			<li><b>BeDataHolder</b> - Holder of a single primitive data
+				element.<br>&nbsp;&nbsp;value - primitive data element.</li>
+			<li><b>BeEdition</b> - Represents the contents of a single
+				edition of a work. References a single RootNode which is the
+				root of the ent tree that holds its actual
+				contents.<br>&nbsp;&nbsp;root - the RootNode that holds the
+				edition contents.<br>&nbsp;&nbsp;branch - the revision number
+				used to tag its own tree nodes.<br>&nbsp;&nbsp;works - BeWorks
+			that have this edition as their contents.<br>&nbsp;&nbsp;...more...</li>
+			<li><b>BeWork</b> - identity of a document, and also the point
+				of access control to the content.<br>&nbsp;&nbsp;edition -
+				single BeEdition that holds the works content.<br>&nbsp;&nbsp;...more...
+			<ul>
+			<li><b>BeClub</b> - work that defines the members of group with
+				access to a work.</li>
+			</ul>
+		</li>
+		</ul>
+		</li>
+		</ul>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<p>The demo implementation is closely modelled after that of
+			Udanax-Gold.</p>
+
+		<ul>
+
+			<li>Udanax-Gold uses the term BeRangeElements rather than
+			BeContentElements. Content seems a little better
+			description.</li>
+
+			<li>Missing BePlaceholder class. The implementation of the Demo
+			simply hasn't progressed far enough to make use of this. A place
+			holder is very interesting idea and is a critical enabler of
+			some of the interesting features of Gold. It acts as a stand in
+			for a future content element that currently isn't available yet.
+			For example the actual element hasn't been returned yet as the
+			result of a search, or may not even exist yet for long running
+			searches.</li>
+
+		</ul>
 
 
 <a name="differences"></a>
@@ -1520,13 +1577,6 @@
 		</ul>
 
 
-<a name="document-structures"></a>
-<h3>Document structures</h3>
-
-		<p>TODO: show how a Work and editions plus links could all fit
-			together to from a rich document</p>
-
-
 <a name="ids"></a>
 <h3>IDs</h3>
 
@@ -1576,10 +1626,10 @@
 <a name="persistence"></a>
 <h3>Persistence</h3>
 
-		<p>The demo uses a very simple implementation of persistence of
+		<p>The demo uses a very simple implementation of persistence for
 		contents. Its aim is to provide the absolute minimum to enable a
-		reasonable chance at experimenting and learning from the Demo
-		system as a user. The existing persistence mechanism does allow
+		reasonable experience for experimenting and learning about the Demo
+		system for users. The existing persistence mechanism does allow
 		documents to survive beyond editing sessions, but is weak on
 		runtime crashes and recovery from disk corruption, mutation of
 		data structures with newer versions of the application, and
@@ -1595,24 +1645,59 @@
 		<p>The persistence mechanism is built on the native object
 		serialisation mechanism provide by @link:dolphin_smalltalk@. This
 		is similar to mechanisms supported by other Smalltalk
-		implementations and Java. Given an object it will convert the
-		content of that object and all the objects it references into a
-		stream of bytes, that may in turn be converted back into a graph
-		of objects that are equal to the original set. Special cases such
-		as handling singleton objects are supported by overriding the
-		object actually dumped, and running fix-up code when
-		de-serialising the byte stream.</p>
+		implementations and also Java. Given an object it will convert the
+		content of that object and the graph of all the objects it
+		references into a stream of bytes. That stream of bytes may in
+		turn be converted back into a graph of objects that are equal to
+		the original set. Special cases such as handling singleton objects
+		are supported by overriding the object actually dumped, and
+		running fix-up code when de-serialising the byte stream.</p>
 
-		<p>TODO</p>
+		<p>Persisting of objects only occurs during the shut-down of the
+		system and on explicit request by user. The system is locked up
+		while the persisting is happening. All objects referenced by the
+		works storage are dumped out in a single action, and placed in a
+		<tt>workstorage.abora</tt> file. A single backup of the existing
+		file is kept in a <tt>workstorage.abora.OLD</tt> file.
 
 <h4>Udanax-Gold implementation</h4>	
 
+		<p>Gold appears to use an incremental persistence solution,
+		dumping out modified objects at the end of a transaction. The
+		author also assumes there is a transaction style system based
+		around the <tt>DiskManager consistent</tt> idiom. There is
+		additionally a lot of effort around grouping related objects
+		together apparently to pick up advantages around clustering disk
+		data into pages.</p>
+
+
+<a name="network"></a>
 <h3>Network</h3>
 
 		<p>TODO: Server loop</p>
 		<p>TODO: FrontEnd/BackEnd object split</p>
 		<p>TODO: Client caching</p>
 
+
+<a name="document-structures"></a>
+<h3>Document structures</h3>
+
+		<p>TODO: show how a Work and editions plus links could all fit
+			together to from a rich document</p>
+
+
+<a name="programmers-api"></a>
+<h3>Programmers API</h3>
+
+		<p>Attention needs to be drawn to the visibility of objects and
+			structures in the system from the point of view of a consumer of
+			the programming API. The programmer of a front-end application
+			that uses the demo API talks in terms of content elements,
+			endorsements and objects of that ilk. Under the covers that are
+			entirely oblivious to the Ent data structure and things such as
+			ContentLeafs.</p>
+
+		<p>TODO: example usage of API</p>
 
 <!-- abora:footer -->
 $Id$
