@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>KSearch - Example Search Form</title>
+<style>
+A:link {color: #000066; text-decoration: none }
+A:visited {color: #000066; text-decoration: none}
+A:active {color: red; text-decoration: underline}
+A:hover {color: red; text-decoration: underline}
+</style>
+</head>
+<body>
+<br>
+<a name="form">
+<center>
+<p>
+        <table cellpadding="10" cellspacing="0" border="1" bgcolor="#ffffff"><td align="center">
+                <FORM action="ksearch.cgi" method="get" name="search">
+                <INPUT type="text" size=35 name="terms" value="" onFocus="select(this);">
+                &nbsp; <INPUT type="submit" value="Search"> &nbsp; 
+		<FONT color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+		<B><INPUT type=checkbox name="all" value=1>+</B> 
+		</font>
+                <p>
+                <table border="0" cellpadding="1" cellspacing="0">
+                        <tr><td valign=top>
+                                <table border="0" cellpadding="1" cellspacing="0">
+                                        <tr><td align=left><font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif"><INPUT type=checkbox name="c" value="s">Case Sensitive</font></td>
+                                        <tr><td align=left><font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif"><INPUT type=checkbox name="w" value="1">Whole Words Only</font></td>
+                                        <tr><td align=left><font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif"><INPUT type=checkbox name="st" value="1">Include Stop-Terms</font></td>
+                                </table></td>
+                        <td valign=top>
+                                <table border="0" cellpadding="3" cellspacing="0">
+                                        <tr><td valign="top" align="left">
+                                                <font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+                                                Sort by <select name="sort"><OPTION SELECTED>Matches<OPTION>Scores<OPTION>Dates<OPTION>Sizes</select>
+                                                </font>
+                                        </td>
+                                        <tr><td valign="top" align="left">
+                                                <font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+                                                Display <select name="display"><OPTION SELECTED>5<OPTION>10<OPTION>25<OPTION>50<OPTION>100</select>
+                                                </font>
+                                        </td>
+                                </table>
+                        </td>
+                        <tr><td align="left" colspan="2"><br><font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif"><b>Search Content</b></font></td>
+                        <tr><td align="left" colspan="2">
+                                <font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+                                <INPUT type=checkbox name="b" value="1" checked>Body
+                                <INPUT type=checkbox name="t" value="1" checked>Title
+                                <INPUT type=checkbox name="u" value="1">Url  
+                                <INPUT type=checkbox name="alt" value="1">Alt-Text
+                                <INPUT type=checkbox name="l" value="1">Links
+                                <INPUT type=checkbox name="default" value=1>Default
+                                </font>
+                        </td>
+                        <tr><td align="left" colspan="2">
+                                <font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+                                <INPUT type=checkbox name="d" value="1" checked>Meta-Description
+                                <INPUT type=checkbox name="k" value="1">Meta-Keywords 
+                                <INPUT type=checkbox name="au" value="1">Meta-Authors
+                                </font>
+                        </td>
+                </table>
+                </p>
+                </FORM>
+        </td></table>
+</p>
+</center>
+<br>
+<p>
+        <table border="0" cellpadding="2" cellspacing="0" bgcolor="#ffffff" width="75%" align="center">
+                <tr><td align="center"><font size="2" color="#000000" face="verdana, arial, helvetica, sans-serif">
+                        &nbsp; &nbsp; Page <b>1</b> of <b>1</b>   
+                        &nbsp; &nbsp; Powered by <a href="http://www.kscripts.com/scripts.html#ksearch">KSearch</a> -
+                        <a href="http://www.kscripts.com/ksearch/faqs.html">FAQs</a></font>
+                </td>
+        	<tr><td align="right">
+	                <a href="http://www.kscripts.com" title="Powered by KScripts.com" alt="Powered by KScripts.com" target="_top"><IMG src="KSlogo.gif" border=0 alt="Powered by KScripts.com" title="Powered by KScripts.com"></a>
+	        </td>
+        </table>
+</p>   
+
+</body>
+</html>

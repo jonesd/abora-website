@@ -1,0 +1,170 @@
+KSEARCH VERSION 1.4
+Copyright (C) 2000 KScripts - www.kscripts.com
+
+Parts of this script are Copyright
+www.perlfect.com (C)2000 N.Moraitakis & G.Zervas. All rights reserved
+
+Thanks to the people at www.perlfect.com for much of the structure behind this script.
+
+
+GNU GENERAL PUBLIC LICENSE:
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place, Suite 330, Boston, MA  02111-1307
+
+READ THIS:
+
+This file contains general instructions on how to install and use KSearch.
+For troubleshooting information go to our FAQs and Discussion Forum sites at: 
+
+http://www.kscripts.com/ksearch/faqs.html
+http://www.kscripts.com/discus
+
+
+INSTALLATION:
+
+You will need a text editor, and access to your server to edit and run
+scripts. If you want to index PDF files, you will need to install Xpdf 
+from http://www.foolabs.com/xpdf/. See faqs.html for details. Be sure 
+that the appropriate permissions are set for each file/directory.
+
+    package includes	file name                       set permissions
+     indexer script:	indexer.pl                         read/exec
+ cgi indexer script:    indexer.cgi                        read/exec
+      search script:	ksearch.cgi                        read/exec
+example search form:	search_form.html                   read
+   search tips page:	help.html                          read
+ configuration file:	configuration/configuration.pl     read
+  ignore files list:	configuration/ignore_files.txt     read
+    stop terms list:	configuration/stop_terms.txt       read
+      HTML template:  	templates/search.html              read
+ database directory:	database/                          read
+
+   (For Unix users)	(type at command line)          (type 'ls -l' for file list)
+          read/exec	'chmod 755 filename'               -rwxr-xr-x
+               read	'chmod 744 filename'               -rwxr--r--
+
+
+1. (For Unix users) Be sure that the path to perl is correct on the first line
+of indexer.pl and ksearch.cgi. To determine the path type 'which perl' at the
+command line prompt. The path must follow '#!'. Default is '#!/usr/bin/perl'.
+
+2. Change paramaters in the configuration file
+'configuration/configuration.pl'.  All paramaters are explained in this file.
+
+	You may have to add the full path to the configuration file in
+	indexer.cgi, indexer.pl and ksearch.cgi where indicated.
+
+	If you are going to use indexer.cgi, we recommend setting a password
+	in the configuration file.
+
+3. Add the full path of files you do not want to index in the ignore files
+list 'configuration/ignore_files.txt' on separate lines.
+(For Unix users) You can determine your current working directory (path) by
+typing 'pwd' at the command line prompt.
+
+4. Add terms you want the search engine to ignore in the stop terms list
+'configuration/stop_terms.txt' on separate lines.
+
+5. You may change the HTML template to match your web site design preference
+by editing 'templates/search.html'. The end of 'search.html' has
+descriptions of all the possible fields you may add to the template. By
+default, all possible fields are added.
+
+6. When you are finished with the configuration you can run the indexer
+script to index your site. Type 'indexer.pl' or './indexer.pl' to run the
+script. To run the indexer from a web browser, go to indexer.cgi in your browser. 
+The time required will depend on the size of your site and your
+server's CPU.
+
+7. When you are finished indexing your site, you can use the search form
+'search_form.html' as an example form and also to search your site.
+
+
+Additional Info:
+
+This search engine is designed to handle very large websites if configured correctly.
+There is a tradeoff between search speed and disk space: if configured for
+speed, this search engine will use more disk space.
+
+To configure for speed (larger websites) change the following settings in
+'configuration/configuration.pl':
+
+1. $IGNORE_COMMON_TERMS = 90; Set this to the maximum percentage of files that indexed 
+terms can exist in. This will remove common terms not present in 'stop_terms.txt'.
+
+2. $SAVE_CONTENT = 1; Set this to 1 to index the processed contents of each file in the database.
+If set to 0, the search engine will perform an on-the-fly search of all files. 
+
+3. It is recommended to use DB_File. The search engine will be slightly faster. See below for details.
+
+
+To configure to save disk space (smaller web sites) use the following settings in
+'configuration/configuration.pl':
+
+1. $IGNORE_COMMON_TERMS = 90; Set this to the maximum percentage of files that indexed 
+terms can exist in. This will remove common terms not present in 'stop_terms.txt'.
+
+2. $SAVE_CONTENT = 0; Set this to 0 to search on-the-fly. This could be extremely slow 
+for large websites.
+
+3. $MAKE_LOG = 0; Set this to 0 so you do not create a logfile of the
+indexing routine.
+
+DBM Issues:
+
+This search engine relies on a Perl DBM database library to create the search
+index and will automatically use the best available DBM database on your system.
+SDBM is the standard library bundled with Perl, and has a limitation that may
+effect the performance of the search engine. The SDBM, ODBM, and NDBM libraries
+have block size limits (memory limits) that may terminate the indexing routine if
+your site is too large.  If you have DB_File or GDBM_File, this will not be an
+issue. Also, if you use "$SAVE_CONTENT = 1" and have DB_File or GDBM_File, the
+search script will perform slightly faster because the data is stored in the DBM 
+database instead of separate files. If SDBM, ODBM, or NDBM is used and you use 
+"$SAVE_CONTENT = 1", the indexer will save the processed file contents to 
+separate files to avoid memory limits. However, this does not prevent your chance 
+to reach the block size limits if you have a very large site. For most sites, 
+this will not be an issue.
+
+If you receive the error:  
+
+'dbm store returned -1, errno 28, key "trap" at - line 3.'
+
+while running the indexer, you have reached the block size limit.
+To fix this problem, you will need DB_File (install from CPAN) and the 
+Berkley DB (http://www.sleepycat.com) or GDBM_File (install from CPAN).
+We recommend DB_File.
+
+See:
+	our FAQs page at: 
+	http://www.kscripts.com/ksearch/faqs.html
+
+	our Discussion Forum page at: 
+	http://www.kscripts.com/discus
+
+	Perl DB_File documentation:
+	http://www.perl.com/pub/doc/manual/html/lib/DB_File.html 
+
+	Sleepycat Software documentation for the Berkeley DB:
+	http://www.sleepycat.com
+
+
+
+Credits:
+
+www.perlfect.com -  N.Moraitakis & G.Zervas - Thanks to the people at www.perlfect.com for
+much of the structure behind this script. For a more robust search script please visit 
+www.perlfect.com.
+

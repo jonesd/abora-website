@@ -1,0 +1,59 @@
+KSEARCH
+Copyright (C) 2000 KScripts - www.kscripts.com
+
+HISTORY
+
+Version 1.4
+	
+05-26-01	New options were added to ksearch.cgi.
+
+		1. The option to show matches in descriptions
+		2. The option to log search queries
+		3. The option to use a text file database instead of a DBM
+		4. The option to sort results by titles and file names
+		5. The option to turn off the translation of special characters
+		   to English equivalents.
+
+		A new CGI indexer has been added to help Windows users 
+		run the indexer from the web. The FAQs page was updated.
+
+Version 1.3
+
+09-20-00	Changes were made in ksearch.cgi to increase the speed of + logical operator searches.
+		A faster algorithm is used for finding the intersecting results. If you are running version 1.2, 
+		you only have to replace ksearch.cgi with the older script.
+
+Version 1.2
+
+09-19-00	Changes were made to fix a bug in ksearch.cgi that prevented searching meta-author content
+
+09-12-00	This version includes the option to index PDF files using pdftotext from
+		Xpdf (http://www.foolabs.com/xpdf/). You must install Xpdf for this option.
+		Thanks to Zak Bell for suggesting this addition.
+
+Version 1.1
+
+09-07-00	Minor changes in configuration.pl for readability.
+
+08-29-00	Significant changes made in ksearch.cgi to add more search options.
+		 1. Added option to search within results.
+		 2. Added (*) wildcard option
+		 3. Added option to search whole words only.
+		 4. Added option to include stop-terms.
+		 5. Added option to use special characters like !#$%|...etc.
+		 6. Added options to search title, meta-descriptions, meta-keywords, meta-authors, 
+		    alternate text, url, and links.
+		 7. Added option to weight scores for matches in title, meta-descriptions, and meta-keywords.
+		 8. Added option to weight scores for documents matching specific terms/phrases
+		 9. Added option to add + in front of all terms/phrases for convenience.
+		10. Added translation of ISO Latin-1 special characters.
+		11. New help.html page.
+
+		Changes were made in indexer.pl
+		 1. No longer indexes individual terms (to make new options possible)
+
+Version 1.0
+
+08-11-00	Fixed bug in escaping characters in terms/phrases to bold/highlight.
+08-08-00	Version 1.0 released to public.
+

@@ -1,0 +1,88 @@
+<!-- The contents of help.html gets added to the KSearch HTML template file -->
+
+<TABLE BORDER=0 ALIGN=CENTER><TD>
+	<FONT color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+	<B>General Search Tips</B>
+	<UL>
+		<LI>Use double quotes around phrases to search.
+		<LI>Add + in front of terms/phrases that must appear in results.
+		<LI>Add - in front of terms/phrases that must not appear in results.
+		<LI>The + checkbox adds a plus in front of all terms/phrases for convenience.
+		<LI>The default search content is the body, title, and meta-description.
+		<LI>The score is the percentage of matching characters in a document.
+		<LI>ISO Latin-1 characters like הßחיס..etc. are treated as english equivalents.
+		<LI>Special characters like #!$%|&..etc. are allowed.
+		<LI>Stop-terms are common terms like "it and the that...".
+	</UL>
+	<BR>
+	<B>Advanced Search Tips</B>
+	<UL>
+		<LI>Searching can be expanded with a wildcard (*).
+			<P>
+			<TABLE BORDER=0 WIDTH=500><TD>
+				<FONT color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+				<P align=justify>
+				Adding a * to the end of a term will match all endings. For example: 'test*' will match 'tests' 'tested' 'testing' etc. Stop-terms are included in wildcard searches.
+				</P>
+				</FONT>
+			</TD></TABLE>
+			</P>
+		<LI>Weights can be applied by adding &lt;2-10000&gt; in front of terms or phrases.
+			<P>
+			<form onsubmit="return false">
+			<TABLE BORDER=0 WIDTH=500><TD>
+				<FONT color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+				For example: <p><center><input type=text value="&lt;100&gt;term none &lt;500&gt;&quot;a phrase&quot;" size=40 readonly></center></p>
+				<P align=justify>
+				The query above will weight scores 100 and 500 times greater for documents containing 'term' and 'a phrase', respectively.
+				The scores for documents containing only 'none' will remain unchanged. The weight must be in the range of 2-10000.
+				Add + (inclusion) in front of weights. The results will be sorted by weighted scores.
+				</P></FONT>
+			</TD></TABLE>
+			</form>
+			</P>
+		<LI>The following options can be placed in any order in front of the query:
+			<P>
+			<UL>
+			<b>c:</b> for a case sensitive search.
+			</UL><UL>
+			<b>w:</b> to match whole words only.
+			</UL><UL>
+			<b>st:</b> to include stop-terms.
+			</UL><UL>
+			<b>all:</b> to add + in front of all terms/phrases.
+			</UL><UL>
+			<b>match: score: date: size: title:</b> or <b>name:</b> for the sorting choice. 
+			</UL><UL>
+			<b>5-100:</b> for the number of results to display per page.
+			</UL><UL>
+			<b>b:</b> to search the body (full text) of documents.
+			</UL><UL>
+			<b>t:</b> to search the title of documents.
+			</UL><UL>
+			<b>u:</b> to search the url of documents.
+			</UL><UL>
+			<b>alt:</b> to search the alternate text in documents.
+			</UL><UL>
+			<b>l:</b> to search the links in documents.
+			</UL><UL>
+			<b>d:</b> to search the meta-description in documents.
+			</UL><UL>
+			<b>k:</b> to search the meta-keywords in documents.
+			</UL><UL>
+			<b>au:</b> to search the meta-author in documents.
+			</UL>
+			</P>
+			<P>
+			<form onsubmit="return false">
+			<TABLE BORDER=0 WIDTH=500><TD>
+				<FONT color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+				For example: <p><center><input type=text value="c:b:t:d:15:size:term &quot;a phrase&quot;" size=40 readonly></center></p>
+				<P align=justify>
+				The query above will perform a case sensitive search for 'term' and 'a phrase' in the body, title, and meta-description of documents. 15 results will be displayed per page and the results will be sorted by file size.
+				</P></FONT>
+			</TD></TABLE>
+			</form>
+	</UL>
+	</FONT>
+</TD></TABLE>

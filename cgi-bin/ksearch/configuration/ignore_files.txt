@@ -1,0 +1,14 @@
+/home/groups/a/ab/abora/cgi-bin
+/home/groups/a/ab/abora/htdocs/udanax-gold2java/abora-gold/api
+/home/groups/a/ab/abora/htdocs/abora-white/clover-historical
+/home/groups/a/ab/abora/htdocs/abora-white/junit
+/home/groups/a/ab/abora/htdocs/abora-white/clover
+
+*/overview-frame.html
+*/overview-tree.html
+*/allclasses-frame.html
+*/allclasses-noframe.html
+*/packages.html
+*/package-tree.html
+*/package-frame.html
+

@@ -1,0 +1,344 @@
+<html>
+<head>
+<title>FAQs - KSearch v1.4 by KScripts.com</title>
+
+<META NAME="description" CONTENT="FAQs - KSearch v1.4 by KScripts.com - General, Installation and Usage Troubleshooting">
+<META NAME="keywords" CONTENT="ksearch kscripts.com search engine installation troubleshooting usage FAQs">
+
+<script language="Javascript" type="text/javascript">
+<!--
+function download () {
+	platform = prompt("Thank you for considering KScripts.com! \nWhat is your server's platform, Unix or Windows?", "");
+	var unix = /^\s*unix\s*$/i;
+	var windows = /^\s*windows\s*$/i;
+	if (unix.test(platform)) { document.location.href = "http://www.kscripts.com/ksearch/ksearch.tar.gz"; }
+	if (windows.test(platform)) { document.location.href = "http://www.kscripts.com/ksearch/ksearch.zip"; }
+}
+// -->
+</script>
+
+</head>
+<body bgcolor="#ccccff" link="#333366" vlink="#333366" alink="#333366" topmargin=0 leftmargin=0 rightmargin=0>
+<a name="top"></a>
+<center>
+<table width="600" border="0" cellpadding="0" cellspacing="0"><td>
+<center>
+
+<!-- Start Main Content -->
+<br>
+<p>
+<table width="90%" border="0" cellpadding="5" cellspacing="0">
+<tr><td align="center">
+<font color="#333366" face="verdana, arial, helvetica, sans-serif"><H3>
+<b>KSearch v1.4 - <a href="http://www.kscripts.com/scripts.html#downloadksearch" onclick="download(); return false" class="big">Download it now!</a>
+</H3>
+<H2>FAQs</H2>
+</td></tr>
+<tr><td>
+	<table width="100%" border=0 cellpadding=5 cellspacing=0>
+		<td align=left><font size=2 color="#333366" face="verdana, arial, helvetica, sans-serif"><a href="http://www.kscripts.com/discus/" class="mainsmall">More Help can be found in our Discussion Forum</a></td>
+		<td align=right><font size=2 color="#333366" face="verdana, arial, helvetica, sans-serif"><a href="http://www.kscripts.com/scripts.html#ksearch" class="mainsmall">Back to Main Page</a></td>
+	</table>
+	<table width="100%" border=0 cellpadding=0 cellspacing=0>
+
+		<td align="center" bgcolor="#333366"><img src="http://www.kscripts.com/images/transparent.gif" width=2 height=2></td>
+	</table>
+</td></tr>
+<tr><td align="center">
+	<table border=0 cellpadding=5 cellspacing=0 align=center>
+		<td><font size=3 color="#333366" face="verdana, arial, helvetica, sans-serif">
+		<b>General</b></font>
+		<font size=2 color="#333366" face="verdana, arial, helvetica, sans-serif">
+		<ul>
+		<li><a href="#whatisksearch"><b>What is KSearch?</b></a>
+		<li><a href="#howdoesitwork"><b>How does KSearch work?</b></a>
+		<li><a href="#requirements"><b>What do I need to use KSearch?</b></a>
+		</ul>
+		</font>
+		<font size=3 color="#333366" face="verdana, arial, helvetica, sans-serif">
+		<b>Installation and Usage Troubleshooting</b>
+		</font>
+		<font size=2 color="#333366" face="verdana, arial, helvetica, sans-serif">
+		<ul>
+		<li><a href="#tar.gz"><b>How do I open the "ksearch.tar.gz" file?</b></a>
+		<li><a href="#installation"><b>How do I install KSearch?</b></a>
+		<li><a href="#ignore_files"><b>How do I prevent certain files and directories from being indexed?</b></a>
+		<li><a href="#stop_terms"><b>How do I stop the search engine from finding certain terms?</b></a>
+		<li><a href="#cut_off"><b>How do I stop the search engine from finding common terms that may be in nearly all my documents but not in the "stop_terms.txt" list?</b></a>
+		<li><a href="#fullpath"><b>What is the full path?</b></a>
+		<li><a href="#perlpath"><b>How do I set the Perl path in "indexer.pl" and "ksearch.cgi"?</b></a>
+		<li><a href="#filepermissions"><b>How do I set file permissions?</b></a>
+		<li><a href="#dbmerror"><b>When I run the indexer, I get the error message 'dbm store returned -1, errno 28, key "trap" at - line 3.' What does this mean?</b></a>
+		<li><a href="#nodbm"><b>I do not have DB_File. Is there an alternative?</b></a>
+		<li><a href="#searchbox"><b>How do I add a search box on my site?</b></a>
+		<li><a href="#speed"><b>How do I configure the search engine for speed?</b></a>
+		<li><a href="#space"><b>How do I configure the search engine to save disk space?</b></a>
+		<li><a href="#description"><b>My descriptions always show the same terms that are in my navigation bar. How do I show useful content in the descriptions?</b></a>
+		<li><a href="#cputime"><b>Why does the search seem to take longer than the indicated search time?</b></a>
+		<li><a href="#score"><b>What is the score?</b></a>
+		<li><a href="#pdf"><b>How do I index PDF files?</b></a>
+		</ul></font>
+		<font size=3 color="#333366" face="verdana, arial, helvetica, sans-serif">
+		<b>Common Problems and Returned Errors</b>
+		</font>
+		<font size=2 color="#333366" face="verdana, arial, helvetica, sans-serif">
+		<ul>
+		<li><a href="#cannotopen"><b>Cannot open ".../database/files: No such file or directory...?</b></a>
+		<li><a href="#indexertimeout"><b>When I run the indexer from the web, the script ends prematurely.</b></a>
+		<li><a href="#cannotruncgi"><b>When I try running either the indexer or search script from the web, my browser returns the contents of the file instead of running the script.</b></a>
+		</ul></font>
+		</td>
+	</table>
+</td></tr>
+<tr><td>
+	<table width="100%" border=0 cellpadding=0 cellspacing=0>
+		<td align="center" bgcolor="#333366"><img src="http://www.kscripts.com/images/transparent.gif" width=2 height=2></td>
+	</table>
+</td></tr>
+<tr><td align="left">
+<br>
+<font size=3 color="#333366" face="verdana, arial, helvetica, sans-serif"><b>General</b></font>
+<font size=2 color="#333366" face="verdana, arial, helvetica, sans-serif">
+<ul>
+<li><a name="whatisksearch"></a> <b>What is KSearch?</b>
+	<p>KSearch is a fast, efficient, and highly configurable search engine and web site indexer. It includes almost
+        all features available in the most popular commercial search engines yet is completely free. Key features
+        include phrase searching, case sensitivity, whole word searches, + and - logical operators, searching within
+        previous results, a completely customizable HTML template and much more.
+	<a href="#top">Back to top</a>
+	</p>
+<li><a name="howdoesitwork"></a> <b>How does KSearch work?</b>
+	<p>The KSearch indexer starts at a specified directory and crawls through all of its files and subdirectories except for those listed in a special ignore-files list.
+	For each file, the indexer removes HTML tags and embedded scripts and styles, translates Latin-1 characters to english equivalents, and then indexes the remaining contents.
+	The title, description, links, meta-description, meta-keywords, meta-author, modification date, and file path are saved using a DBM database or flat file.
+	To increase the search speed, the contents of each file can also be saved in the database or in a flat-file.
+	The search script finds the number of query terms in each document, ignoring terms in a special stop-terms file, by directly accessing the file information stored in the DBM database or flat-file, or by searching on-the-fly.
+	The results are sorted according to the users preference and are then returned to the user via a customized HTML template.
+	<a href="#top">Back to top</a>
+	</p>
+
+<li><a name="requirements"></a> <b>What do I need to use KSearch?</b>
+	<p> KSearch can be installed on Unix or Windows platforms. Perl (5.003 or higher) must be installed on your system to run both the indexer and search scripts.
+	The search script uses the Benchmark and CGI perl modules which are included in the standard Perl distribution.
+	KSearch uses the best perl DBM library module available on your system (SDBM_File is included in the standard Perl distribution. DB_File or GDBM_File may be required for very large sites).
+	If you want to index PDF files, you must install Xpdf from <a href="http://www.foolabs.com/xpdf/">http://www.foolabs.com/xpdf/</a>; the KSearch indexer uses pdftotext in Xpdf to convert PDF files to text content.
+	The disk space needed depends on the users configuration and the size of the website. To get an idea of size requirements, the index for the 5M perl manual is 4.9M.
+	KSearch can be configured to use a very compact index for <a href="#space">minimal size requirements</a>.
+	<a href="#top">Back to top</a>
+	</p></font>
+</ul>
+</td></tr>
+<tr><td>
+	<table width="100%" border=0 cellpadding=0 cellspacing=0>
+		<td align="center" bgcolor="#333366"><img src="http://www.kscripts.com/images/transparent.gif" width=2 height=2></td>
+	</table>
+</td></tr>
+<tr><td align="left">
+<br>
+<font size=3 color="#333366" face="verdana, arial, helvetica, sans-serif"><b>Installation and Usage Troubleshooting</b></font>
+<font size=2 color="#333366" face="verdana, arial, helvetica, sans-serif">
+<ul>
+<li> <a name="tar.gz"></a><b>How do I open the "ksearch.tar.gz" file?</b>
+	<p>Uncompress the file first by typing "gunzip ksearch.tar.gz", and then type "tar xvf ksearch.tar" to extract the file.
+	On Windows platforms, winzip (<a href="http://www.winzip.com">winzip.com</a>) can open "tar.gz" archives.
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="installation"></a><b>How do I install KSearch?</b>
+	<p>After you <a href="#tar.gz">extract the compressed file</a>, you can open the <a href="http://www.kscripts.com/ksearch/README">README</a> file for detailed instructions to complete the installation.
+	</p>
+	<p>General Installaton Steps:</p>
+	<p>
+	<ol>
+	<li><a href="#perlpath">Set the path to perl</a> on the first line of "indexer.pl" and "ksearch.cgi".
+	<li>Set the appropriate <a href="#filepermissions">file permissions</a>.
+	<li>Edit the "<a href="http://www.kscripts.com/ksearch/scripts/configuration.pl">configuration/configuration.pl</a>" file.
+	<li>Edit the "<a href="http://www.kscripts.com/ksearch/scripts/ignore_files.txt">configuration/ignore_files.txt</a>" and "<a href="scripts/stop_terms.txt">configuration/stop_terms.txt</a>" files.
+	<li>Run the indexer by typing "indexer.pl". Some systems may require you to type "./indexer.pl".
+	</ol>
+	<br>
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="ignore_files"></a><b>How do I prevent certain files and directories from being indexed?</b>
+	<p>To skip files and directories in the indexing routine, add their full paths in the "configuration/ignore_files.txt" file.
+	Be sure that they are added on separate lines.
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="stop_terms"></a><b>How do I stop the search engine from finding certain terms?</b>
+	<p>Add terms you do not want indexed in the "configuration/stop_terms.txt" file.
+	Be sure that they are added on separate lines.
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="cut_off"></a><b>How do I stop the search engine from finding common terms that may be in nearly all my documents but not in the "stop_terms.txt" list?</b>
+	<p>Set $IGNORE_COMMON_TERMS to the maximum percentage of files
+	that terms can exist in. This will add the common terms to 'stop_terms.txt'.
+	For example: if set to 80, terms that are found in over 80% of all files will be added to the 'stop_terms.txt' file.
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="fullpath"></a><b>What is the full path?</b>
+	<p>The full path is the absolute path of a file or directory. On Unix systems, you can determine the full path of the current directory by typing "pwd".
+	We recommend asking your host service or system administrator for the full path to your web site for running CGI scripts.
+	For Windows, you may need to include the drive letter, for example "C:\WINDOWS\kscripts\".
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="perlpath"></a><b>How do I set the Perl path in "indexer.pl" and "ksearch.cgi"?</b>
+	<p>For Unix platforms, the first line of each script tells the computer that the file is a Perl program.
+	On the first line you will see "#!/usr/bin/perl" which is a common location for Perl.  You can type "which perl" to determine the Perl path on your system.
+	If it is different, you will have to change the first line to the correct path keeping the "#!" in front.
+	<a href="#top">Back to top</a>
+	</p>
+
+
+<li> <a name="filepermissions"></a><b>How do I set file permissions?</b>
+	<p>For Unix platforms, type "chmod 755 filename" for read/exec permissions, and "chmod 744 filename" for read only permissions (filename is the name of the file).
+	For Windows (NT) users right-click the file or directory, click Properties on the shortcut menu, and then click Permissions on the Security tab.
+	See the <a href="http://www.kscripts.com/ksearch/README">README</a> file for a list of file permissions for each file.
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="dbmerror"></a><b>When I run the indexer, I get the error message 'dbm store returned -1, errno 28, key "trap" at - line 3.' What does this mean?</b>
+	<p>This means that your system does not have either the DB_File or GDBM_File module and that you have reached the (key/value) memory limit of the DBM database.
+	You will have to install either the DB_File or GDBM_File module from CPAN (http://www.perl.com/CPAN-local).
+	Most systems will have DB_File.
+	<a href="#top">back to top</a>
+	</p>
+
+<li> <a name="nodbm"></a><b>I do not have DB_File. Is there an alternative?</b>
+	<p>If you do not have DB_File, you can use a flat file database to prevent running into memory limits or database access problems.
+	To do this, set $USE_DBM = 0 in configuration.pl.
+	<a href="#top">back to top</a>
+	</p>
+
+
+<li> <a name="searchbox"></a><b>How do I add a search box on my site?</b>
+	<p>To add a search box, insert the following HTML code:</p>
+        </font>
+        <font size=3 color="#333366" face="verdana, arial, helvetica, sans-serif">
+        <p>
+        <pre>
+&lt;FORM ACTION="http://my_web_site.com/cgi-bin/ksearch/ksearch.cgi" METHOD="GET" NAME="search"&gt;
+&lt;INPUT TYPE="text" NAME="terms"&gt;&lt;INPUT TYPE="submit" VALUE="Search"&gt;
+&lt;/FORM&gt;
+        </pre>
+        </p></font>
+        <font size=2 color="#333366" face="verdana, arial, helvetica, sans-serif">
+	Be sure to change "my_web_site.com" to your actual domain.
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="speed"></a><b>How do I configure the search engine for speed?</b>
+	<p>
+Set $IGNORE_COMMON_TERMS to the maximum percentage of files
+that indexed terms can exist in. This will ignore common terms not present in 'stop_terms.txt'.
+Additionally, the search engine will be slightly faster if DB_file is used. See the <a href="http://www.kscripts.com/ksearch/README">
+README</a> documentation for details.
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="space"></a><b>How do I configure the search engine to save disk space?</b>
+	<p>
+Set $SAVE_CONTENT to 0 to use a compact search index database.
+Set $MAKE_LOG to 0 so you do not create a logfile of the indexing routine. This configuration
+may cause unbearably slow search speeds.
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="description"></a><b>My descriptions always show the same terms that are in my navigation bar. How do I show useful content in the descriptions?</b>
+	<p>
+	Descriptions may always show the same content if websites start with the same navigation bar.
+	You can show more useful content by setting $DESCRIPTION_START to a number that will represent the term number to start the description at. The very first term is 0. For example:
+	if you set $DESCRIPTION_START to 50, then the description will start from the 51st term in the file.
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="cputime"></a><b>Why does the search seem to take longer than the indicated search time?</b>
+	<p>The search time is the actual CPU time used to complete the search process. This time does not represent the actual "wallclock" time that takes into account CPU scheduling and other factors. It also does not include the time used by busy networks. The CPU time is a more accurate measure of the search engine itself.
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="score"></a><b>What is the score?</b>
+	<p>Unless weights are used, the score is simply the percentage of matching characters in the document (0.00 - 100.00).
+	<a href="#top">Back to top</a>
+	</p>
+
+<li> <a name="pdf"></a><b>How do I index PDF files?</b>
+	<p>In order to index PDF files, you must install Xpdf from <a href=" http://www.foolabs.com/xpdf/">http://www.foolabs.com/xpdf/</a>. The KSearch indexer uses pdftotext in Xpdf to convert PDF documents to text.
+	Xpdf is freely available for Unix and Windows platforms under the GNU General Public License. Once you have installed Xpdf, set $PDF_TO_TEXT to the full path of the 'pdftotext' executable in the Xpdf package, and then index your web site as per usual.
+	Note: Using this option produces a security risk since the indexer script must run pdftotext using a shell command.  Do not use this option if you do not trust the content of the PDF files you want to index.
+	Results for phrases may be less accurate due to the output format of pdftotext; columns of text are left in the conversion rather than continuous content.
+	<a href="#top">Back to top</a>
+	</p>
+
+</font><br>
+</td></tr>
+<tr><td>
+	<table width="100%" border=0 cellpadding=0 cellspacing=0>
+		<td align="center" bgcolor="#333366"><img src="http://www.kscripts.com/images/transparent.gif" width=2 height=2></td>
+	</table>
+</td></tr>
+<tr><td align="left">
+<br>
+<font size=3 color="#333366" face="verdana, arial, helvetica, sans-serif"><b>Common Problems and Returned Errors</b></font>
+<font size=2 color="#333366" face="verdana, arial, helvetica, sans-serif">
+<ul>
+<li><a name="cannotopen"></a> <b>Cannot open ".../database/files: No such file or directory...?</b>
+	<p>This error may occur if you do not have a database directory in the ksearch folder, if your server does not grant write access to CGI scripts, if your <a href="#filepermissions">permissions</a> are set incorrectly, or if the DBM module is not installed correctly. In order to run both the indexer and search script, your server must allow write access to CGI scripts.
+	If your server grants write acces to CGI scripts and you still get this error, then try using a flat file database by setting $USE_DBM = 0 in configuration.pl.
+	<a href="#top">Back to top</a>
+	</p>
+<li><a name="indexertimeout"></a> <b>When I run the indexer from the web, the script ends prematurely.</b>
+	<p>Most servers give HTTP requests a time limit (time out) to prevent tying up the server's resources. If you are indexing a relatively large site from a web browser, you will probably reach this limit. The only way to get around this limit with the current version of KSearch is to ask your host service or system administrator to increase the time so the server does not time out.
+
+	<a href="#top">Back to top</a>
+	</p>
+<li><a name="cannotruncgi"></a> <b>When I try running the indexer or search script from the web, my browser returns the contents of the file instead of running the script.</b>
+	<p>When running the indexer from the web, be sure to run indexer.cgi (not indexer.pl).  Additionally, be sure your server is set to run Perl for .CGI scripts, particularly in the directory that KSearch is installed.
+
+	<a href="#top">Back to top</a>
+	</p></font>
+</ul>
+</td></tr>
+
+</table>
+
+<!-- End Main Content -->
+
+<br>
+<!-- Start Footer -->
+<table width="100%" border=0 cellpadding=5 cellspacing=0>
+	<td align=right><font size=1 color="#333366" face="verdana, arial, helvetica, sans-serif"><a href="#top" class="mainsmall">Back to top</a></td>
+</table>
+<table width="100%" border=0 cellpadding=7 cellspacing=0>
+	<tr>
+		<td bgcolor="#9999cc" align="center" nowrap>
+			<center>
+			<font size=1 color="#333366" face="verdana, arial, helvetica, sans-serif">
+			<a href="http://www.kscripts.com" class="navsmall"><b>Home</b></a> |
+			<a href="http://www.kscripts.com/services.html" class="navsmall"><b>Services</b></a> |
+			<a href="http://www.kscripts.com/resources.html" class="navsmall"><b>Resources</b></a> |
+			<a href="http://www.kscripts.com/scripts.html" class="navsmall"><b>Free Scripts</b></a> |
+			<a href="http://www.kscripts.com/support.html" class="navsmall"><b>Support</b></a> |
+			<a href="http://www.kscripts.com/discus/" class="navsmall"><b>Forum</b></a>
+			</font>
+			</center>
+		</td>
+	</tr>
+	<tr>
+		<td align="center">
+			<font size=1 color="#333366" face="verdana, arial, helvetica, sans-serif">KScripts.com  &copy; Copyright 2000, All rights reserved</font>
+		</td>
+	</tr>
+</table>
+
+<!-- End Footer -->
+</center>
+</td></table>
+</center>
+
+</body>
+</html>
