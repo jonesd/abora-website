@@ -972,6 +972,143 @@
 <h3>Differences</h3>
 </td></tr></table>
 
+		<p>Given two documents, what are the similarities and the
+		differences between them? This is a feature supported by word
+		processors, text editors and custom differencing tools such as the
+		unix <i>diff</i> tool. Most of these implementations start with two
+		arbitrary text and can calculate a set of differences from them.
+		The quality of the results varies tremendously based on the input
+		texts, uniqueness of terms, quantity of repetition, and the number
+		of differences. Results may be at the granularity of individual
+		lines or even down to words or characters within a line. The
+		resulting differences are usually broken down into primitive
+		insert, delete and modification differences. So if a block of text
+		is moved from the start of a document to the end, this will be
+		recorded as a delete from the first document, and an insert into
+		the second. This simplification unfortunately distances the
+		results from the user level actions that originated these changes,
+		which the user would obviously prefer to see as their changes.
+		Differencing tools can often support an extended form of this
+		involving three files, with one considered the elder version of
+		the second and third files.</p>
+
+		<p>The demo implementation is completely different from the
+		standard techniques highlighted above. The high level spin on this
+		is that the demo finds the similarities between two documents,
+		rather than the differences. The demo can accurately indicate
+		moved and copied blocks of text in addition to the simple insert,
+		delete and modification differences one usually finds. It also
+		wont get confused by some of the issues that degradate the results
+		from the classic differencing tools.</p>
+
+		<p>The downside of the demo implementation is from its inherent
+		implementation. It works by finding what content is shared by the
+		two documents that are being compared. So given a simple text
+		edition. If that content is transcluded by another edition, then
+		those editions will be seen as being the same - because that
+		actually reference the same content elements. But if one was to
+		retype in the contents of the first edition in a new edition, so
+		it appears to be exactly the same, then those two editions would
+		be seen as completely different. Even though each element of the
+		two has the same character value, they aren't the same character
+		element, so they are different. So even though the tool can
+		provide superior results to the standard differencing techniques,
+		it is useless for texts entered without reference to each
+		other.</p>
+
+		<p>To help with the problem of parallel entered texts, it would be
+		possible to pass this through a standard differencing tool, though
+		it would probably lead to even more confusion.</p>
+
+<h4>API</h4>
+
+		<p>As mentioned the implementation works by walking through two
+		editions and building a map between each of the content elements
+		that they share. It can handle a content element being including
+		in a different location between the two, or an element being
+		included more than once.</p>
+
+		<p>The user level API for an edition is the
+		<code>BeEdition>>sharedWith: anotherEdition</code> method which
+		returns an ordered collection of mappings. The mapping is simply a
+		mapping from a range of elements of the first edition to another
+		range of elements in the second. There could be multiple mappings
+		for the same element if the same content occurs more than
+		once.</p>
+
+<h4>UI rendering of results</h4>
+
+		<p>Once returned to the UI, the steps required to show this to the
+		user by painting is relatively simple.</p>
+
+		<p>For the case of painting a different background colour, it's
+		just a case of walking the mappings and a sequence of alternative
+		colours, and just painting them.</p>
+
+		<P>TODO: show example</p>
+
+		<p>The thin vertical mapping window that draws a connections
+		between the individual characters of the two editions has an
+		interesting issue in that the connections do overlap, so it's not
+		possible to ensure that useful connections are not obscured. The
+		simple strategy the author took was to paint the largest mappings
+		first, and then overlay the smaller mappings on top of that.</p>
+
+<h4>Implementation</h4>
+
+		<p>Each of the leafs of the source edition are walked one by one.
+		For each leaf, the content element that they represent is fetched,
+		and in turn all of the leafs which represent it. These other leafs
+		are then walked, and any which aren't members of anotherEditon and
+		its revisionNumber are ignored. Of the remaining leafs, their
+		global positions are calculated and a mapping between the global
+		position of the source leaf to the global position of the each of
+		these leafs is collected.</p>
+
+		<p>In the case of CollectionLeafs there is also an additional test
+		to make sure that there are some elements of the content element
+		shared between the subsets of that content held between the two
+		leafs. If there is a match, then the range of common elements
+		between the two is calculated and a suitable mapping created.</p>
+
+		<p>TODO: diagram showing the combining of mappings</p>
+
+		<p>Once all the mappings have been collected for the leafs of the
+		edition tree, then a further processing step is employed to
+		convert the mappings into a more coherent and convenient result
+		for use by clients. Mappings are sorted by their global positions,
+		and contiguous mappings are combined over their combined range.
+		The actual algorithm used is potential expensive, and involves
+		multiple passes over the mappings until no improvement in a
+		processing round can be found.</p>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<p>The requirements for the demo differences were gathered from a
+		few comments around the Udanax-Gold behaviour. The implementation
+		was done from scratch so could well miss out on some critical
+		features and performance ideas from the original.</p>
+
+		<p>One aspect of the Udanax-Gold implementation is its apparent
+		ability to work on documents from any coordinate-space. This is
+		one area where standard differencing tools are very weak, and can
+		only be constructively applied to text. The author assumes that
+		given a two-dimensional image of a face, if a second edition of
+		the image was created by painting the eyes green, that a
+		differencing operation between these images would properly
+		highlight that the pixels making up the eyes have changed. This
+		might be particularly interesting with collages.</p>
+
+		<p>The performance of the demo is hampered by the need to walk
+		root-ward up ent trees from the leafs to find if a content element
+		is present for a specific edition and revision. Udanax-Gold
+		incorporates some significant performance optimisations in this
+		area courtesy of the Canopy systems.</p>
+
+		<p>On a minor note, the Udanax-Gold <code>sharedWith</code> method
+		returns an edition rather than the primitive collection used in
+		the demo.</p>
+
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Endorsements</h3>
