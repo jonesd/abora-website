@@ -13,6 +13,8 @@
       <h1>Dolphin Demo Technical Documentation</h1>
 <!-- abora:header_close -->
 
+		<p><font color="red">---- Document still being written ----</font></p>
+
 		<p>The implementation of the Dolphin Demo was driven out of a lack
 		of appreciation of the features of Udanax-Gold, and definitely an
 		understanding of how it could all be made to work. I had access to
@@ -39,7 +41,9 @@
 		employer, @link:intware@. Many thanks.</p>
 
 
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Data Structure Requirements</h3>
+</td></tr></table>
 
 		<p>The core of the implementation is a limited version of the Ent
 		data structure at the heart of Udanax-Gold. As mentioned above
@@ -63,7 +67,10 @@
 
 <h3>Possibly Implementations</h3>
 
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Base Implementation</h3>
+</td></tr></table>
 
 		<p>The contents of a document and the structure defining the
 		different versions and links between content are split into two
@@ -171,14 +178,173 @@
 		then connects to "One" on the left and the parent of "Four" and
 		"Three" on the right.</p>
 
-		<p>TODO: explain the dsp on F</p>
 
+<table bgcolor="antiquewhite" width="100%"><tr><td>
+<h3>Element Positions</h3>
+</td></tr></table>
+
+		<p>One issue that we have only briefly dwelled on is how to use
+		the data structure that we have built up. The single case we have
+		concentrated on is retrieving the entire contents of a specific
+		revision of a document. This is achieved by walking all leafs of a
+		tree starting from the left most one.</p>
+
+		<p>Another primitive operation is to retrieve an element at a
+		specific position of a document, or a range elements from one
+		position to another.</p>
+
+<h4>Example</h4>
+
+		<img src="nodeTreeF.png">
+
+		<p>Looking back at revision B we can see that retrieving the
+		element at position 1 is the character "O" (assuming 1-based
+		number scheme). This can be found by looking at the single child
+		of the B root, and then just a simple #at: request on the contens
+		of that leaf node.</p>
+
+		<p>Retrieving the element at specified position is more
+		interesting for revision C. Assuming we want to retrieve the
+		character at position 5, then we can make use of the split value
+		of the Split child of the C root. This includes a value of 4,
+		which is the position of the first element that could be found by
+		following its right child. So to retrieve the character at
+		position 5, we start at the C root, find its child, see that 5 is
+		greater or equal to the split value of 4. Follow the right branch,
+		and knowing that the first element of the found "Two" content has
+		a global position of 4, then we can easily find the the second
+		character of its content, "w" is the character at the global
+		position of 5.</p>
+
+		<p>Moving onto finding the character at the 5th postion of
+		revision D, then we can follow a simple path. Starting at the D
+		root, we can see that 5 is less than the split value of 7 for its
+		child, which will send us down its left branch. At that point 5
+		&gt;= 4 and so we end up at the "Two" leaf node again.</p>
+
+		<p>The more interesting case is with revision F. Again we are
+		looking for the character at position 5. Starting at the F root,
+		we travel to its single Spit child node, whose split value is 4.
+		As 5 &gt;= 4, we follow the right child, and we this time we make
+		use of a the +3 displacement value that has been associated with
+		the right branch. The displacement value is applied to the
+		position 5 that we had been looking for, so that when we arrive at
+		the end of the right branch we are now looking for the position 8
+		(5 + 3). As 8 &lt; 11, we take the left most branch and retrieve
+		the last but two character, "o".</p>
+
+		<p>The displacement that we applied while navigating leafwards has
+		enabled the F revision to share the 11 sprit node from the E
+		revision. This split node when defined for the E revision had a
+		global position of 11, as the F revision has deleted the "Two"
+		text before it, that nodes position within the F revision is
+		actually 9, but changing the split value of that node would then
+		break the E revision. By associating the displacement value with
+		the new split node added for the F revision, we are able to share
+		this node from E.</p>
+
+		<p>So the neat thing about the displacement idea is that even if
+		we insert and delete elements, later revisions can still share
+		split nodes from earlier revisions, even if the global positions
+		of those nodes now differes across the numerous revision that
+		share that node.</p>
+
+<h4>Root-ward walk</h4>
+
+		<p>When walking rootwards, from leaf to root, the inverse of the
+		displacement is applied. This enables you to learn the global
+		position from any element in a leaf node. Those of you on the ball
+		we will now realised that tracing a path up to a root is actually
+		now an involved issue, because a leaf could have a number of
+		roots. This is not a common problem with tree data structures! We
+		will investigate this issue later.</p>
+
+<h4>Demo implementation</h4>
+
+		<p>The Demo implementation stores a separate displacement for both
+		the left and right children of a split node. Whenever you follow
+		either the left or right branch, the displacement is applied to
+		the position that is being found.</p>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<p>The Udanax-Gold Split node implementation has a number of
+		differences from the one described above. Rather than a simple
+		split value, Gold has a region that defines all positions that can
+		be found in its left children. The displacement value is stored in
+		a DspNode, rather than embedded within the split node. As Gold
+		supports more than integer positions, the displacement value may
+		also be a non-integer.</p>
+
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Version support</h3>
+</td></tr></table>
 
-		<p>TODO: Revision numbers</p>
+		<p>We ended off the above description of walking the nodes of a
+		revision tree, with the issue of walking from a leaf to its root.
+		Normally this is a very easy operation in tree data structures,
+		assuming suitable parent references. The complexity in this case
+		is obvious if you look at the "Three" leaf in the final diagram
+		for revision F. The "Three" leaf node actually has two parents,
+		one is the 7 split node associated with revision D, and the other
+		is the 11 split node associated with revisions E and F. Which of
+		the two parents should be followed?</p>
 
+		<p>For the demo each non-leaf node includes a revision number
+		associated with the revision for which it was originally created.
+		Whenever one walks the tree root-wards, a desired revision is also
+		known which can be used to resolve the parent choice. So for
+		example, if we want to learn the global position of the first
+		character of "Three" for revision F, we want to walk root-ward
+		from its leaf node. There are two immediate parents, the 7 or 11
+		split nodes. We will take the 11 split node as that node was
+		created with revision E, which is closer to revision F than the D
+		of the 7 split node. At this point we again have two parent
+		choices, and the 4 split node of revision F is obviously the
+		preferred route. At that point its single parent is the revision F
+		root and so we have reached our destination. Applying inverse
+		displacements we can calculate that the T of "Three" is at the
+		global position of 8 for revision F.</p>
 
+<h4>Revision Numbers</h4>
+
+		<p>A revision number is not a simple integer, but a branching
+		number with a format such as "1:4:1". The first revision is "1",
+		the second "2", and so on. If another revision is made from the
+		first revision, then that is known as "1:1:1" with the next on that
+		branch being "1:1:2".</p>
+
+		<img src="branching-number.png">
+
+		<p>Reviewing the diagram we can see that revision "2" has three
+		following revisions, "3", "2:1:1" and "2:2:1". A branch is
+		considered the path from the root revision "1" to the specified
+		revision. For example "1", "2", "2:1:1", "2:1:2", "2:1:2:1:1" an d
+		beyond form a branch.</p>
+
+		<p>We discussed earlier in this section navigating root-wards and
+		deciding which one of possibly multiple parents should be
+		followed. Given a desired revision we choose the parent whose
+		created revision is closest to the revision we are interested in.
+		The closest revision has to be on the same branch and then the
+		nearest revision before or equal to the desired revision.</p>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<p>There are significant differences between the demo and
+		Udanax-Gold in this area. Gold supports the concepts of Canopies
+		which enable a number of features, and one of them is associating
+		a node with all the editions that include that node. The concept
+		of a revision number is not present, and instead the ID of the
+		edition itself can be used. Canopies also enable faster
+		determination of whether a node belongs to a revision or not,
+		which for the demo would require walking root-wards a significant
+		distance.</p>
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Tree Balancing by Splaying</h3>
+</td></tr></table>
 
 		<p>The advantage of a tree as a search data structure is that the
 		height of the tree is O(logN), where N is the number of leaves in
@@ -187,16 +353,160 @@
 		children always being to the left. This will form an O(N) tree, or
 		effectively a linked list.</p>
 
-		<p>The Ent appears to use the Splay Tree balancing method.</p>
+		<p>The Ent appears to use the Splay Tree balancing method. This is
+		an amortised balancing technique, and so balances a tree across a
+		number of operations rather than after a single specific
+		operation. This kind of balancing enables the cost of balancing to
+		be spread out over all operations, and it can adapt to a changing
+		pattern of accessing the tree over time.</p>
 
-		<p>TODO: Big picture rotates</p>
+		<p>The process proceeds by applying a splaying operation on every
+		access to the tree; for example find, inserts and deletes. When
+		accessing a tree, the node that is to be effected is first found,
+		then the splaying operation will through a series of alternating
+		rotate operations pull that node towards the root of the tree.</p>
 
-		<p>TODO: Rotates and their DSPs for left and right</p>
+		<p>TODO: Individual rotate operations and big picture rotates</p>
+
+
+<h4>Reviewing Displacement Navigation</h4>
+
+		<img src="dsp-navigate.png">
+
+		<p>Before investigating the effects of rotations on displacement,
+		a quick walk through the example tree that will be experimented
+		on. The three trees shown above are in fact the same tree, and
+		show three separate walk throughs, the first finding element at
+		position 1, the second position 2 and the third position 3. The
+		tree itself contains the string with three characters "XYZ". "X"
+		was originally added at position 9, "Y" at 11 and "Z" at 13. The
+		version of the document that we are now querying to only contains
+		those three characters.</p>
+
+		<p>If we following the centre trace, which shows the process of
+		finding the element at position 2. The Yellow line indicates the
+		steps followed. Starting with a desire to find the element at
+		position 2, we apply the displacement +4, so that we are now
+		looking for the element at 6. The 7 split node indicates we should
+		follow the left child, where we apply a displacement of +6, so
+		that we are now looking for the element at 9. The 9 split node
+		indicates we should follow the right child, where we apply a
+		displacement of +2, so that we are now looking for the element at
+		11. We finally arrive at the leaf and correctly find the "Y"
+		element. Additionally you can see that our original query for
+		position 2 has been converted through a series of steps to a query
+		for position 11, which is the global position at which "Y" would
+		have been originally added to in its revision.</p>
+
+
+<h4>Displacements and Rotations</h4>
+
+		<p>Thinking back to the Demo implementation of Split nodes, and
+		you will remember that a displacement is associated with left and
+		right children of the node. This feature is not part of standard
+		binary search tree and so we have to resolve the impact of
+		that.</p>
+	
+		<img src="dsp-rotate-right.png">
+
+		<img src="dsp-rotate-left.png">
+
+		<p>The above diagram shows the impact of a rotation towards the
+		right, and below that a rotation towards the left. The second
+		example is actually a continuation of the result of the first, and
+		so after a rotate right, followed by a rotate left, we end up with
+		the original tree again.</p>
+
+		<p>If you take a closer look at the top pair of trees, the left
+		hand tree is the before, and the right hand tree is the result of
+		rotating the 9 split node towards the right. You can see in the
+		result that the 9 split node is now the parent and the previous 7
+		parent is now the child of the 9 node. The three nodes X, Y and Z
+		are still in the correct order, but we see that the Y leaf is now
+		the child of the 7 split rather than the 9 split. The original
+		tree includes a displacement for each arc, and these are labelled
+		starting at A for +4 at the top of the tree. In the resultant tree
+		the displacements are calculated to ensure that the positions 1, 2
+		and 3 will still lead to the characters "X", "Y" and "Z"
+		respectively. The calculations are shown using the labelled
+		displacements from the first. For example the displacement at the
+		top of the tree is now +7 and is the result of adding the A and B
+		labelled displacements from the original tree.</p>
+
+<h4>Handling Multiple Parents</h4>
+
+		<p>A second complexity enjoyed by the demo implementation that is
+		beyond the trees discussed in the splaying paper, is that a node
+		in these trees may have more than one parent. This is a very
+		significant difference!</p>
+
+		<img src="dsp-rotate-right-duplicate.png">
+
+		<p>Imagine the tree that we used early to show the effect or the
+		right rotation on displacements, but this time the 9 split node
+		has two parents, one the root of its revision, and the other a
+		split node of a later revision. If we again rotate to the right
+		you will see that the result looks pretty much the same as before.
+		The one difference is that the D revision root is still connected
+		to the 9 split node. Tracing down from that root, position 1
+		properly matches "X", and 2 matches "Y", unfortunately position 3
+		now matches "Z", but that wasn't originally a member of revision
+		D.</p>
+
+		<p>As a temporary solution, the demo duplicates a node if it and
+		another node from a different revision are part of a rotation.
+		This unfortunately means that there can be significant quantities
+		of duplicated nodes.</p>
+
+	<p>TODO: Bottom up linking</p>
+
+<h4>Demo Splaying Issues</h4>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<p>Udanax-Gold use of splaying inspired the demo use of it. The
+		details of Gold implementation are unknown to the author, but it
+		is clearly implemented in a significantly cleaner way using a
+		table driven mechanism. The use of canopies and separating
+		displacement values into their own nodes feels like it might side
+		step the mess that the Demo gets into. A closer analysis to the
+		Gold implementation in action is going to be critical in deciding
+		whether splaying has any value in the long term as the tree
+		balancing algorithm.</p>
 
 		<p>TODO: Splay ACM reference</p>
 
 
+<table bgcolor="antiquewhite" width="100%"><tr><td>
+<h3>Insert and Delete algorithm</h3>
+</td></tr></table>
+
+		<p>The earlier discussions over the use of the tree data structure
+		for sharing content between revisions glossed over the mechanisms
+		for deciding what nodes need to be created and who they connect
+		to.</p>
+
+		<p>The insert and delete algorithms both rely on the splaying
+		operation to pull the nearest node root wards to one of a small
+		number of known patterns. At that point a predefined set of
+		mutations can be applied.</p>
+
+<h4>Insert operation</h4>
+
+<h4>Delete operation</h4>
+
+		<p>TODO: rotating around target node to top to match a small
+		number of recognised patterns that could then be modified.</p>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<p>Currently the author does not know how Udanax-Gold approaches
+		this problem.</p>
+
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Transclusions</h3>
+</td></tr></table>
 
 		<p>Transclusion enables the sharing of content by quoting from the
 		original source. Transclusion is a primitive function of the
@@ -221,7 +531,9 @@
 			subsequent references.</p>
 
 
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>BeRangeElement hierarchy</h3>
+</td></tr></table>
 
 		<p>TODO: Nature and hierarchy of content classes</p>
 
@@ -259,7 +571,9 @@
 		<p>TODO: Placeholders</p>
 
 
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Works and Editions</h3>
+</td></tr></table>
 
 		<p>TODO; Work is identity, Edition is the content</p>
 
@@ -269,21 +583,53 @@
 
 		<p>TODO: Missing Work ownership and access control</p>
 
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Differences</h3>
+</td></tr></table>
 
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Endorsements</h3>
+</td></tr></table>
 
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
+<h3>Hyperlinks</h3>
+</td></tr></table>
+
+		<p>Considering the Demo is classified as a hypertext system, it
+		has taken us a long time to reach a description of the
+		implementation of the hyperlink that one would assume was a
+		primitive operation of the software. In fact hyperlinks are
+		implemented using transclusions. I find this particularly
+		interesting.</p>
+
+		<p>TODO: show implementation</p>
+
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Document structures</h3>
+</td></tr></table>
 
 		<p>TODO: show how a Work and editions plus links could all fit
 			together to from a rich document</p>
 
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Network</h3>
+</td></tr></table>
 
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Client Caching</h3>
+</td></tr></table>
 
 
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>References</h3>
+</td></tr></table>
 
 		<p>The authors knowledge of the Ent data structure derives from
 		two papers plus repeated fumbling readings of the published
