@@ -44,8 +44,10 @@
 			translated source.</li>
 		</ul>
 
-<!-- ------------------------------------------------- ->
-<!-- ------------------------------------------------- ->
+		<img alt="Translation Process" src="process.png">
+
+<!-- ------------------------------------------------- -->
+<!-- ------------------------------------------------- -->
 
 <a name="udanax-gold"></a>
 <table width="100%" bgcolor="antiquewhite">
@@ -104,13 +106,13 @@ These are additional Smalltalk source files found on Les Tyrrell's
 Collection of X++ (the XOC dialect of C++) source which has proven
 			very useful for making up for the missing PrimArray and
 			IntegerVar classes of the core Smalltalk code. There is a
-			mixture of hand created X++ and the results of XOC's
+			mixture of hand created X++ and the results of XOC's own
 			auto-translator from Smalltalk to X++. These classes were found
 			in the CVS section  of Jeff Rush's website.<br>
 <a href="http://www.sunless-sea.net">http://www.sunless-sea.net</a></p>
 
-<!-- ------------------------------------------------- ->
-<!-- ------------------------------------------------- ->
+<!-- ------------------------------------------------- -->
+<!-- ------------------------------------------------- -->
 
 <a name="translator"></a>
 <table width="100%" bgcolor="antiquewhite">
@@ -148,7 +150,7 @@ present in this directory.</p>
 <p>Once you have Java JDK 1.4+, Ant 1.5.1+, JUnit 3.8.1 set up, just run
 the following from the command line:</p>
 
-<tt>> <b>ant</b></tt>
+<tt>&gt; <b>ant</b></tt>
 
 <p>You should see some logging info summarising the walk through of a
 number of source Smalltalk files, and a larger number of generated
@@ -158,6 +160,56 @@ machine. You should find approximately 500 classes generated.</p>
 <p>The generated Java files are placed in <tt>../abora-gold/src-gen directory</tt>
 under the <tt>org.abora.gold</tt> Java package. </p>
 
+
+<h4>Translator Examples</h4>
+
+		<p>The best way to sample the result of the translator is simply
+		to look at the resulting code in the <tt>src-gen</tt> directory.
+		As a quick introduction I have included a few examples from the
+		<tt>org.abora.ug2java.translator.tests</tt> package to give a
+		flavour for the basic transformations that are used.</p>
+
+		<p>Note the formatting has been manually modified from the
+		original text of each for easier reading. In practice the results
+		of auto-translation should be passed separately through an
+		automatic tidying process.</p>
+
+		<table bgcolor="#ffff99" border="1" width="100%">
+			<tr bgcolor="#e6e64c">
+					<th width="50%">Smalltalk Source</th>
+					<th width="50%">Java Translation</th>
+				</tr>
+
+				<tr>
+					<td valign="top"><tt><pre><b>test</b><br>	one and: [two]!</pre></tt></td>
+					<td valign="top"><tt><pre>public void <b>test</b>() {<br>	one && (two);<br>}</pre></tt></td>
+				</tr>
+
+				<tr>
+					<td valign="top"><tt><pre><b>test</b>
+	(one = two)
+		ifTrue: [^one]
+		ifFalse: [^two]!</pre></tt></td>
+					<td valign="top"><tt><pre>public void <b>test</b>() {
+	<b>if</b> (one == two) {
+		<b>return</b> one;
+	} <b>else</b> {
+		<b>return</b> two;
+	}
+}</pre></tt></td>
+				</tr>
+
+				<tr>
+					<td valign="top"><tt><pre><b>test</b>
+	one two three: four and: 55!</pre></tt></td>
+					<td valign="top"><tt><pre>public void <b>test</b>() {
+	one.two().threeAnd(four, 55);
+}</pre></tt></td>
+				</tr>
+
+		</table>
+
+		
 
 <h4>Extending the Translator</h4>
 
@@ -169,17 +221,21 @@ transformations.</p>
 <p>The JUnit tests are present in the <tt>org.abora.ug2java.tests.TestWriteMethod</tt>
 class, and can be run courtesy of ant:</p>
 
-<tt>> <b>ant test</b></tt>
+<tt>&gt; <b>ant test</b></tt>
 
 
-<p><tt>TranslateSmalltalk.main(...)</tt> is the entry point taking an output
-directory, and a number of source Smalltalk files to process.</p>
+		<p><tt>TranslateSmalltalk.main(...)</tt> is the entry point of the
+		application taking an output directory, and one or more source
+		Smalltalk files to process.</p>
 
-<p>The Smalltalk files are stored in a version of the classic Smalltalk
-Chunk format which effectively has a sequence of chunks of text with a
-terminating exclamation mark (!). A chunk can define a new class,
-define a method of a specific method category and arbitrary Smalltalk
-expressions. More than one class can be defined in each source file.</p>
+		<tt>&gt; <b>java org.abora.ug2java.TranslateSmalltalk outputDir udanax-top.st</b></tt>
+
+		<p>The Smalltalk files are stored in a version of the classic
+		Smalltalk Chunk format which effectively has a sequence of chunks
+		of text with a terminating exclamation mark (!). A chunk can
+		define a new class, define a method of a specific method category
+		and arbitrary Smalltalk expressions. More than one class can be
+		defined in each source file.</p>
 
 <p>There are two major passes over the source by TranslateSmalltalk.</p>
 
@@ -244,8 +300,8 @@ on what should be happening - for example class attributes such as ON.CLIENT</li
 		<li>Tidying up the code!</li>
 		</ul>
 
-<!-- ------------------------------------------------- ->
-<!-- ------------------------------------------------- ->
+<!-- ------------------------------------------------- -->
+<!-- ------------------------------------------------- -->
 
 
 <a name="abora-gold"></a>
@@ -274,6 +330,34 @@ have been released yet by XOC.</p>
 Smalltalk by my translator. It will only be present if you have run
 the translator.</p>
 
+		<p>The base class of the UG Smalltalk source is typically
+		<tt>Heaper</tt>, plus a few of the Smalltalk specific lower-level
+		implementation directly subclass <tt>Object</tt>. The Heaper class
+		is translated to <tt>org.abora.gold.xpp.basic.Heaper</tt>, but
+		this subclasses from a made up
+		<tt>org.abora.gold.java.AboraHeaper</tt> class rather than Object.
+		The AboraHeaper class is the superclass for <b>all</b> Abora
+		classes, and is used to hold a few methods that XOC added to the
+			Smalltalk Object class and inherited, and also introduces the names
+		of fluid variables in a non-functional way.</p>
+
+		<p>There are a number of classes referenced from the supplied XOC
+		source that don't appear to be defined. Place holder classes with
+		matching names were created under the
+		<tt>org.abora.gold.java.missing</tt> package and sub-packages.
+		These have been split up into application, handle and Smalltalk
+		packages.</p>
+
+		<p>Earlier work to import the XOC Smalltalk source into Dolphin
+		Smalltalk, followed by a focus on running the XOC tests, indicated
+		that the basic collection classes were missing. These are vital
+		for running the tests, and are widely referenced. An alternative
+		source of the basic collection classes was acquired from some X++
+		sources and are present in the
+		<tt>org.abora.gold.collection.basic</tt> package. These are again
+		place holder implementation, except that the public method
+		definitions have also been added. See Abora-White for a working
+		implementation of these classes.</p>
 
 <!-- abora:footer -->
     </body>

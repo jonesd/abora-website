@@ -29,7 +29,9 @@
         description="compile the source pages" >
 
 	<copy todir="${htdocs}" overwrite="true">
-		<fileset dir="${src}"/>
+		<fileset dir="${src}">
+			<exclude name="**/*.sxd"/>
+		</fileset>
 	</copy>
 	</target>
 	
