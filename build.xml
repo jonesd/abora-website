@@ -122,7 +122,7 @@
 
   </target>
 
-  <target name="dist" depends="compile, collect, replacetemplate"
+  <target name="dist" depends="clean, compile, collect, replacetemplate"
         description="generate the distribution" >
   </target>
   
