@@ -845,16 +845,127 @@
 
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
-<h3>Works and Editions</h3>
+<h3>API Level Objects</h3>
 </td></tr></table>
 
-		<p>TODO; Work is identity, Edition is the content</p>
-		<p>TODO: Freezing a work</p>
-		<p>TODO: Work history</p>
+		<p>TODO: Move this to a better place</p>
 
-		<p>TODO: Work locking</p>
+		<p>Attention needs to be drawn to the visibility of objects and
+			structures in the system from the point of view of a consumer of
+			the programming API. The programmer of a front-end application
+			that uses the demo API talks in terms of content elements,
+			endorsements and objects of that ilk. Under the covers that are
+			entirely oblivious to the Ent data structure and things such as
+			ContentLeafs.</p>
 
-		<p>TODO: Missing Work ownership and access control</p>
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
+<h3>Works</h3>
+</td></tr></table>
+
+		<p>Works define the identity for a document, and its edition
+		provides its contents.</p>
+
+<h4>Revising a work</h4>
+
+		<p>A work holds a single edition which is considered the current
+		content of that works revision. As editions are read-only, any
+		attempt to modify the contents of the edition results in a new
+		edition that incorporates the existing content and the desired
+		change. A work must then be <b>revised</b> to reference the
+		updated edition.</p>
+
+		<p>Revising a work to a new edition requires one to have
+		previously gained a <b>lock</b> to the work. This gives one the
+		exclusive rights to revise the work as many times as one likes
+		while the lock is held. The unlock operation gives up the revise
+		right for others to take. A unlock automatically occurs when
+		either the front-ends reference to the work is lost, or the
+		connection from the front-end to the server on which the work is
+		stored is lost.</p>
+
+		<p>This limitation of a single work modifier at a time on the face
+		of it seems to be a little restrictive. For example a user could
+		lock a Work for the majority of the day, restricting any other
+		user of the system from modifying it during that time. This
+		problem is side stepped in a very interesting way. A work is
+		simply the identity for a document, with its content held by its
+		associated edition. Any number of works may reference the same
+		edition, so this allows a second writer to create a new temporary
+		work on the original edition of the first work which they can then
+		edit freely. Once the lock on the original work is released, they
+		can then gain the lock and merge in any changes from their edition
+		as need be.</p>
+
+<h4>Histories and frozen works</h4>
+
+		<p>A work can be frozen which toggles it into a permantent
+		read-only state. Once frozen it will not allow itself to be
+		revised to hold a different edition as its contents. As editions
+		are effectively immutable, that safeguards the works content from
+		changing. Even in a frozen state, the works list of endorsement
+		can still be modified.</p>
+
+		<p>A work can store a list of previous revisions of itself. These
+		are frozen works so their content can not be changed. The history
+		is extended each time the work is revised. The current time is
+		associated with the frozen work.</p>
+
+<h4>Identity</h4>
+
+		<p>The work holds an ID object which uniquely identifies the work
+			on this machine.</p>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<ul>
+
+			<li>Access to the features of a work is restricted by the use of
+			clubs; read, edit and history clubs. There is a BeClub class in
+			the demo, but it currently is not actively tied into any
+			authorisation system.</li>
+
+			<li>By default Works do not build up a history of previous
+			frozen works, and this must be explicitly enabled. The author
+			assumes that recording histories is off by default to reduce the
+			space overhead.</li>
+
+			<li>Freezing of Works is accomplished in Gold by deleting the
+			works edit club, so removing the authority to make changes from
+			any authority. The demo does not support the concept of clubs
+			yet, and so a direct <code>isFrozen</code> flag is used.</li>
+
+			<li>In Udanax-Gold a front-end can request to be notified when a
+			work is revised. As the support for front-ends is not complete
+			yet in the demo, this feature is not in place.</li>
+
+			<li>The demo only allows a simple list of frozen works making up
+			the history of a work. It is not known at this point if
+			Udanax-Gold allows a tree of revisions of the work to be built
+			up. On the face of it, this would only be possible if you could
+			thaw out an existing frozen work which doesn't seem right.</li>
+
+		</ul>
+
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
+<h3>Editions</h3>
+</td></tr></table>
+
+		<p>An edition forms effectively an immutable object, and
+		modifications to its contents will result in a new edition
+		containing the original contents and the modifications.</p>
+
+		<p>The contents that an edition holds can be both collections of
+		simple data elements such as characters, or it can form a
+		composite structure holding further editions and works.</p>
+
+<h4>Revision Number</h4>
+
+		<p>The edition holds a revision number for itself, and is able to
+			respond with the next valid revision number after itself. It
+			records the highest revision number it has given out so that it
+			can properly generate subsequent revision numbers.</p>
 
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
