@@ -90,16 +90,15 @@
 	<table width="100%" summary="">
 		<tr>
 		<td valign="top"><table width="100%" summary="">
-		<tr><td>
-]]></replacevalue>
+		<tr><td valign="top">]]></replacevalue>
 	</replace>
 
 	<replace dir="${htdocs}">
 		<include name="**/*.html"/>
 		<exclude name="**/api/**"/>
 		<replacetoken><![CDATA[<!-- abora:footer -->]]></replacetoken>
-		<replacevalue><![CDATA[
-		</td></tr></table>
+		<replacevalue><![CDATA[</td></tr></table>
+		
 		<td valign="top" width="1%">
 		<table width="100%" summary="">
 		<tr><td align="right">
