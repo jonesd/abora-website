@@ -82,48 +82,96 @@
 		<p>To see how this works, we will step through a few revisions of
 		a document by adding and removing content to it.</p>
 
-		<p>First step: We can start with an empty document. This is
-		constructed of just a single root node, with no children. We
-		indicate this root with a filled square in the diagram below.</p>
+		<hr>
+		<img src="nodeTreeA.png">
 
-		<p>Second step: We will now add some content to the document, in
-		this case the word "One". A new leaf node is created, which points
-		to the "One" string. The leaf node is then added to the root as
-		its single child. The document is now considered to be at revision
-		one.</p>
+		<p>Revision A: We can start with an empty document. This is
+		constructed from just a single root node, with no children. We
+		indicate this root with a empty square in the diagram above on the
+		left hand side of the diagram. The section on the right hand side
+		indicates that the A revision of the document has no contents.</p>
+
+		<p>We have coloured this revision of the document gray, and
+		labelled it as A. In the forthcoming steps we will assign a new
+		colour and ascending letter for each revision in turn.</p>
+
+		<hr>
+		<img src="nodeTreeB.png">
+
+		<p>Revision B: We will now add some content to the document, in
+		this case the word "One". A new root node is created that is
+		associated with the second revision of the document. A leaf node
+		is created, which points to the "One" string, and the leaf node is
+		then added to the new root as its single child. The document is
+		now considered to be at revision two.</p>
 
 		<p>Before continuing, you can see that our diagram still contains
 		the first empty root node. In fact at this point we have two
 		revisions of the same document. The first is empty, the second
-		contains the single "One" word.</p>
+		contains the single "One" word. The contents of each revision is
+		indicated at the top right of the diagram, revision A is still
+		empty and revision 2 contains the "One".</p>
 
-		<p>Third step: We will now add a second word to the document,
-		"Two", after the first. A new root node is created, and a Split
-		node is added as its single child. A split node is an internal
-		node and does not directly reference contents, instead it has two
-		children; left and right children. An integer split value is also
-		kept, and it defines the position of the first element of the
-		right child. As we see in the diagram below, the round circle
-		indicate a split node, with "One" as its left child, and "Two" as
-		its right child. The split value of the node is shown to be the
-		value 4. This is the position of T character of the right "Two"
-		child. The "O" of "One" has the position 1.</p>
+		<hr>
+		<img src="nodeTreeC.png">
 
-		<p>Fourth step: We will now add a third element to the end of the
+		<p>Revision C: We will now add a second word to the document,
+		"Two", after the first. A new root node is again created, and a
+		Split node is added as its single child this time. A split node is
+		an internal node and does not directly reference content, instead
+		it has two children; left and right children. An integer split
+		value is also kept, and it defines the position of the first
+		element of the right child. As we see in the diagram below, the
+		round circle indicate a split node, with "One" as its left child,
+		and "Two" as its right child. The split value of the node is shown
+		to be the value 4. This is the position of T character of the
+		right "Two" child. The "O" of "One" has the position 1.</p>
+
+		<p>One of the interesting aspects of the data structure is
+		starting to emerge. The third revision C is uses as much of the
+		previous revision as possible, so in this case we see that the
+		"One" of C's "OneTwo" content is actually shared with the previous
+		B region. The printout of the content for each revision at the top
+		right of the diagram shows that each revision is keeping the same
+		contents, even as further revisions are re-using some of their
+		contents.</p>
+
+		<hr>
+		<img src="nodeTreeD.png">
+
+		<p>Revision D: We will now add a third element to the end of the
 		document, "Three". Again a new root is created, together with a
 		split node as its child. The right child of this split is set to
 		the new "Three" value and a split value of 7 is stored. More
 		interesting is that the left child of the split points to the
-		split that we have previously created. What is interesting here is
-		that we are sharing the split and leaf nodes of the previous
-		revisions. Really we are just adding the difference from the
-		previous revision. This hints at possible space savings across
-		multiple revisions of the same document.</p>
+		split that we have previously created. We are now sharing content
+		and data structures of previous revisions. This hints at possible
+		space savings across multiple revisions of the same document.</p>
 
-		<p>Fifth step: We will add a fourth element, "Four", but this time
-			rather than appending to the end of the document, we will
-			instead insert this new element between "Two" and "Three". XXXX</p>
+		<hr>
+		<img src="nodeTreeE.png">
 
+		<p>Revision E: We will add a fourth element, "Four", but this time
+		rather than appending to the end of the document, we will instead
+		insert this new element between "Two" and "Three". A new root node
+		and child split node is created. The left node connects into C's
+		child. The right child connects to a second split which it in turn
+		connects to the "Four" and "Three" contents. If you trace the leaf
+		nodes from left to right starting from the E root node you will
+			see that the desired document content is collected.</p>
+
+		<hr>
+		<img src="nodeTreeF.png">
+
+		<p>Revision F: In this case we will try to remove one of the
+		existing elements for our next revision, in this case the word
+		"Two". Even though our new revision shouldn't contain "Two", we
+		want the previous revisions to still contain it. To implement this
+		we define a new root node and child split node. The split node
+		then connects to "One" on the left and the parent of "Four" and
+		"Three" on the right.</p>
+
+		<p>TODO: explain the dsp on F</p>
 
 <h3>Version support</h3>
 
