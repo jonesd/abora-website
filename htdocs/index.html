@@ -19,23 +19,68 @@
 
       <p><h1>Abora Hypertext System</h1></p>
 
-      <p>Abora is an ongoing project to implement a hypertext system based on a Xanalogical Structure. 
-	It will support fine grained links, transclusion of content, user filtering of links and enable
-	client-server and server-server distribution. This project is released under the MIT open-source
-	license and source code for Dolphin Smalltalk is included. An executable demo for the MS Windows
-	platform is available.</p>
+      <p>Abora is an ongoing project to implement a hypertext system
+      based on a xanalogical structure.  It will support fine grained
+      links, transclusion of content, user filtering of links and
+      enable client-server and server-server distribution. This
+      project is released under the MIT open-source license and source
+      code for Dolphin Smalltalk is included. An executable demo for
+      the MS Windows platform is available.</p>
 
+      <h3>Udanax-Gold and Xanadu</h3>
       <p>This project is strongly based on the ideas of <a href="http://ted.hyperland.com/">Ted Nelson</a>'s <a href="http://www.xanadu.com">Xanadu</a> and in particular the design
-	and implementation ideas of <a href="http://www.udanax.com/gold/">Udanax-Gold</a> by <a href="http://www.udanax.com/">XOC</a> which was released as open-source in 1999.</p>
+	and architecture of <a href="http://www.udanax.com/gold/">Udanax-Gold</a> by <a href="http://www.udanax.com/">XOC</a>
+	which was released as open-source in 1999.</p>
 
-      <p>Abora is coded from scratch using <a href="http://www.object-arts.com">Dolphin Smalltalk</a>. This currently limits the project to the MS Windows platform, but once the code starts to reach a reasonable level ports to an open and cross-platform version of Smalltalk are planned.</p>
+      <p>I originally started working with the Udanax-Gold code
+      released by XOC but found the missing source, overall complexity
+      and lack of documentation to form too high a barrier for my
+      available time. What I did find was a fascinating tree-based
+      structure, The Ent, for storing versioned data and a series of
+      interesting techniques for implementing transclusions, links,
+      server loops, promises and other goodies.  Throwing caution to
+      the wind I decide to start over from scratch as a learning
+      exercise and to provide a base for the system that I had wanted
+      for some time now. I was originally focused on a short holiday
+      project to learn some more about a xanalogical system and what
+      it would enable in comparison to the web, wiki-wiki and other
+      systems, but I must confess that I have now been fully sucked
+      into the vortex. </p>
+      
+      <p>The primary intention of Abora is to release an open-source
+      version of a xanalogical server with cross-platform and language
+      independent API which can support a Xanadu like Front-End/UI. I
+      will continue releasing my own renditions of a Front-End,
+      though I fear it will turn away from a suitable UI for
+      most. Hopefully others will step in to fill the gap.</p>
+
+      <h3>Xanalogical Features</h3>
+      
+      <p>The Abora core features are inspired by Xanadu and derive
+	from the capabilities of the underlying data
+	structure. Transclusions or virtual-copies can be seen as a
+	form of copying-and-pasting but the pasted form is connected
+	back to the original text so it is always possible to find the
+      original author of any character of text, and all other
+	documents that share the same content. Implemented on top of
+	this is the support for fine-grained links that are typed and
+	can be navigated in both directions.</p>
+
+      <h3>Implementation</h3>
+
+      <p>Abora is coded from scratch using <a
+      href="http://www.object-arts.com">Dolphin Smalltalk</a>. This
+      currently limits the project to the MS Windows platform, but
+      once the code starts to reach a reasonable level ports to an
+      open and cross-platform version of Smalltalk are planned.</p>
 
       <p>As you will quickly find out Abora's capabilities are currently very limited!</p>
+
+      <h3>Assistance</h3>
 
       <p>If you would like to help in anyway then don't hesitate to get in contact. It is always
       difficult to keep a spare time project going, especially one which is going to take some time before
       it can be used by end-users for their own work.</p>
-
 
       <table width="100%" bgcolor="antiquewhite">
 	<tr><td>
