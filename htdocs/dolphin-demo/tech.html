@@ -1281,66 +1281,71 @@
 <a name="differences"></a>
 <h3>Differences</h3>
 
-		<p>Given two documents, what are the similarities and the
+		<p>Given two documents, what are the similarities or the
 		differences between them? This is a feature supported by word
 		processors, text editors and custom differencing tools such as the
-		unix <i>diff</i> tool. Most of these implementations start with two
-		arbitrary text and can calculate a set of differences from them.
-		The quality of the results varies tremendously based on the input
-		texts, uniqueness of terms, quantity of repetition, and the number
-		of differences. Results may be at the granularity of individual
-		lines or even down to words or characters within a line. The
-		resulting differences are usually broken down into primitive
-		insert, delete and modification differences. So if a block of text
-		is moved from the start of a document to the end, this will be
-		recorded as a delete from the first document, and an insert into
-		the second. This simplification unfortunately distances the
-		results from the user level actions that originated these changes,
-		which the user would obviously prefer to see as their changes.
-		Differencing tools can often support an extended form of this
-		involving three files, with one considered the elder version of
-		the second and third files.</p>
+		Unix <i>diff</i> tool. Most of these implementations start with
+		two arbitrary text files and can calculate a set of differences
+		from them. The quality of the results varies tremendously based on
+		the input texts; uniqueness of terms used, quantity of repetition,
+		and the number of differences. Results may be at the granularity
+		of individual lines or even down to words or characters within a
+		line. The resulting differences are usually broken down into
+		primitive insert, delete and modification differences. So if a
+		block of text is moved from the start of a document to the end,
+		this will be recorded as a delete from the first document, and an
+		insert into the second. This simplification unfortunately
+		distances the results from the user level actions that originated
+		these changes, and this separation of actions and resulting
+		differences is a problem for a user to understand what has
+		actually been done to a file to make its contents different.
+		Differencing tools can often support an extended form of finding
+		the differences between a pair of files, by comparing three files,
+		with one considered the elder version of both the second and third
+		files. This handles the case of a version branches when two
+		competing versions are made form the same starting document.</p>
 
-		<p>The demo implementation is completely different from the
-		standard techniques highlighted above. The high level spin on this
-		is that the demo finds the similarities between two documents,
-		rather than the differences. The demo can accurately indicate
-		moved and copied blocks of text in addition to the simple insert,
-		delete and modification differences one usually finds. It also
-		wont get confused by some of the issues that degradate the results
-		from the classic differencing tools.</p>
+		<p>The implementation of the demo is completely different from the
+		standard techniques used. The high level spin on this is that the
+		demo finds the similarities between two documents, rather than the
+		differences. The demo can accurately indicate moved and copied
+		blocks of text in addition to the simple insert, delete and
+		modification differences one usually finds. It also wont get
+		confused by some of the issues that degrade the quality of results
+		obtained from the classic differencing tools.</p>
 
 		<p>The downside of the demo implementation is from its inherent
 		implementation. It works by finding what content is shared by the
 		two documents that are being compared. So given a simple text
-		edition. If that content is transcluded by another edition, then
-		those editions will be seen as being the same - because that
-		actually reference the same content elements. But if one was to
-		retype in the contents of the first edition in a new edition, so
-		it appears to be exactly the same, then those two editions would
-		be seen as completely different. Even though each element of the
-		two has the same character value, they aren't the same character
-		element, so they are different. So even though the tool can
-		provide superior results to the standard differencing techniques,
-		it is useless for texts entered without reference to each
-		other.</p>
+		edition, if that content is transcluded by another edition, then
+		those editions will be seen as being the same - because they
+		actually reference the same content elements under the covers. But
+		if one was to retype in the contents of the first edition in a new
+		edition, so it appears to be exactly the same to the user, then
+		those two editions would be seen as completely different. Even
+		though each element of the two has the same character value, they
+		aren't referencing the same character element, so they are
+		considered different. So even though the tool can provide superior
+		results to the standard differencing techniques, it is useless for
+		texts entered without reference to each other.</p>
 
 		<p>To help with the problem of parallel entered texts, it would be
-		possible to pass this through a standard differencing tool, though
-		it would probably lead to even more confusion.</p>
+		possible to have a second phase that passes differences through a
+		standard differencing tool, though it may lead to even more
+		confusion.</p>
 
 <h4>API</h4>
 
 		<p>As mentioned the implementation works by walking through two
 		editions and building a map between each of the content elements
-		that they share. It can handle a content element being including
+		that they share. It can handle content elements being included
 		in a different location between the two, or an element being
 		included more than once.</p>
 
 		<p>The user level API for an edition is the
-		<code>BeEdition>>sharedWith: anotherEdition</code> method which
-		returns an ordered collection of mappings. The mapping is simply a
-		mapping from a range of elements of the first edition to another
+		<code>BeEdition>>sharedWith: anotherEdition</code> message which
+		returns an ordered collection of mappings. A mapping is simply an
+		association from a range of elements in the first edition to another
 		range of elements in the second. There could be multiple mappings
 		for the same element if the same content occurs more than
 		once.</p>
@@ -1348,13 +1353,13 @@
 <h4>UI rendering of results</h4>
 
 		<p>Once returned to the UI, the steps required to show this to the
-		user by painting is relatively simple.</p>
+		user by painting are relatively simple.</p>
 
 		<p>TODO: show screen shot of demos rendering</p>
 
-		<p>For the case of painting a different background colour, it's
-		just a case of walking the mappings and a sequence of alternative
-		colours, and just painting them.</p>
+		<p>For the case of painting a different background colour for each
+		similarity, it's just a case of walking the mappings and a
+		sequence of alternating colours, and just painting them.</p>
 
 		<p>The thin vertical mapping window that draws a connections
 		between the individual characters of the two editions has an
@@ -1386,10 +1391,10 @@
 		edition tree, then a further processing step is employed to
 		convert the mappings into a more coherent and convenient result
 		for use by clients. Mappings are sorted by their global positions,
-		and contiguous mappings are combined over their combined range.
-		The actual algorithm used is potential expensive, and involves
-		multiple passes over the mappings until no improvement in a
-		processing round can be found.</p>
+		and contiguous mappings are combined together to form a single
+		mapping. The actual algorithm used is potentially expensive, and
+		involves multiple passes over the collection of mappings until no
+		improvement in a processing round has been found.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
@@ -1399,24 +1404,27 @@
 		features and performance ideas from the original.</p>
 
 		<p>One aspect of the Udanax-Gold implementation is its apparent
-		ability to work on documents from any coordinate-space. This is
-		one area where standard differencing tools are very weak, and can
-		only be constructively applied to text. The author assumes that
-		given a two-dimensional image of a face, if a second edition of
-		the image was created by painting the eyes green, that a
+		ability to work on documents with a more general sense of element
+		position, based on a coordinate-space. This is one area where
+		standard differencing tools are very weak, and can generally only
+		be constructively applied to text documents. The author assumes
+		that given a two-dimensional image of a face, if a second edition
+		of the image was created by painting the eyes green, then a
 		differencing operation between these images would properly
 		highlight that the pixels making up the eyes have changed. This
-		might be particularly interesting with collages.</p>
+		might be particular interest with collage works or manipulations
+		made to photographs in newspapers or magazines.</p>
 
 		<p>The performance of the demo is hampered by the need to walk
 		root-ward up ent trees from the leafs to find if a content element
 		is present for a specific edition and revision. Udanax-Gold
 		incorporates some significant performance optimisations in this
-		area courtesy of the Canopy systems.</p>
+		area courtesy of the Canopy systems to help it quick reject items
+		not in the matching edition.</p>
 
 		<p>On a minor note, the Udanax-Gold <code>sharedWith</code> method
-		returns an edition rather than the primitive collection used in
-		the demo.</p>
+		returns an edition holding the mapping results rather than the
+		primitive collection used in the demo.</p>
 
 
 <a name="endorsements"></a>
@@ -1424,20 +1432,21 @@
 
 		<p>An endorsement is a tag composed of a club and ID that can be
 		associated with an edition on club. It is the primitive means to
-		filter out the results at the application level. Endorsements can
-		be used to define the type of content.</p>
+		filter out elements from collected results at the application
+		level. Endorsements can be used to define the type and nature of
+		content.</p>
 
 <h4>Implementation</h4>
 
 		<p>Endorsements are introduced to an edition or club with the
 		<code>endorse:</code> message, and removed with the
-		<code>revoke:</code> message. The collection of endorsements
-		associated with the content acts as Set, so duplicates are not
-		kept. The Endorsement class is a simple information holder holding
-		a pair of IDs. The first ID is that of a club, and the second can
-		be of anything. One possibility for the second id is to be that of
-		a work or edition that describes the endorsement for human
-		readers.</p>
+		<code>retract:</code> message. The collection of endorsements
+		associated with the content acts as a Set, so duplicates by
+		equality are not kept. The Endorsement class is a simple
+		information holder with a pair of IDs. The first ID is that of a
+		club, and the second can be of anything. One possibility for the
+		second id is to be that of a work or edition that describes the
+		endorsement for human readers.</p>
 
 		<p>A number of endorsements are built into the system to define
 		server supplied edition wrappers types such as FeHyperLink. These
@@ -1447,7 +1456,7 @@
 
 		<p>Endorsements are also used to filter out results of requests,
 		specifically <code>transclusionsFilteredBy:</code> and related
-		methods. This method returns a collection of the content elements
+		messages. This message returns a collection of the content elements
 		that are transcluded by this edition, which are then filtered
 		according to the supplied list of endorsements. This operation can
 		be useful to find all the hyperlinks referencing this document for
@@ -1457,10 +1466,10 @@
 
 		<img src="endorsements.png" alt="Example endorsements">
 
-		<p>More to show the diagrammatic style that will be used to
-		indicate endorsements, than for any great revelation, the above
-		diagram shows a block of text in an edition with a number of
-		endorsements.</p>
+		<p>The diagram above is more to highlight the diagrammatic style
+		that will be used to indicate endorsements, than for any great
+		revelation. A block of text held by an edition is indicated,
+		together with a number of associated endorsements.</p>
 
 		<ul>
 
@@ -1471,10 +1480,10 @@
 
 			<li>The <b>English translation</b> endorsement is one that the
 			author just made up to indicate that this actually a translation
-			of the original Don Quixote. In practice the English translation
+			from the original Don Quixote. In practice the English translation
 			endorsement might be better as an <i>English</i> endorsement,
 			and a hyper link between this translation and the original with
-			a type of translation.</li>
+			a type of <i>translation</i>.</li>
 
 		</ul>
 
