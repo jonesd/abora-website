@@ -78,6 +78,7 @@
 	  <tr><td>
 	  		<b>Abora-White</b><br>
 	  		<a href="/abora-white/index.html">Overview</a><br>
+	  		<a href="/abora-white/porting.html">Port&nbsp;Details</a><br>
 	  		<a href="/abora-white/api/index.html">JavaDoc</a><br>
 	  		<a href="/abora-white/junit/html/index.html">JUnit&nbsp;Report</a><br>
 	  	</td></tr>
@@ -151,7 +152,7 @@
 
 	<target name="upload" depends="init">
 		<exec executable="rsync">
-			<arg line="rsync --rsh=ssh -Cavz --delete --force ${htdocs}/* ${sourceforge.user}@${sourceforge.server}:${sourceforge.dir}/htdocs/" />
+			<arg line="rsync --rsh=ssh -Cavz --delete --delete-after --whole-file ${htdocs}/ ${sourceforge.user}@${sourceforge.server}:${sourceforge.dir}/htdocs" />
 		</exec>
 		<!-- dont know how to drive rysnc to set up correct file/dir permissions, so following hack -->
 		<exec executable="ssh" failonerror="true">
