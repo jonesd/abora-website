@@ -66,7 +66,15 @@
       <table width="100%" bgcolor="antiquewhite">
 	<tr>
 	  <td>
-		  <a href="http://www.abora.org">Abora Hypertext Project</a>
+]]></replacevalue>
+	</replace>
+
+
+	<replace dir="${htdocs}">
+		<include name="**/*.html"/>
+		<exclude name="**/api/**"/>
+		<replacetoken><![CDATA[<!-- abora:header_close -->]]></replacetoken>
+		<replacevalue><![CDATA[
 		</td>
 	  <td align="right">
 	  <FORM ACTION="http://www.abora.org/cgi-bin/ksearch/ksearch.cgi" METHOD="GET" NAME="search">
@@ -134,6 +142,14 @@
       <table width="100%">
 	<tr><td>
 	    <a href="mailto:david_jones@night.dircon.co.uk">David Jones</a>
+]]></replacevalue>
+	</replace>
+
+	<replace dir="${htdocs}">
+		<include name="**/*.html"/>
+		<exclude name="**/api/**"/>
+		<replacetoken><![CDATA[<!-- abora:footer_close -->]]></replacetoken>
+		<replacevalue><![CDATA[
 	  </td>
 	  <td align="right">
 	  		  <a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=64700&amp;type=1" width="88" height="31" border="0" alt="SourceForge.net Logo"></a>
