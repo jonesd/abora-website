@@ -23,9 +23,9 @@ a:hover { background-color: #FAEBD7; }
 .footer a:link { color: #808080; }
 .footer a:visited { color: #808080; }
 
-.modified-last-week, .modified-last-month { color: white; font-size: smaller;}
-.modified-last-week { background-color: red; }
-.modified-last-month { background-color: #FF6600; }
+.modified-last-week, .modified-last-month { color: white; font-size: smaller; padding-left: 2px; padding-right: 2px; }
+.modified-last-week { background-color: #ff3232; }
+.modified-last-month { background-color: #ff893a; }
 .modified-long-ago { display: none; }
 
 td, th { vertical-align: top; }
