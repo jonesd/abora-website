@@ -35,26 +35,217 @@
 		but has left some rough edges and unexplored spaces.</p>
 
 		<p>The majority of work on the Demo was accomplished during a two
-		month summer holiday break. This was kindly green lighted by more
-		employee, @link:intware@. Many thanks.</p>
+		month summer holiday break during 2002. This was kindly green lighted by my
+		employer, @link:intware@. Many thanks.</p>
+
 
 <h3>Data Structure Requirements</h3>
+
+		<p>The core of the implementation is a limited version of the Ent
+		data structure at the heart of Udanax-Gold. As mentioned above
+		this isn't a strict subset of the original design, and is more of
+		a twisted take on it derived from my shallow interpretation.</p>
+
+		<p>There are a number of features that we want to be present in
+		this structure.</p>
+
+		<ul>
+			<li>Large documents</li>
+			<li>Multiple versions of the same document</li>
+			<li>Minimise space overhead of multiple document versions</li>
+			<li>Fine grained links</li>
+			<li>Minimise time overhead of modifying documents</li>
+			<li>Natural programming API</li>
+			<li>Links valid across document versions</li>
+			<li>Remote caching of document fragments</li>
+		</ul>
+
 
 <h3>Possibly Implementations</h3>
 
 <h3>Base Implementation</h3>
 
-<h3>Tree Balancing by Splaying</h3>
+		<p>The contents of a document and the structure defining the
+		different versions and links between content are split into two
+		layers. The Content layer holds chunks of contiguous sequences of
+			document data. These are connected to one or more leaves of a
+		series of binary search trees each defining a document.</p>
+
+		<p>The structure of the contents is built from a binary search
+		tree whose leaves are the contents of the document. The root of
+		the tree corresponds to one version of the document, and walking
+		the leaves from left to right will produce the entire document. At
+		each interior node a split integer indicates the position of
+		the first element that can be reached by its right branch, and all
+		elements to the left will be before this position.</p>
+
+		<p>To see how this works, we will step through a few revisions of
+		a document by adding and removing content to it.</p>
+
+		<p>First step: We can start with an empty document. This is
+		constructed of just a single root node, with no children. We
+		indicate this root with a filled square in the diagram below.</p>
+
+		<p>Second step: We will now add some content to the document, in
+		this case the word "One". A new leaf node is created, which points
+		to the "One" string. The leaf node is then added to the root as
+		its single child. The document is now considered to be at revision
+		one.</p>
+
+		<p>Before continuing, you can see that our diagram still contains
+		the first empty root node. In fact at this point we have two
+		revisions of the same document. The first is empty, the second
+		contains the single "One" word.</p>
+
+		<p>Third step: We will now add a second word to the document,
+		"Two", after the first. A new root node is created, and a Split
+		node is added as its single child. A split node is an internal
+		node and does not directly reference contents, instead it has two
+		children; left and right children. An integer split value is also
+		kept, and it defines the position of the first element of the
+		right child. As we see in the diagram below, the round circle
+		indicate a split node, with "One" as its left child, and "Two" as
+		its right child. The split value of the node is shown to be the
+		value 4. This is the position of T character of the right "Two"
+		child. The "O" of "One" has the position 1.</p>
+
+		<p>Fourth step: We will now add a third element to the end of the
+		document, "Three". Again a new root is created, together with a
+		split node as its child. The right child of this split is set to
+		the new "Three" value and a split value of 7 is stored. More
+		interesting is that the left child of the split points to the
+		split that we have previously created. What is interesting here is
+		that we are sharing the split and leaf nodes of the previous
+		revisions. Really we are just adding the difference from the
+		previous revision. This hints at possible space savings across
+		multiple revisions of the same document.</p>
+
+		<p>Fifth step: We will add a fourth element, "Four", but this time
+			rather than appending to the end of the document, we will
+			instead insert this new element between "Two" and "Three". XXXX</p>
+
 
 <h3>Version support</h3>
 
+		<p>TODO: Revision numbers</p>
+
+
+<h3>Tree Balancing by Splaying</h3>
+
+		<p>The advantage of a tree as a search data structure is that the
+		height of the tree is O(logN), where N is the number of leaves in
+		the tree. This feature only holds if a tree is balanced. For
+		example in the worst case nodes form a chain from the root with
+		children always being to the left. This will form an O(N) tree, or
+		effectively a linked list.</p>
+
+		<p>The Ent appears to use the Splay Tree balancing method.</p>
+
+		<p>TODO: Big picture rotates</p>
+
+		<p>TODO: Rotates and their DSPs for left and right</p>
+
+		<p>TODO: Splay ACM reference</p>
+
+
+<h3>Transclusions</h3>
+
+		<p>Transclusion enables the sharing of content by quoting from the
+		original source. Transclusion is a primitive function of the
+		implementation, which even hyperlinks are created from.</p>
+
+		<p>Transclusions are implemented under the covers by making use of
+		a layer of indirection between the leaves of an Ent tree and the
+		actual content. A content element contains a collection of parent
+		leaf nodes belonging to possibly different document trees that it
+		is a member of. This allows some content to belong to multiple
+		documents, or that multiple documents quote the same content.</p>
+
+		<p>Reviewing the Transclusion summary from the first paragraph of
+		this section, we see "...by quoting from the original source". In
+		fact in the current implementation there is no distinction between
+		the document that originally contained a reference to the content
+		and subsequent references. A missing feature would be storing the
+		owner of the content, which would either by the author or the
+		owner/publisher.</p>
+		
+		<p>TODO: Is that really true about no difference between first and
+			subsequent references.</p>
+
+
 <h3>BeRangeElement hierarchy</h3>
 
+		<p>TODO: Nature and hierarchy of content classes</p>
+
+<h3>Extra Ent Udanax-Gold features</h3>
+
+		<p>The Demo implementation is focused on a simple domain of
+		contiguous integers starting from 1. The UG implementation extends
+		the supported domain into a far more generalised coordinate-space
+		system. The demo split-integer is instead a generic region of
+		inclusive positions.</p>
+
+		<p>The Demo includes no separation between the document node tree
+		and revision identity of those nodes. The nodes includes a
+		revision number that indicates when that node was created. The up
+		side of this is the simplicity and directness of the
+		implementation. The down side is highlighted by the alternative
+		path that UG took. The UG document nodes do not contain a revision
+		identity, instead there is a concept of canopies that associates
+		nodes within revisions. Additionally there does not appear to be
+		the concept of a revision number, which has a problem with
+		distributed generation, and instead seems to be based on the
+		uniqueness of IDs associated with works together with works
+		holding a list of previous revisions (? this might be a level
+		apart and so not relevant to this ?).</p>
+
+		<p>The Demo probably has problems with Garbage Collection, and
+		loosing references to document revisions and editions that are not
+		being used. This is apparently handled by UG.</p>
+
+		<p>UG Ent has a different set of set of leave nodes that connect
+		to content. The Demo does not follow the actual UG implementation
+		due to a lack of understanding of its semantics and constraints on
+		it.</p>
+
+		<p>TODO: Placeholders</p>
+
+
 <h3>Works and Editions</h3>
+
+		<p>TODO; Work is identity, Edition is the content</p>
+
+		<p>TODO: Work history</p>
+
+		<p>TODO: Work locking</p>
+
+		<p>TODO: Missing Work ownership and access control</p>
+
+<h3>Differences</h3>
+
+<h3>Endorsements</h3>
+
+<h3>Document structures</h3>
+
+		<p>TODO: show how a Work and editions plus links could all fit
+			together to from a rich document</p>
 
 <h3>Network</h3>
 
 <h3>Client Caching</h3>
+
+
+<h3>References</h3>
+
+		<p>The authors knowledge of the Ent data structure derives from
+		two papers plus repeated fumbling readings of the published
+		Udanax-Gold source code. The papers I found to be most helpful can
+		be found at the Sunless-Sea website.<p>
+
+		<ul>
+			<li>@link:xia@</li>
+			<li>@link:ent_theory@</li>
+		</ul>
 
 <!-- abora:footer -->
 $Id$
