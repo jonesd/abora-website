@@ -144,7 +144,9 @@
 		<echo message="** Collect docs from abora-white                         **"/>
 		<echo message="***********************************************************"/>
 		<echo/>
-		<ant antfile="${white.dir}/build.xml" target="dist" dir="${white.dir}" inheritAll="false"/>
+		<ant antfile="${white.dir}/build.xml" target="dist" dir="${white.dir}" inheritAll="false">
+			<property name="clover.includesource" value="false"/>
+		</ant>
 		<echo/>
 		<echo message="***********************************************************"/>
 		<echo/>
