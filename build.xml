@@ -33,7 +33,7 @@
 			<exclude name="**/*.sxd"/>
 		</fileset>
 	</copy>
-		<copy todir="${htdocs}/abora-white">
+		<copy todir="${htdocs}/abora-white" overwrite="true">
     		<fileset dir="${white.dir}/docs/">
     			<include name="*.html"/>
     		</fileset>
@@ -159,7 +159,7 @@
 		
 	</target>  
 
-	<target name="upload" depends="init">
+	<target name="uploadNoReplace" depends="init">
 		<exec executable="rsync">
 			<arg line="rsync --rsh=ssh -Cavz --whole-file ${htdocs}/ ${sourceforge.user}@${sourceforge.server}:${sourceforge.dir}/htdocs" />
 		</exec>
@@ -172,7 +172,7 @@
 		</exec>
 	</target>
 
-	<target name="uploadReplace" depends="init">
+	<target name="upload" depends="init">
 		<exec executable="rsync">
 			<arg line="rsync --rsh=ssh -Cavz --delete --delete-after --whole-file ${htdocs}/ ${sourceforge.user}@${sourceforge.server}:${sourceforge.dir}/htdocs" />
 		</exec>
