@@ -27,7 +27,7 @@
       code for Dolphin Smalltalk is included. An executable demo for
       the MS Windows platform is available.</p>
 
-      <h3>Udanax-Gold and Xanadu</h3>
+      <h3>Xanadu and Udanax-Gold</h3>
       <p>This project is strongly based on the ideas of <a href="http://ted.hyperland.com/">Ted Nelson</a>'s <a href="http://www.xanadu.com">Xanadu</a> and in particular the design
 	and architecture of <a href="http://www.udanax.com/gold/">Udanax-Gold</a> by <a href="http://www.udanax.com/">XOC</a>
 	which was released as open-source in 1999.</p>
@@ -57,14 +57,62 @@
       <h3>Xanalogical Features</h3>
       
       <p>The Abora core features are inspired by Xanadu and derive
-	from the capabilities of the underlying data
-	structure. Transclusions or virtual-copies can be seen as a
-	form of copying-and-pasting but the pasted form is connected
-	back to the original text so it is always possible to find the
-      original author of any character of text, and all other
-	documents that share the same content. Implemented on top of
-	this is the support for fine-grained links that are typed and
-	can be navigated in both directions.</p>
+      from the capabilities of the underlying Ent data
+      structure as present in Udanax-Gold.</p>
+
+      <ul>
+	<li><b>Transclusions</b> or virtual-copies can be seen as a form
+      of copying-and-pasting except that the pasted form is connected back to
+      the original text so it is always possible to find the original
+      author of any character of text, and all other documents that
+      share the same content. This helps against the problems of quoting
+	  out-of-context, and taking benefit from some-one elses work
+	  without proper acknowledgement.</li>
+	<li>Implemented on top of this is support
+      for <b>fine-grained links</b> that are typed and can be navigated in
+      both directions. Links can be stored separate from the content
+      itself which enables anyone to annotate any other document that
+	  they can view. In
+      combination with typed links this enables low-overhead
+      commenting of original text and structured responses such as
+      refutations, agreements, acknowledgements. Links can also be
+      filtered by users to focus on comments from respected or specific
+      viewpoints. This will be a critical feature once hundreds or
+	  thousands of links have been attached to a document.</li>
+	<li><b>Coordinate space</b> mechanism allows content elements to
+	    be mapped over more spohisticated spaces than that of
+	    text or uncompressed audio. One possibility is the two
+	    dimensions of an image. This enables transclusions and
+	    links to work across these numerous spaces, for example
+	    just the eye of an image of a face could be transcluded
+	    into a separate document, and a destination of a link
+	    could be to a few seconds of a sound sample.</li>
+	<li><b>Sensors</b> or detectors can be attached to objects to learn
+	  when certain actions occur. Some examples includes detecting
+	  when a new link is added to an interesting document, or when
+	  a new edition of a document is made. This can enable the
+	  spontaneous grouping of interested parties around a central
+	  document that acts as focus for the work.</li>
+
+	<li>These features are all tied into a <b>version system</b>
+	that ensures links stay connected to their original content
+	and transcluded text stays available. Modifications to
+	documents are stored at the level of changes by the user, so
+	between editions changes can be copying and moving in addition
+	to the more primitive deletes and inserts that systems such as
+	CVS would break changes down to.</li>
+
+	<li>A significant force that shaped the Udana-Gold design was
+	  the need for an implementation that could expand up to a
+	  <b>distributed system</b> comparable to todays World-Wide-Web. There is an
+	  interesting mix of mutable and immutable state that enables
+	  replication of data, together with idea of sponsors of
+	  documents and a distributed garbage collection system to
+	  enable that documents are only jettisoned when they aren't
+	  referenced anymore or no-one is prepared to provide
+	  sufficient space for it.</li>
+      </ul>
+	  
 
       <h3>Implementation</h3>
 
