@@ -130,14 +130,14 @@
 	  		<a href="/abora-white/clover/index.html">Clover</a>/<a href="/abora-white/clover-historical/historical.html">History</a><br>
 	  	</td></tr>
 	  	<tr><td align="right">
-	  		<b>UGold2Java</b><br>
-	  		<a href="/udanax-gold2java/index.html">Overview</a><br>
-	  		<a href="/udanax-gold2java/abora-gold/api/index.html">Gold&nbsp;JavaDoc</a><br>
-	  	</td></tr>
-	  	<tr><td align="right">
 	  		<b>Dolphin&nbsp;Demo</b><br>
 	  		<a href="/dolphin-demo/index.html">Overview</a><br>
 	  		<a href="/dolphin-demo/tech.html">Tech&nbsp;Report</a>
+	  	</td></tr>
+	  	<tr><td align="right">
+	  		<b>UGold2Java</b><br>
+	  		<a href="/udanax-gold2java/index.html">Overview</a><br>
+	  		<a href="/udanax-gold2java/abora-gold/api/index.html">Gold&nbsp;JavaDoc</a><br>
 	  	</td></tr>
 	  	<tr><td align="right">
 	  			  <form action="http://www.abora.org/cgi-bin/ksearch/ksearch.cgi" method="GET" name="search">
@@ -184,6 +184,7 @@
 		<replacefilter token="@link:sunless_sea@" property="sunless_sea"/>
 		<replacefilter token="@link:ted_nelson@" property="ted_nelson"/>
 		<replacefilter token="@link:udanax_gold@" property="udanax_gold"/>
+		<replacefilter token="@link:udanax_gold2java@" property="udanax_gold2java"/>
 		<replacefilter token="@link:xia@" property="xia"/>
 		<replacefilter token="@link:xoc@" property="xoc"/>
 		<replacefilter token="@link:xoc_videos@" property="xoc_videos"/>

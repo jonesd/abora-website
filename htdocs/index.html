@@ -17,29 +17,35 @@
       <h1>Abora Hypertext Project</h1>
 <!-- abora:header_close -->
 
-      <p>Abora is an ongoing project to implement a hypertext system
-      based on xanalogical structures. It will support fine grained
-      links, transclusion of content, user filtering of links and
-      enable client-server and server-server distribution. This
-      project is strongly based on the ideas of <a
-      href="http://ted.hyperland.com/">Ted Nelson</a>'s <a
-      href="http://www.xanadu.com">Xanadu</a> and in particular the
-      design, architecture and code of <a
-      href="http://www.udanax.com/gold/">Udanax-Gold</a> by <a
-      href="http://www.udanax.com/">XOC</a> which was released as
-      open-source in 1999.</p>
 
-			<p>This project is released under the MIT open-source license.
-			Source development in Java and Dolphin Smalltalk is available.
-			An executable prototype/demo for the MS Windows platform gives a
-			flavour of one possible destination.</p>
+			<p>Abora is an ongoing project to implement and nurture
+			information systems that enable individuals and groups to create
+			a rich literature of long lived works. The interconnected nature
+			of documents will be supported from the core up through quoting
+			and fine-grained typed links. Collaboration of individuals
+			across time by concurrent modifications, strong versioning,
+			refined change notifications, and external commenting.
+			Extensible first-class document types from text to movies to
+			structured research data. Resilient, adaptive and relevant
+			implementations that will cope with and last for a lifetime of
+			use. All-in-one solutions and generic server with API will be
+			released under open-source licenses.</p>
 
-		<p>The author has been working on this project in his spare time
-		since late 2001, but due to the numerous changes in direction
-		while trying to get an understanding of the XOC technologies there
-		is <b>still some way to go</b>. It is hoped that
-		a usable subset of the functionality based on the new Abora-White
-		code-base should be available for experimenting with Summer 2003.</p>
+			<p>Current work on the project is strongly influenced by the
+			ideas of @link:ted_nelson@ as articulated in his Xanadu
+			hypermedia project, and also the design and implementation of
+			@link:udanax_gold@ by @link:xoc@.</p>
+
+			<p>A number of sub-projects exploring these aims are documented
+			on this website. A limited demo was written in Summer 2002 that
+			gives a flavour for some of the core features. An expanded
+			implementation suitable for wider exploration should be
+			available Summer 2003.</p>
+
+		<p>David Jones<br> <a
+		href="mailto:david_jones@night.dircon.co.uk">david_jones@night.dircon.co.uk</a><br>
+		<a
+		href="http://www.night.dircon.co.uk">http://www.night.dicon.co.uk</a></p>
 
 
 		<h3>Sub-Projects</h3>
@@ -54,10 +60,12 @@
 		<td><b>Dolphin Demo</b> <font color="gray">[<font
 		color="#FFA500">Paused</font> 2002]</font><br> Smalltalk
 		implementation of a simple text editor that supports fine-grained
-		typed links, transclusions, versioning and differencing. MS
-		Windows executable demo available. Extensive Technical Report on
-		the mechanisms used to support versioning, transclusions and how
-		hyperlinks are built from them.<br> <a
+		typed links, transclusions, versions, backlinks and viewing
+		differences. Written to explore aspects of the Udanax-Gold design
+		and gain a feel for the capabilities a xanalogical system provides
+		users. Extensive Technical Report on the mechanisms used to
+		implement the core features of the demo. MS Windows
+		executable demo available to play with. <br> <a
 		href="dolphin-demo/index.html">Overview</a> - <a
 		href="dolphin-demo/tech.html">Tech Report</a> - <a
 		href="http://sourceforge.net/project/showfiles.php?group_id=64700&amp;release_id=116238">Download
@@ -71,14 +79,15 @@
 				</a></td>
 
 				<td><b>Abora-White</b> <font color="gray">[<font
-				color="#FFA500">Paused</font> 2003]</font><br>Java
-				implementation of the Udanax-Gold server that has been
-				auto-translated from the original Smalltalk, and then manually
-				converted for a better fit into the Java world. Work is
-				underway to incrementally port components of the original,
-				write JUnit tests, JavaDoc and overview documentation.<br><a
+				color="#FFA500">Paused</font> 2003]</font><br>Java port of the
+				Udanax-Gold server. Starting from the erroneous automated
+				translation result of Udanax-Gold2Java, the goal is for a
+				compilable, working version that aligns with standard Java
+				idioms. Work is underway to incrementally port components of
+				the original, write JUnit tests, JavaDoc and overview
+				documentation.<br><a
 				href="abora-white/index.html">Overview</a> - <a
-																												href="abora-white/porting.html">Port Details</a> - <a
+				href="abora-white/porting.html">Port Details</a> - <a
 				href="http://sourceforge.net/project/showfiles.php?group_id=64700&amp;release_id=146834">Download
 				Source</a></td>
 
@@ -90,7 +99,7 @@
 				</a></td>
 
 		<td><b>Udanax-Gold2Java</b> <font color="gray">[<font
-		color="red">Complete</font> 2001,2003]</font><br>Small throw-away
+		color="red">Completed</font> 2001,2003]</font><br>Small throw-away
 		command line application to auto-translate the Udanax-Gold
 		Smalltalk source into approximate Java. The result has 1000's of
 		compilation problems, but it is the basis for the Abora-White
@@ -108,12 +117,13 @@
 
 
 		<td><b>Udanax-Gold2Dolphin</b> <font color="gray">[<font
-		color="red">Aborted</font> 2001]</font><br> Attempt to load the
-		Udanax-Gold source code into Dolphin Smalltalk, and get the
-		supplied tests to work. Managed to get most of the tests to at
-		least run a little. I know now that I messed up my 100% guess
-		implementation of the missing PrimArray, so could do a lot better
-		now. Source available on request.<br> <a
+		color="red">Aborted</font> 2001]</font><br> First attempt by the
+		author to investigate the Udanax-Gold code. The source was loaded
+		into Dolphin Smalltalk and tweaked enough to allow most of the
+		existing tests to run a little. Major roadblocks were from missing
+		code, and the guesses that were made to make for those gaps. The
+		result of this project was never packaged up for distribution, but
+		source could be made available on request.<br> <a
 		href="http://www.night.dircon.co.uk/udanax_gold/index.html">Overview</a></td>
 
 
