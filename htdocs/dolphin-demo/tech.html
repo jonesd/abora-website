@@ -65,9 +65,6 @@
 		</ul>
 
 
-<h3>Possibly Implementations</h3>
-
-
 <table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Base Implementation</h3>
 </td></tr></table>
@@ -269,12 +266,27 @@
 <h4>Udanax-Gold implementation</h4>
 
 		<p>The Udanax-Gold Split node implementation has a number of
-		differences from the one described above. Rather than a simple
-		split value, Gold has a region that defines all positions that can
-		be found in its left children. The displacement value is stored in
-		a DspNode, rather than embedded within the split node. As Gold
-		supports more than integer positions, the displacement value may
-		also be a non-integer.</p>
+		differences from the one described above.</p>
+
+		<ul>
+
+				<li>Rather than a simple split value, Gold has a region that
+				defines all positions that can be found in its left
+				children.</li>
+
+		<li>The displacement value is stored in a separate node of the
+		tree called the DspNode, rather than embedded within the split
+		node. This gives a lot more flexibility. The author went with the
+		simpler technique of embedding the displacement in the Split node,
+		and a similar displacement for Root nodes. Somehow this seemed to
+		end up with more code than the Gold implementation. At the heart
+		of it, it is unknown why Gold went with the separate DspNode, and
+		whether it should be copied.</li>
+
+		<li>As Gold supports more than integer positions, the displacement
+		value may also be a non-integer.</li>
+
+		</ul>
 
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
@@ -333,14 +345,23 @@
 <h4>Udanax-Gold implementation</h4>
 
 		<p>There are significant differences between the demo and
-		Udanax-Gold in this area. Gold supports the concepts of Canopies
-		which enable a number of features, and one of them is associating
-		a node with all the editions that include that node. The concept
-		of a revision number is not present, and instead the ID of the
-		edition itself can be used. Canopies also enable faster
-		determination of whether a node belongs to a revision or not,
-		which for the demo would require walking root-wards a significant
-		distance.</p>
+		Udanax-Gold in this area.</p>
+
+		<ul>
+
+				<li>Gold supports the concepts of Canopies which enable a
+				number of features, one of which is associating a node with
+				all the document editions that reference that node.</li>
+
+			<li>The concept of a revision number is not present, and instead
+			the ID of the edition itself can be used.</li>
+
+			<li>Canopies also enable faster determination of whether a node
+			belongs to a revision or not, which for the demo would require
+			walking root-wards a significant distance.</li>
+
+		</ul>
+
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Tree Balancing by Splaying</h3>
@@ -360,13 +381,65 @@
 		be spread out over all operations, and it can adapt to a changing
 		pattern of accessing the tree over time.</p>
 
+<h4>Brief summary of Splay tree algorithm</h4>
+
 		<p>The process proceeds by applying a splaying operation on every
 		access to the tree; for example find, inserts and deletes. When
 		accessing a tree, the node that is to be effected is first found,
 		then the splaying operation will through a series of alternating
 		rotate operations pull that node towards the root of the tree.</p>
 
-		<p>TODO: Individual rotate operations and big picture rotates</p>
+		<img src="splay-rotate-right.png">
+
+		<img src="splay-rotate-left.png">
+
+		<p>The two basic operations of the algorithm are rotate left and
+		rotate right. Both right and left rotations are shown above with
+		before and after. X marks the node that is to be rotated, and P is
+		the parent of X which X is going to be rotated about. A, B and C
+		represents sub-trees of any depth that are children of X and Y.
+		The most immediate point of interest is that the X node moves
+		root-wards up the tree.</p>
+
+		<p>The algorithm sequences of left and right rotations, depending
+		on the path between the focused node and the root of the tree, to
+		pull the focused node to the root of the tree or one of its
+		immediate children. This pattern of rotations tends to bunch up
+		single chains of nodes producing a 'bushier' tree, and assuming
+		locality of reference should reduce the access cost for succeeding
+		node references.</p>
+
+		<tt>
+			<ul>
+				<li>If X is the left child of the root, then rotate right
+				about Parent.</li>
+				<li>If X is the right child of the root, then rotate left
+				about Parent.</li>
+			  <li>If X and its Parent are both left children, then rotate
+				right about Parent followed by a rotate right about X.</li>
+			  <li>If X and its Parent are both right children, then rotate
+				left about Parent followed by a rotate left about X.</li>
+			  <li>If X is a right child and its Parent is a left child, then
+				rotate left about Parent follow by a rotate right about original
+				Grand parent.</li>
+			  <li>If X is a left child and its Parent is a right child, then
+				rotate right about Parent follow by a rotate left about original
+				Grand parent.</li>
+		</ul>
+	</tt>
+
+<h4>Algorithm References</h4>
+
+		<p>Please investigate the following references for better
+			descriptions of the algorithm, analysis of its performance and
+			example implementations.</p>
+
+		<ul>
+				<li><a href="http://doi.acm.org/10.1145/3828.3835">Self-adjusting binary trees</a> - Sleator &amp; Tarjan 1985 - Original academic paper on Splay trees</li>
+			<li><a href="http://www.cs.mcgill.ca/~rsinge/web251.html">Splay Trees</a> - Ron Singer - Overview of amortized analysis and splay tree operations.</li>
+			<li><a href="http://www.hut.fi/~ccandoli/botanica/algorithms/java/SplayTree.java">SplayTree.java</a> - Java implementation of splay trees.</li>
+			<li><a href="http://www.cs.caltech.edu/courses/cs134/cs134b/2002/labs/lab1/lab1.pdf">Splay trees - Implementation of a functional splay tree.</a></li>
+		</ul>
 
 
 <h4>Reviewing Displacement Navigation</h4>
@@ -440,27 +513,51 @@
 		in these trees may have more than one parent. This is a very
 		significant difference!</p>
 
+		<img src="dsp-rotate-right-mixed.png">
+
+		<p>We are again going to show a rotate right operation, but this
+		time the 9 split node has two parents. One is the root node for
+		its revision D. The other parent is the 7 split node of a later
+		version.</p>
+
+		<p>Looking closely at the before tree you can see that from the D
+		revision root node, position 1 finds "X" and position 2 finds "Y".
+		Starting above 7 split node which is from a later revision we can
+		see that position 3 finds "X", position 4 finds "Y" and position 5
+		finds "Z". Node that X for example has a different position for
+		each revision.</p>
+
+		<p>If we look at the result of rotating right about 9 split node
+		you will see something interesting. From the start we can see that
+		the 9 split node from the D revision is now the parent of the 7
+		split node which is actually associated with a later revision than
+		itself.</p>
+
+		<p>Tracing down from the D revision root node we still find that
+		position 1 finds "X" and position 2 finds "Y". But now we find
+		that there is a position 3 would find "Z". We have broken the
+		integrity of revision D as it can now includes Z in its content,
+		which it didn't before the operation.</p>
+
 		<img src="dsp-rotate-right-duplicate.png">
 
-		<p>Imagine the tree that we used early to show the effect or the
-		right rotation on displacements, but this time the 9 split node
-		has two parents, one the root of its revision, and the other a
-		split node of a later revision. If we again rotate to the right
-		you will see that the result looks pretty much the same as before.
-		The one difference is that the D revision root is still connected
-		to the 9 split node. Tracing down from that root, position 1
-		properly matches "X", and 2 matches "Y", unfortunately position 3
-		now matches "Z", but that wasn't originally a member of revision
-		D.</p>
+		<p>The solution the Demo uses for this case would be to duplicate
+		the 9 split node before the rotation. This is indicated in the
+		diagram above, and you can see that the result preserves the
+		integrity of both revisions. Note that the D revision nodes are
+		now completely untouched.</p>
 
-		<p>As a temporary solution, the demo duplicates a node if it and
-		another node from a different revision are part of a rotation.
-		This unfortunately means that there can be significant quantities
-		of duplicated nodes.</p>
-
-	<p>TODO: Bottom up linking</p>
-
-<h4>Demo Splaying Issues</h4>
+		<p>This strategy of duplicating a node if it and another node from
+		a different revision are part of a rotation has an obvious
+		downside that we are re-using less of an earlier revision than
+		before. Over time this strategy would end up duplicating a
+		significant proportion of all nodes, and so the demo attempts to
+		minimise the number of rotations by not only rotating on inserts
+		and deletes rather than finds. This significantly degrades the
+		quality of the Splay tree algorithm, and wouldn't be acceptable
+		for a non-demo version of the software. The author hasn't analysed
+		the situation enough to be able to suggest an alternative strategy
+		without this limitation.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
@@ -469,12 +566,10 @@
 		is clearly implemented in a significantly cleaner way using a
 		table driven mechanism. The use of canopies and separating
 		displacement values into their own nodes feels like it might side
-		step the mess that the Demo gets into. A closer analysis to the
-		Gold implementation in action is going to be critical in deciding
-		whether splaying has any value in the long term as the tree
-		balancing algorithm.</p>
-
-		<p>TODO: Splay ACM reference</p>
+		step the mess that the Demo gets when handling multiple parents. A
+		closer analysis to the Gold implementation in action is going to
+		be critical in deciding whether splaying has any value in the long
+		term as the tree balancing algorithm.</p>
 
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
@@ -523,21 +618,199 @@
 		this section, we see "...by quoting from the original source". In
 		fact in the current implementation there is no distinction between
 		the document that originally contained a reference to the content
-		and subsequent references. A missing feature would be storing the
-		owner of the content, which would either by the author or the
-		owner/publisher.</p>
-		
-		<p>TODO: Is that really true about no difference between first and
-			subsequent references.</p>
+		and subsequent references. A missing feature from Udanax-Gold
+		would be storing the owner of the content, which would either by
+		the author or the owner/publisher.</p>
+
+		<p>The UI for the Demo specifies a transclusion operation by
+		altering the behaviour of the copy-and-paste action. When pasting,
+		rather than just inserting a copy of the text that was initially
+		copied, instead the original text is quoted.</p>
+
+<h4>ContentLeaf implementation</h4>
+
+		<p>Lets first consider a simple case. A document revision holding
+		a single character "X". We can draw another tree diagram as we
+		have numerous times above.</p>
+
+		<img src="transclude-single.png">
+
+		<p>The second diagram is peeling back the conceptual skin of the X
+		leaf node on the first, to reveal that the leaf node actually
+		doesn't hold the "X" character, but in turn references a
+		BeDataHolder object holding the "X" character. The value of this
+		indirection is that the same "X" character can be included
+		(transcluded) other times in the same document revision, other
+		revisions or even other documents. In all cases the leaf node
+		representing "X" will reference the same BeDataHolder.</p>
+
+		<p>BeDataHolders include a collection of parents, which are all
+		the leaf nodes that reference it and so represent its contents.
+		This enables you to find all revisions and documents that
+		transclude this contents.</p>
+
+		<p>The example has so far considered simple content such as a
+		character, but later on we will find that the content leaf can
+		reference other types of content elements, such as BeEdition or
+		BeWorks which in turn could represent significant quantities of
+		content.</p>
+
+<h4>CollectionLeaf implementation</h4>
+
+		<p>The CollectionLeaf is an optimisation for the ContentLeaf.
+		Imagine the user adds the phrase "Aaron A Aardvark" in one
+		operation. Creating 17 leaf nodes and 17 BeDataHolders each
+		holding a single character of the phrase would be a performance
+		disaster. CollectionLeaf and its paired BeContentHolder content
+		element is an attempt to reduce the overhead. In this case a
+		single CollectionLeaf leaf node would be created, that would
+		reference a single BeContentHolder that would holder the 17
+		characters as a single String object.</p>
+
+		<p>If the same contents was transcluded to a different document, a
+		new CollectionLeaf would be created that would be added to its ent
+		tree, but it would reference the same BeContentHolder instance and
+		so have access to the 17 characters.</p>
+
+		<img src="transclude-multiple.png">
+
+		<p>What if another document simply wanted to transclude the
+		"Aardvark" section of the phrase. In that case again a new
+		CollectionLeaf would be created that would be added to its ent
+		tree, and it would reference the same BeContentHolder, but would
+		record that is was only interested in a region of the entire
+		contents of the holder, positions 9 to 16 inclusive.</p>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<p>The Udanax-Gold equivalents for the ContentLeaf and
+		CollectionLeaf classes and the content element classes that they
+		reference are somewhat of a mystery to the author at the
+		moment.</p>
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
+<h3>EntNode class hierarchy</h3>
+</td></tr></table>
+
+		<p>The class hierarchy for the tree nodes is strongly inspired by
+			the Udanax-Gold implementation but includes some
+			simplifications, especially for the Leaf classes as a result of
+			a lack of knowledge on my part for how this group of classes
+			relates to the content classes.</p>
+
+		<ul>
+			<li><b>EntNode</b> - Abstract super-class of all 
+				nodes that are present in an Ent tree.<br>&nbsp;&nbsp;branch - revision number of edition that
+				created this node</li>
+			<ul>
+			<li><b>ChildNode</b> - Abstract super-class for all nodes that can be
+			children of others.<br>&nbsp;&nbsp;parents - list of parent EntNodes</li>
+			<ul>
+			<li><b>LeafNode</b> - Abstract super-class for all nodes that
+				can be leafs of the tree. These nodes holds the contents of
+				the tree with 0 or more elements.<br>&nbsp;&nbsp;startPosition
+			- Global position of revision this node was originally created in.</li>
+			<ul>
+			<li><b>CollectionLeaf</b> - Leaf node that references a subset
+				of the element of a BeCollectionHolder.<br>&nbsp;&nbsp;collectionHolder - BeCollectionHolder
+			that actually contains the elements that this leaf node
+				represents.<br>&nbsp;&nbsp;collectionRegion - which of the
+				collectionHolders elements does this node represent. This is a
+			simple region defining the first and last index considered part
+				of the region.</li>
+			<li><b>ContentLeaf</b> - Leaf node that references a
+				BeContentElement considered as a single
+				element. This could be a BeDataHolder holding a single
+				Character or something more interesting such as a BeEdition.<br>&nbsp;&nbsp;contentElement - BeContentElement holding
+				the single element that the leaf represents. </li>
+		  </ul>
+		  </li>
+      <li><b>SplitNode</b> - Internal node of the tree that has two
+			children known as left and right.<br>&nbsp;&nbsp;split - integer
+		split value which is the position of the first element available
+			from its right child.<br>&nbsp;&nbsp;left - ChildNode child
+			considered its left child.<br>&nbsp;&nbsp;leftDsp - integer
+			displacement value applied to the current position when
+			traversing to the left child.<br>&nbsp;&nbsp;right - ChildNode child
+			considered its right child.<br>&nbsp;&nbsp;rightDsp - integer
+			displacement value applied to the current position when
+			traversing to the right child.</li>
+		  </ul>
+		  <li><b>RootNode</b> - Internal node at the top of the tree that
+			holds a single child. Roots are considered if the child has not
+			been set yet. BeEditions hold a reference to a single RootNode
+			which is considered the root of the contents it
+			represents.<br>&nbsp;&nbsp;edition - back link to the BeEdition
+			that root holds contents for (Cant remember if this is here only
+			for debug purposes...).<br>&nbsp;&nbsp;child -
+			single ChildNode of the root, may be null.<br>&nbsp;&nbsp;dsp - integer displacement value
+			applied to the current position when traversing to the child.</li>
+		  </ul>
+		</li>
+		</ul>
 
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
-<h3>BeRangeElement hierarchy</h3>
+<h3>BeContentElement class hierarchy</h3>
 </td></tr></table>
 
-		<p>TODO: Nature and hierarchy of content classes</p>
+		<p>The BeContentElement class hierarchy is a subset of the content
+			classes supported by Udanax-Gold. An instances of this class
+			specify the content of documents.</p>
 
+		<ul>
+			<li><b>BeContentElement</b> - Abstract super class of content
+				elements.<br>&nbsp;&nbsp;parents - un-ordered collection of
+				ent leaf nodes that represent this element as their content.</li>
+			<ul>
+			<li><b>BeCollectionHolder</b> - Holder of multiple elements,
+				each of which is a primitive data
+				element.<br>&nbsp;&nbsp;collection - ordered collection of
+				primitive data elements</li>
+			<li><b>BeDataHolder</b> - Holder of a single primitive data
+				element.<br>&nbsp;&nbsp;value - primitive data element.</li>
+			<li><b>BeEdition</b> - Represents the contents of a single
+				edition of a work. References a single RootNode which is the
+				root of the ent tree that holds its actual
+				contents.<br>&nbsp;&nbsp;root - the RootNode that holds the
+				edition contents.<br>&nbsp;&nbsp;branch - the revision number
+				used to tag its own tree nodes.<br>&nbsp;&nbsp;works - BeWorks
+			that have this edition as their contents.<br>&nbsp;&nbsp;...more...</li>
+			<li><b>BeWork</b> - identity of a document, and also the point
+				of access control to the content.<br>&nbsp;&nbsp;edition -
+				single BeEdition that holds the works content.<br>&nbsp;&nbsp;...more...</li>
+			<ul>
+			<li><b>BeClub</b> - work that defines the members of group with
+				access to a work.</li>
+			</ul>
+		</li>
+		</ul>
+		</li>
+		</ul>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<p>The demo implementation is closely modelled after that of
+			Udanax-Gold.</p>
+
+		<ul>
+				<li>Udanax-Gold uses the term BeRangeElements rather than
+			BeContentElements. Content seems a little better
+				description.</li>
+			<li>Missing BePlaceholder class. The implementation of the Demo
+				simply hasn't progressed far enough to make use of this. A
+				place holder is very interesting idea and is a critical
+				enabler of some of the interesting features of Gold. It acts
+				as a stand in for a future content element that currently
+				isn't available yet. For example the actual element hasn't
+				been returned yet as the result of a search, or may not even
+				exist yet for long running searches.</li>
+		</ul>
+
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Extra Ent Udanax-Gold features</h3>
+</td></tr></table>
 
 		<p>The Demo implementation is focused on a simple domain of
 		contiguous integers starting from 1. The UG implementation extends
@@ -576,7 +849,7 @@
 </td></tr></table>
 
 		<p>TODO; Work is identity, Edition is the content</p>
-
+		<p>TODO: Freezing a work</p>
 		<p>TODO: Work history</p>
 
 		<p>TODO: Work locking</p>
