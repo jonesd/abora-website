@@ -137,7 +137,7 @@
 	  	<tr><td align="right">
 	  		<b>Dolphin&nbsp;Demo</b><br>
 	  		<a href="/dolphin-demo/index.html">Overview</a><br>
-	  		<a href="/dolphin-demo/tech.html">Tech&nbsp;Docs</a>
+	  		<a href="/dolphin-demo/tech.html">Tech&nbsp;Report</a>
 	  	</td></tr>
 	  	<tr><td align="right">
 	  			  <form action="http://www.abora.org/cgi-bin/ksearch/ksearch.cgi" method="GET" name="search">
@@ -184,6 +184,7 @@
 		<replacefilter token="@link:ted_nelson@" property="ted_nelson"/>
 		<replacefilter token="@link:xia@" property="xia"/>
 		<replacefilter token="@link:xoc@" property="xoc"/>
+		<replacefilter token="@link:xoc_videos@" property="xoc_videos"/>
 	</replace>
   </target>
 
@@ -258,19 +259,17 @@
 	<exec executable="rsync">
 		<arg line="rsync --rsh=ssh -Cavz --whole-file ${htdocs}/ ${sourceforge.user}@${sourceforge.server}:${sourceforge.dir}/htdocs" />
 	</exec>
-	<!-- dont know how to drive rysnc to set up correct file/dir permissions, so following hack -->
-	<exec executable="ssh" failonerror="true">
-		<arg line="${sourceforge.user}@${sourceforge.server} chmod -R a+r ${sourceforge.dir}/htdocs/*" />
-	</exec>
-	<exec executable="ssh" failonerror="true">
-		<arg line="${sourceforge.user}@${sourceforge.server} chmod -R o+x ${sourceforge.dir}/htdocs/*" />
-	</exec>
+	<antcall target="website.permissions"/>
 </target>
 
 <target name="upload" depends="init">
 	<exec executable="rsync">
 		<arg line="rsync --rsh=ssh -Cavz --delete --delete-after --whole-file ${htdocs}/ ${sourceforge.user}@${sourceforge.server}:${sourceforge.dir}/htdocs" />
 	</exec>
+	<antcall target="website.permissions"/>
+</target>
+
+<target name="website.permissions" depends="init">
 	<!-- dont know how to drive rysnc to set up correct file/dir permissions, so following hack -->
 	<exec executable="ssh" failonerror="true">
 		<arg line="${sourceforge.user}@${sourceforge.server} chmod -R a+r ${sourceforge.dir}/htdocs/*" />
