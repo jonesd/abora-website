@@ -130,8 +130,13 @@
 	  	</td></tr>
 	  	<tr><td align="right">
 	  		<b>UGold2Java</b><br>
-	  		<a href="/udanax-gold2java/index.html">Overviw</a><br>
+	  		<a href="/udanax-gold2java/index.html">Overview</a><br>
 	  		<a href="/udanax-gold2java/abora-gold/api/index.html">Gold&nbsp;JavaDoc</a><br>
+	  	</td></tr>
+	  	<tr><td align="right">
+	  		<b>Dolphin&nbsp;Demo</b><br>
+	  		<a href="/dolphin-demo/index.html">Overview</a><br>
+	  		<a href="/dolphin-demo/tech.html">Tech&nbsp;Docs</a><br>
 	  	</td></tr>
 		</table>
 		</td></tr>
@@ -159,6 +164,15 @@
 ]]></replacevalue>
 	</replace>
 
+	<replace dir="${htdocs}" propertyFile="links.properties">
+		<include name="**/*.html"/>
+		<exclude name="**/api/**"/>
+		<replacefilter token="@link:ent_theory@" property="ent_theory"/>
+		<replacefilter token="@link:intware@" property="intware"/>
+		<replacefilter token="@link:sunless_sea@" property="sunless_sea"/>
+		<replacefilter token="@link:xia@" property="xia"/>
+		<replacefilter token="@link:xoc@" property="xoc"/>
+	</replace>
   </target>
 
 
