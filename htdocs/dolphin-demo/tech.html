@@ -1114,6 +1114,35 @@
 <h3>Endorsements</h3>
 </td></tr></table>
 
+		<p>An endorsement is a tag composed of a club and ID that can be
+		associated with an edition on club. It is the primitive means to
+		filter out the results at the application level. Endorsements can
+		be used to define the type of content.</p>
+
+<h4>API</h4>
+
+		<p>Endorsements are introduced to an edition or club with the
+		<code>endorse:</code> message, and removed with the
+		<code>revoke:</code> message. The collection of endorsements
+		associated with the content acts as Set, so duplicates are not
+		kept. The Endorsement class is a simple information holder holding
+		a pair of IDs.</p>
+
+		<p>TODO: transclusionsFilteredBy </p>
+
+		<p>TODO: Recording revokes, signing endorsements</p>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<p>There does not appear to be an Endorsement class in
+		Udanax-Gold, so a Pair of IDs is probably used.</p>
+
+		<p>The demo supports very simple filtering of results based on a
+		flat and operation for a collection of endorsements. Udanax-Gold
+		includes a far more flexible filtering mechanism, built from the
+		standard coordinate-space with support for standard boolean
+		operations together with union and intersection operations.</p>
+
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Hyperlinks</h3>
