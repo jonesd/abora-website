@@ -17,7 +17,7 @@
 	</td></tr>
       </table>
 
-      <p><h1>Abora Hypertext System</h1></p>
+      <h1>Abora Hypertext System</h1>
 
       <p>Abora is an ongoing project to implement a hypertext system
       based on a xanalogical structure.  It will support fine grained
@@ -27,13 +27,19 @@
       code for Dolphin Smalltalk is included. An executable demo for
       the MS Windows platform is available.</p>
 
+      <p>It should be made clear up front that the Abora project is
+	still in it's <b>early days</b>, and even though there are executable
+	demos it is probably in the order of six months before first
+	pass versions of the bulk of the following features are implemented.</p>
+
       <h3>Xanadu and Udanax-Gold</h3>
+
       <p>This project is strongly based on the ideas of <a href="http://ted.hyperland.com/">Ted Nelson</a>'s <a href="http://www.xanadu.com">Xanadu</a> and in particular the design
 	and architecture of <a href="http://www.udanax.com/gold/">Udanax-Gold</a> by <a href="http://www.udanax.com/">XOC</a>
 	which was released as open-source in 1999.</p>
 
-      <p>I originally started working with the Udanax-Gold code
-      released by XOC but found the missing source, overall complexity
+      <p>The author originally started working with the Udanax-Gold code
+      released by XOC but found the missing components, overall complexity
       and lack of documentation to form too high a barrier for my
       available time. What I did find was a fascinating tree-based
       structure, The Ent, for storing versioned data and a series of
@@ -61,32 +67,36 @@
       structure as present in Udanax-Gold.</p>
 
       <ul>
-	<li><b>Transclusions</b> or virtual-copies can be seen as a form
-      of copying-and-pasting except that the pasted form is connected back to
-      the original text so it is always possible to find the original
-      author of any character of text, and all other documents that
-      share the same content. This helps against the problems of quoting
-	  out-of-context, and taking benefit from some-one elses work
-	  without proper acknowledgement.</li>
-	<li>Implemented on top of this is support
-      for <b>fine-grained links</b> that are typed and can be navigated in
-      both directions. Links can be stored separate from the content
-      itself which enables anyone to annotate any other document that
-	  they can view. In
-      combination with typed links this enables low-overhead
-      commenting of original text and structured responses such as
-      refutations, agreements, acknowledgements. Links can also be
-      filtered by users to focus on comments from respected or specific
-      viewpoints. This will be a critical feature once hundreds or
-	  thousands of links have been attached to a document.</li>
-	<li><b>Coordinate space</b> mechanism allows content elements to
-	    be mapped over more spohisticated spaces than that of
-	    text or uncompressed audio. One possibility is the two
-	    dimensions of an image. This enables transclusions and
-	    links to work across these numerous spaces, for example
-	    just the eye of an image of a face could be transcluded
-	    into a separate document, and a destination of a link
-	    could be to a few seconds of a sound sample.</li>
+	<li><b>Transclusions</b> or virtual-copies can be seen as a
+	form of copying-and-pasting except that the pasted form is
+	connected back to the original text so it is always possible
+	to find the original author of any character of text, and all
+	other documents that share the same content. This helps
+	against the problems of quoting out-of-context, and taking
+	benefit from some-one elses work without proper
+	acknowledgement.</li>
+
+	<li>Implemented on top of this is support for <b>fine-grained
+	links</b> that are typed and can be navigated in both
+	directions. Links can be stored separate from the content
+	itself which enables anyone to annotate any other document
+	that they can view. In combination with typed links this
+	enables low-overhead commenting of original text and
+	structured responses such as refutations, agreements,
+	acknowledgements. Links can also be filtered by users to focus
+	on comments from respected or specific viewpoints. This will
+	be a critical feature once hundreds or thousands of links have
+	been attached to a document.</li>
+
+	<li><b>Coordinate space</b> mechanism allows content elements
+	to be mapped over more spohisticated spaces than that of text
+	or uncompressed audio. One possibility is the two dimensions
+	of an image. This enables transclusions and links to work
+	across these numerous spaces, for example just the eye of an
+	image of a face could be transcluded into a separate document,
+	and a destination of a link could be to a few seconds of a
+	sound sample.</li>
+
 	<li><b>Sensors</b> or detectors can be attached to objects to learn
 	  when certain actions occur. Some examples includes detecting
 	  when a new link is added to an interesting document, or when
@@ -103,26 +113,87 @@
 	CVS would break changes down to.</li>
 
 	<li>A significant force that shaped the Udana-Gold design was
-	  the need for an implementation that could expand up to a
-	  <b>distributed system</b> comparable to todays World-Wide-Web. There is an
-	  interesting mix of mutable and immutable state that enables
-	  replication of data, together with idea of sponsors of
-	  documents and a distributed garbage collection system to
-	  enable that documents are only jettisoned when they aren't
-	  referenced anymore or no-one is prepared to provide
-	  sufficient space for it.</li>
+	the need for an implementation that could expand up to a
+	<b>distributed system</b> comparable to todays
+	World-Wide-Web. There is an interesting mix of mutable and
+	immutable state that enables replication of data, together
+	with idea of sponsors of documents and a distributed garbage
+	collection system to enable that documents are only jettisoned
+	when they aren't referenced anymore or no-one is prepared to
+	provide sufficient space for it.</li>
       </ul>
-	  
+	
+      <h3>Downsides</h3>
+
+      <p>The features summary lists a series of very interesting
+	differences against the standard WWW and even the innumerable
+	custom web-site implementations. Given all this good news,
+	where should one be concerned?</p>
+
+      <ul>
+	<li><b>Complexity</b> of the implementation is significantly
+	higher than was found during the birth of the WWW. This has
+	implications both to the time it will take to write a
+	production-grade version of the server, and on to the
+	complexity and level of knowledge required by programmers that
+	are interested in writing additional clients. Where as any
+	programmer could wrestle up HTTP clients and servers, just
+	writing a compatible Abora client will be a significant
+	undertaking. Once the project has stablized, producing well
+	documented versions of the API with ample examples will be an
+	important force on the greater success of the project.</li>
+
+	<li><b>Server reliance</b> is a constraint on the use of
+	clients. A client needs to be in relatively frequent
+	communication with a server, both to find content, but also
+	during modification of content as the server essentially acts
+	as a repository and needs to be informed of higher level
+	actions such as copying text between two locations. Constrast
+	this to the use of CVS and a text editor; a CVS client is used
+	to download a text document from the CVS repositoy, but then
+	the text editor can make as many changes as it likes before
+	eventually committing the new revision of the document back to
+	the CVS server. It is only at this point that the server
+	attempts to calculate the users changes, which will be encoded
+	up as primitive actions such as inserts and deletes. The
+	frequent Abora communication with server can be mitigated by
+	running a server on each machine. The other effect though is
+	that clients have to understand the Abora protocol, whereas
+	the text editor knows nothing of CVS, as far as it is
+	concerned it is just opening and saving text documents from
+	the local filing text, and is obviously to the CVS client
+	which moves files in and out of the external CVS server. An
+	Abora client does have to know about Abora, and even with efforts to
+	ease this communication with well documented APIs this will be
+	a significant challenge to the uptake of the software.</li>
+
+	</ul>
 
       <h3>Implementation</h3>
 
       <p>Abora is coded from scratch using <a
-      href="http://www.object-arts.com">Dolphin Smalltalk</a>. This
-      currently limits the project to the MS Windows platform, but
-      once the code starts to reach a reasonable level ports to an
-      open and cross-platform version of Smalltalk are planned.</p>
+      href="http://www.object-arts.com">Dolphin Smalltalk</a>. This is
+	a low cost, clean and compact implementation of the Smalltalk
+	programming language for the MS Windows Platform. It was
+	chosen due to the authors familiarity with it. The downsides
+	are it's commercial nature and the lack of cross-platform
+	execution. These limitations are present in the executable
+	demo that is currently available.</p>
 
-      <p>As you will quickly find out Abora's capabilities are currently very limited!</p>
+      <p>One of the longer term forces on the project is to ensure
+      that the server is at least cross-platform capable and that
+      development efforts can be undertaken using non-proprietary
+      tools.  This will probably eventually push the server
+      implementation to be translated to either <a
+      href="http://www.squeak.org">Squeak</a> or a non-commercial
+      flavour of VisualWorks. A second avenue may be to a language
+      such as Java.</p>
+
+      <p>Beyond the server will be a langugae independent API for
+      clients to communicate with the server. The intention is to
+      include support for the Smalltalk and Java languages with the
+      main release, and hopefully interested parties may donate Perl,
+      Python, etc implementations.</p>
 
       <h3>Assistance</h3>
 
