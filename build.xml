@@ -20,27 +20,42 @@
 	<property name="base.url" value="/"/>
 	
 	<property name="tarball.dir" location="../sf.tarballs"/>
-   
-  <target name="init">
-    <tstamp/>
-    <mkdir dir="${build}"/>
-    <mkdir dir="${htdocs}"/>
-  </target>
 
-  <target name="compile" depends="init"
-        description="compile the source pages" >
+
+<!--**************************************************************-->
+<!--** Init ******************************************************-->
+<!--**************************************************************-->
+   
+<target name="init">
+	<tstamp/>
+	<mkdir dir="${build}"/>
+	<mkdir dir="${htdocs}"/>
+</target>
+
+
+<!--**************************************************************-->
+<!--** Collect all website pages *********************************-->
+<!--**************************************************************-->
+
+<target name="compile" depends="init"
+		description="compile the source pages" >
 
 	<copy todir="${htdocs}" overwrite="true">
 		<fileset dir="${src}">
 			<exclude name="**/*.sxd"/>
 		</fileset>
 	</copy>
-		<copy todir="${htdocs}/abora-white" overwrite="true">
-    		<fileset dir="${white.dir}/docs/">
-    			<include name="*.html"/>
-    		</fileset>
-		</copy>
-	</target>
+	<copy todir="${htdocs}/abora-white" overwrite="true">
+		<fileset dir="${white.dir}/docs/">
+			<include name="*.html"/>
+		</fileset>
+	</copy>
+</target>
+
+
+<!--**************************************************************-->
+<!--** Update HTML files with navigation bars ********************-->
+<!--**************************************************************-->
 	
 	<target name="replacetemplate" depends="init">
 	<replace dir="${htdocs}">
@@ -65,42 +80,6 @@
 	
 	<table width="100%">
 		<tr>
-		<td valign="top" width="1%">
-		<table width="100%">
-		<tr><td>
-			<b>General</b><br>
-			<a href="/index.html">Home</a><br>
-			<a href="/features.html">Features</a><br>
-			<a href="/screenshots.html">Screenshots</a><br>
-<!--			<a href="features.html">Features</a><br> -->
-<!--			<a href="why.html">Why</a><br> -->
-			<a href="/author.html">Author</a><br>
-			<a href="/links.html">Links</a><br>
-		</td></tr>
-		<tr><td>
-			<b>SourceForge</b><br>
-			<a href="http://sourceforge.net/projects/abora/">Summary</a><br>
-			<a href="http://sourceforge.net/news/?group_id=64700">News</a><br>
-			<a href="http://sourceforge.net/mail/?group_id=64700">Lists</a><br>
-			<a href="http://sourceforge.net/project/showfiles.php?group_id=64700">Downloads</a><br>
-	  </td></tr>
-	  <tr><td>
-	  		<b>Abora-White</b><br>
-	  		<a href="/abora-white/index.html">Overview</a><br>
-	  		<a href="/abora-white/tech.html">Tech&nbsp;Docs</a><br>
-	  		<a href="/abora-white/porting.html">Port&nbsp;Details</a><br>
-	  		<a href="/abora-white/api/index.html">JavaDoc</a><br>
-	  		<a href="/abora-white/junit/html/index.html">JUnit&nbsp;Report</a><br>
-	  		<a href="/abora-white/clover/index.html">Clover</a><br>
-	  		<a href="/abora-white/clover-historical/historical.html">Clover&nbsp;History</a><br>
-	  	</td></tr>
-	  	<tr><td>
-	  		<b>UGold2Java</b><br>
-	  		<a href="/udanax-gold2java/index.html">Overviw</a><br>
-	  		<a href="/udanax-gold2java/abora-gold/api/index.html">Gold&nbsp;JavaDoc</a><br>
-	  		</tr></td>
-		</table>
-		</td>
 		<td valign="top"><table width="100%">
 		<tr><td>
 ]]></replacevalue>
@@ -111,15 +90,50 @@
 		<exclude name="**/api/**"/>
 		<replacetoken><![CDATA[<!-- abora:footer -->]]></replacetoken>
 		<replacevalue><![CDATA[
+		</td></tr></table>
+		<td valign="top" width="1%">
+		<table width="100%">
+		<tr><td align="right">
+			<b>Abora&nbsp;Project</b><br>
+			<a href="/index.html">Home</a><br>
+			<a href="/features.html">Features</a><br>
+			<a href="/screenshots.html">Screenshots</a><br>
+<!--			<a href="features.html">Features</a><br> -->
+<!--			<a href="why.html">Why</a><br> -->
+			<a href="/author.html">Author</a><br>
+			<a href="/acknowledgements.html">Thanks</a><br>
+			<a href="/links.html">Links</a><br>
 		</td></tr>
+		<tr><td align="right">
+			<b>SourceForge</b><br>
+			<a href="http://sourceforge.net/projects/abora/">Summary</a><br>
+			<a href="http://sourceforge.net/news/?group_id=64700">News</a><br>
+			<a href="http://sourceforge.net/mail/?group_id=64700">Lists</a><br>
+			<a href="http://sourceforge.net/project/showfiles.php?group_id=64700">Downloads</a><br>
+	  </td></tr>
+	  <tr><td align="right">
+	  		<b>Abora-White</b><br>
+	  		<a href="/abora-white/index.html">Overview</a><br>
+	  		<a href="/abora-white/tech.html">Tech&nbsp;Docs</a><br>
+	  		<a href="/abora-white/porting.html">Port&nbsp;Details</a><br>
+	  		<a href="/abora-white/api/index.html">JavaDoc</a><br>
+	  		<a href="/abora-white/junit/html/index.html">JUnit&nbsp;Report</a><br>
+	  		<a href="/abora-white/clover/index.html">Clover</a>/<a href="/abora-white/clover-historical/historical.html">History</a><br>
+	  	</td></tr>
+	  	<tr><td align="right">
+	  		<b>UGold2Java</b><br>
+	  		<a href="/udanax-gold2java/index.html">Overviw</a><br>
+	  		<a href="/udanax-gold2java/abora-gold/api/index.html">Gold&nbsp;JavaDoc</a><br>
+	  	</td></tr>
 		</table>
 		</td></tr>
 		</table>
 		
-      <table width="100%" bgcolor="antiquewhite">
+	<hr bgcolor="antiquewhite">
+	
+      <table width="100%">
 	<tr><td>
-	    <a href="mailto:david_jones@night.dircon.co.uk">David Jones</a> - 
-	    <a href="http://www.night.dircon.co.uk">http://www.night.dircon.co.uk</a>
+	    <a href="mailto:david_jones@night.dircon.co.uk">David Jones</a>
 	  </td>
 	  <td align="right">
 	  		  <a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=64700&amp;type=1" width="88" height="31" border="0" alt="SourceForge.net Logo"></a>
@@ -131,70 +145,99 @@
 
   </target>
 
+
+<!--**************************************************************-->
+<!--** Distribute; collect, update docs **************************-->
+<!--**************************************************************-->
+
   <target name="dist" depends="clean, compile, collect, replacetemplate"
         description="generate the distribution" >
   </target>
+
+
+<!--**************************************************************-->
+<!--** Clean temporary dirs **************************************-->
+<!--**************************************************************-->
   
   <target name="clean"
         description="clean up" >
     <delete dir="${build}"/>
   </target>
 
-	<target name="collect" depends="init">
-		<echo/>
-		<echo message="***********************************************************"/>
-		<echo message="** Collect docs from abora-white                         **"/>
-		<echo message="***********************************************************"/>
-		<echo/>
-		<ant antfile="${white.dir}/build.xml" target="dist" dir="${white.dir}" inheritAll="false">
-			<property name="clover.includesource" value="false"/>
-		</ant>
-		<echo/>
-		<echo message="***********************************************************"/>
-		<echo/>
-		<delete dir="${htdocs}/abora-white/"/>
-		<copy todir="${htdocs}/abora-white">
-    		<fileset dir="${white.dir}/build/docs"/>
-		</copy>
-		
-		<delete dir="${htdocs}/udanax-gold2java/abora-gold/api"/>
-		<copy todir="${htdocs}/udanax-gold2java/abora-gold/api">
-    		<fileset dir="../udanax-gold2java/abora-gold/doc/api"/>
-		</copy>
-		
-	</target>  
 
-	<target name="uploadNoReplace" depends="init">
-		<exec executable="rsync">
-			<arg line="rsync --rsh=ssh -Cavz --whole-file ${htdocs}/ ${sourceforge.user}@${sourceforge.server}:${sourceforge.dir}/htdocs" />
-		</exec>
-		<!-- dont know how to drive rysnc to set up correct file/dir permissions, so following hack -->
-		<exec executable="ssh" failonerror="true">
-			<arg line="${sourceforge.user}@${sourceforge.server} chmod -R a+r ${sourceforge.dir}/htdocs/*" />
-		</exec>
-		<exec executable="ssh" failonerror="true">
-			<arg line="${sourceforge.user}@${sourceforge.server} chmod -R o+x ${sourceforge.dir}/htdocs/*" />
-		</exec>
-	</target>
+<!--**************************************************************-->
+<!--** Locally Collect docs and metrics from subprojects *********-->
+<!--**************************************************************-->
 
-	<target name="upload" depends="init">
-		<exec executable="rsync">
-			<arg line="rsync --rsh=ssh -Cavz --delete --delete-after --whole-file ${htdocs}/ ${sourceforge.user}@${sourceforge.server}:${sourceforge.dir}/htdocs" />
-		</exec>
-		<!-- dont know how to drive rysnc to set up correct file/dir permissions, so following hack -->
-		<exec executable="ssh" failonerror="true">
-			<arg line="${sourceforge.user}@${sourceforge.server} chmod -R a+r ${sourceforge.dir}/htdocs/*" />
-		</exec>
-		<exec executable="ssh" failonerror="true">
-			<arg line="${sourceforge.user}@${sourceforge.server} chmod -R o+x ${sourceforge.dir}/htdocs/*" />
-		</exec>
-	</target>
+<target name="collect" depends="init">
+	<echo/>
+	<echo message="***********************************************************"/>
+	<echo message="** Collect docs from abora-white                         **"/>
+	<echo message="***********************************************************"/>
+	<echo/>
+	<ant antfile="${white.dir}/build.xml" target="dist" dir="${white.dir}" inheritAll="false">
+		<property name="clover.includesource" value="false"/>
+	</ant>
+	<echo/>
+	<echo message="***********************************************************"/>
+	<echo/>
+	<delete dir="${htdocs}/abora-white/"/>
+	<copy todir="${htdocs}/abora-white">
+		<fileset dir="${white.dir}/build/docs"/>
+	</copy>
+	
+	<delete dir="${htdocs}/udanax-gold2java/abora-gold/api"/>
+	<copy todir="${htdocs}/udanax-gold2java/abora-gold/api">
+		<fileset dir="../udanax-gold2java/abora-gold/doc/api"/>
+	</copy>
+</target>  
 
-	<target name="index" depends="init">
-		<exec executable="ssh" failonerror="true">
-			<arg line="${sourceforge.user}@${sourceforge.server} cd /home/groups/a/ab/abora/cgi-bin/ksearch; ./indexer.pl" />
-		</exec>
-	</target>
+
+<!--**************************************************************-->
+<!--** Upload ****************************************************-->
+<!--**************************************************************-->
+
+<target name="uploadNoReplace" depends="init">
+	<exec executable="rsync">
+		<arg line="rsync --rsh=ssh -Cavz --whole-file ${htdocs}/ ${sourceforge.user}@${sourceforge.server}:${sourceforge.dir}/htdocs" />
+	</exec>
+	<!-- dont know how to drive rysnc to set up correct file/dir permissions, so following hack -->
+	<exec executable="ssh" failonerror="true">
+		<arg line="${sourceforge.user}@${sourceforge.server} chmod -R a+r ${sourceforge.dir}/htdocs/*" />
+	</exec>
+	<exec executable="ssh" failonerror="true">
+		<arg line="${sourceforge.user}@${sourceforge.server} chmod -R o+x ${sourceforge.dir}/htdocs/*" />
+	</exec>
+</target>
+
+<target name="upload" depends="init">
+	<exec executable="rsync">
+		<arg line="rsync --rsh=ssh -Cavz --delete --delete-after --whole-file ${htdocs}/ ${sourceforge.user}@${sourceforge.server}:${sourceforge.dir}/htdocs" />
+	</exec>
+	<!-- dont know how to drive rysnc to set up correct file/dir permissions, so following hack -->
+	<exec executable="ssh" failonerror="true">
+		<arg line="${sourceforge.user}@${sourceforge.server} chmod -R a+r ${sourceforge.dir}/htdocs/*" />
+	</exec>
+	<exec executable="ssh" failonerror="true">
+		<arg line="${sourceforge.user}@${sourceforge.server} chmod -R o+x ${sourceforge.dir}/htdocs/*" />
+	</exec>
+</target>
+
+
+<!--**************************************************************-->
+<!--** Build indexes on website **********************************-->
+<!--**************************************************************-->
+
+<target name="index" depends="init">
+	<exec executable="ssh" failonerror="true">
+		<arg line="${sourceforge.user}@${sourceforge.server} cd /home/groups/a/ab/abora/cgi-bin/ksearch; ./indexer.pl" />
+	</exec>
+</target>
+
+
+<!--**************************************************************-->
+<!--** Tarball Download from Source Forge ************************-->
+<!--**************************************************************-->
 
 <target name="tarball.download" depends="init">
 	<move file="${tarball.dir}/abora-cvsroot.tar.gz" tofile="${tarball.dir}/abora-cvsroot.previous.tar.gz"/>
@@ -203,4 +246,5 @@
 	</exec>
 </target>
 
+<!--**************************************************************-->
 </project>
