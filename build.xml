@@ -176,6 +176,7 @@
 		<exclude name="**/api/**"/>
 		<exclude name="**/clover/**"/>
 		<replacefilter token="@link:abora_project@" property="abora_project"/>
+		<replacefilter token="@link:dolphin_demo@" property="dolphin_demo"/>
 		<replacefilter token="@link:dolphin_smalltalk@" property="dolphin_smalltalk"/>
 		<replacefilter token="@link:ent_theory@" property="ent_theory"/>
 		<replacefilter token="@link:eric_drexler@" property="eric_drexler"/>
