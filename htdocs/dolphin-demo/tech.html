@@ -15,82 +15,197 @@
 
 		<p><font color="red">---- Document still being written ----</font></p>
 
-		<p>The implementation of the Dolphin Demo was driven out of a lack
-		of appreciation of the features of Udanax-Gold, and definitely an
-		understanding of how it could all be made to work. I had access to
-		the source code released by XOC, but it was incomplete, and it's
-		size defied easy interpretation. I found two critical papers on
-		the @link:sunless_sea@ website that gave an overview of the Ent
-		data structure, and the basic infrastructure for client
-		developers.</p>
-
-		<p>Starting from scratch as I did with the Demo forced me to gain
-		some understanding of the core constraints and pressures on the
-		design, and the learning about the design from the inside. I was
-		not intending to implement a feature-by-feature clone of
-		Udanax-Gold, but I did want to explore the basic features of a
-		xanalogical data server and I did want to improve my knowledge of
-		Udanax-Gold. As I progressed through a few iterations of the
-		application later discoveries would reveal misunderstandings made
-		early in the project. I often just drove straight on rather than
-		rework the effected parts. This allowed me to cover more ground,
-		but has left some rough edges and unexplored spaces.</p>
-
-		<p>The majority of work on the Demo was accomplished during a two
-		month summer holiday break during 2002. This was kindly green lighted by my
-		employer, @link:intware@. Many thanks.</p>
-
-
-<h3>References</h3>
-
-		<p>The authors knowledge of the Ent data structure derives from
-		two papers plus repeated fumbling readings of the published
-		Udanax-Gold source code. The papers I found to be most helpful can
-		be found at the Sunless-Sea website.</p>
+		<table summary="">
+			<tr>
+					<th align="left">Contents:</th>
+					<td>Design and implementation of the Dolphin Demo,
+		including comparisons with Udanax-Gold.</td>
+				</tr>
+				<tr>
+					<th align="left">Intended audience:</th>
+		      <td>Programmers and general readers interested
+		in what's happening under the covers.</td>
+				</tr>
+			</table>
 
 		<ul>
+			<li><a href="#introduction">Introduction</a></li>
+			<li><a href="#ent-tree">Ent tree</a>
+				<ul>
+					<li><a href="#ent_base-implementation">Base Implementation</a></li>
+					<li><a href="#ent_element-positions">Element Positions</a></li>
+					<li><a href="#ent_version-support">Version support</a></li>
+					<li><a href="#ent_tree-balancing-by-splaying">Tree Balancing by Splaying</a></li>
+					<li><a href="#ent_insert-and-delete-algorithm">Insert and Delete algorithm</a></li>
+					<li><a href="#ent_transclusions">Transclusions</a></li>
+				</ul>
+			<li><a href="#entnode-class-hierarchy">EntNode class hierarchy</a></li>
+			<li><a href="#becontentelement-class-hierarchy">BeContentElement class hierarchy</a></li>
+			<li><a href="#works">Works</a></li>
+			<li><a href="#clubs">Clubs</a></li>
+			<li><a href="#editions">Editions</a></li>
+			<li><a href="#differences">Differences</a></li>
+			<li><a href="#endorsements">Endorsements</a></li>
+			<li><a href="#hyperlinks">Hyperlinks</a></li>
+			<li>Document structures</li>
+			<li><a href="#ids">Ids</a></li>
+			<li><a href="#persistence">Persistence</a></li>
+			<li>Network</li>
+		</ul>
+
+
+<a name="introduction"></a>
+<h3>Introduction</h3>
+
+		<p>The Dolphin Demo is an open-source implementation in
+		@link:dolphin_smalltalk@ of a subset of the Udanax-Gold hypermedia
+		server together with a thick-client UI for MS Windows that
+		explores some of the features of the Xanadu system. The author
+		undertook this application to learn how these systems work, how
+		they might be applied in practice, and to provide something for
+		others to evaluate while the far greater effort of producing
+		production grade versions was undertaken.</p>
+
+		<p>The efforts applied to the demo were driven by an appreciation
+		of the design of Udanax-Gold at a shallow level and a glimmer from
+		the possibilities offered by broader xanalogical systems.
+		Investigations into xanalogical systems basically involved working
+		through the writings of Ted Nelson, but the lack of any
+		representative systems left one short of understanding how these
+		features could be used day-to-day and be connected into existing
+		systems. On the design and code side, difficulties were
+		encountered while trying to work with the released Udanax-Gold
+		code. The size of the released code, the generality of it, the
+		incompleteness of the release, lack of running system and lack of
+		documentation placed significant barriers on its considered
+		application. A small degree of relief was found courtesy of a
+		couple of critical papers original written by XOC and recently
+		made available at the @link:sunless_sea@ website. These writings
+		shed enough light on the code to confirm the authors suspicions on
+		its value, and were instrumental in pressing on with the project
+		in creating the simple demo implementation.</p>
+
+		<p>The process of developing the demo helped the author appreciate
+		some of the core constraints and pressures on the design. A
+		typical course would be close scrutiny of the reference material,
+		followed by confused head scratching, charging off and coding up
+		something, running into unforeseen complexities or limitations,
+		capped with some new insight on returning to the original
+		reference material. The intention of the demo was not to implement
+		a feature-by-feature clone of Udanax-Gold, but instead to explore
+		the basic features of a xanalogical data server. Repeated
+		iterations of work would reveal earlier misunderstandings, these
+		were often ignored in an attempt to cover as much ground as
+		possible rather than to refactor the code to production grade
+		level.</p>
+
+<h4>References</h4>
+
+		<p>The authors knowledge of the Ent data structure and the basic
+		elements of the Udanax-Gold design derive from two papers written
+		by members of the XOC team, plus repeated travels through the
+		published Udanax-Gold source code.</p>
+
+		<ul>
+			<li>@link:xoc@</li>
 			<li>@link:xia@</li>
 			<li>@link:ent_theory@</li>
 		</ul>
 
+<h4>Acknowledgements</h4>
 
-<h3>Data Structure Requirements</h3>
+		<p>@link:ted_nelson@ for the Xanadu system, and the @link:xoc@
+		team for the Udanax-Gold design and implementation.</p>
 
-		<p>The core of the implementation is a limited version of the Ent
-		data structure at the heart of Udanax-Gold. As mentioned above
-		this isn't a strict subset of the original design, and is more of
-		a twisted take on it derived from my shallow interpretation.</p>
+		<p>The authors employer, @link:intware@, for enthusiastically
+		allowing me to corral real and fictional holiday allowances to
+		enable me to work on the implementation over a couple of months
+		during the summer of 2002.</p>
 
-		<p>There are a number of features that we want to be present in
-		this structure.</p>
+		<p>Many thanks to you all.</p>
+
+		<p>David Jones. March 2003</p>
+
+
+<a name="ent-tree"></a>
+<h3>Ent Tree</h3>
+
+		<p>The core of the demo implementation is a limited version of the
+		Ent data structure which can be found at the heart of Udanax-Gold.
+		The Ent was invented by @link:eric_drexler@ and named after the
+		long remembering trees from The Lord of the Rings by
+		J.R.R.Tolkien. The Ent turns out to be a very interesting tree
+		based data structure with some very useful characteristics even
+		though it turns a number of standard computer science assumptions
+		on their head.</p>
+
+		<p>The demo only uses a limited version of the ent, reducing the
+		level of generality and most certainly mis-interpreting some of
+		the finer aspects of the implementation. Overlaid features that
+		significantly improve the performance for walking root-wards
+		through trees, and reducing space overhead when associating data
+		with nodes shared across versions has been ignored. Even with
+		these limitations in mind, the hope is that others will find the
+		following details useful as an introduction.</p>
+
+		<p>The Ent tree, or variations of it, have applicability beyond
+		xanalogical applications. Udanax-Gold builds on the full Ent a very
+		powerful and generic document storage system, but it could be
+		considered in a number of other cases. One example would be for
+		tree based data structures with integrated versioning capabilities;
+		for example XML documents or complicated BOM structures.</p>
+
+<h4>Data Structure Requirements</h4>
+
+		<p>There are a number of core features that we want to be
+		supported by a hypermedia system that should be enabled by the
+		low-level data structure responsible for storing the document
+		contents and the links and references between them. Some of the
+		required features of this low level structure that we want to aim
+		for are:</p>
 
 		<ul>
-			<li>Large documents</li>
 			<li>Multiple versions of the same document</li>
-			<li>Minimise space overhead of multiple document versions</li>
+			<li>Minimise space overhead with multiple versions of the same document</li>
+			<li>Fast access times to sections of a document</li>
+		  <li>Minimise time costs for modifying a document</li>
+			<li>Handle large documents</li>
 			<li>Fine grained links</li>
-			<li>Minimise time overhead of modifying documents</li>
-			<li>Natural programming API</li>
-			<li>Links valid across document versions</li>
+			<li>Reasonable programming API</li>
+			<li>Sharing of content between multiple documents and revisions</li>
+			<li>Link and content sharing staying valid across document versions</li>
 			<li>Remote caching of document fragments</li>
 		</ul>
 
+<h4>References</h4>
 
+		<ul>
+			<li>@link:ent_theory@</li>
+			<li>TODO: ent transcript from sunless sea</li>
+			<li>TODO: collect ent page from sunless sea</li>
+			<li>TODO: relevant videos from sunless sea</li>
+		</ul>
+
+
+<a name="ent_base-implementation"></a>
 <h3>Base Implementation</h3>
 
 		<p>The contents of a document and the structure defining the
-		different versions and links between content are split into two
-		layers. The Content layer holds chunks of contiguous sequences of
-			document data. These are connected to one or more leaves of a
-		series of binary search trees each defining a document.</p>
+		different versions and links between their content are split into
+		two layers. The Content layer holds chunks of contiguous sequences
+		of document data. These are connected to one or more leaves of a
+		series of binary search trees each defining the contents of a
+		document.</p>
 
 		<p>The structure of the contents is built from a binary search
-		tree whose leaves are the contents of the document. The root of
-		the tree corresponds to one version of the document, and walking
-		the leaves from left to right will produce the entire document. At
-		each interior node a split integer indicates the position of
-		the first element that can be reached by its right branch, and all
-		elements to the left will be before this position.</p>
+		tree whose leaves reference the contents of the document. The root
+		of the tree corresponds to a single version of the document, and
+		walking the leaves from left to right will produce the entire
+		document. At each interior node a split integer indicates the
+		position of the first element that can be reached by its right
+		branch, and all elements to the left will be before this position.
+		This can be used when trying to find the content element at a
+		specific position in the document.</p>
 
 		<p>To see how this works, we will step through a few revisions of
 		a document by adding and removing content to it.</p>
@@ -98,103 +213,124 @@
 		<hr>
 		<img src="nodeTreeA.png" alt="Revision A">
 
-		<p>Revision A: We can start with an empty document. This is
+		<p><b>Revision A</b>: We can start with an empty document. This is
 		constructed from just a single root node, with no children. We
-		indicate this root with a empty square in the diagram above on the
-		left hand side of the diagram. The section on the right hand side
-		indicates that the A revision of the document has no contents.</p>
+		indicate this root with an empty square in the diagram above on
+		the left hand side of the diagram. The section on the right hand
+		side indicates that the A revision of the document has no
+		contents.</p>
 
-		<p>We have coloured this revision of the document gray, and
+		<p>We have coloured this revision of the document grey, and
 		labelled it as A. In the forthcoming steps we will assign a new
 		colour and ascending letter for each revision in turn.</p>
 
 		<hr>
 		<img src="nodeTreeB.png" alt="Revision B">
 
-		<p>Revision B: We will now add some content to the document, in
-		this case the word "One". A new root node is created that is
-		associated with the second revision of the document. A leaf node
-		is created, which points to the "One" string, and the leaf node is
-		then added to the new root as its single child. The document is
-		now considered to be at revision two.</p>
+		<p><b>Revision B</b>: We will now add some content to the
+		document, in this case the word "One". A new root node is created
+		that is associated with the second revision of the document. A
+		leaf node is created, which represents the "One" string, and the
+		leaf node is then added to the new root as its single child. The
+		document is now considered to be at revision two.</p>
 
 		<p>Before continuing, you can see that our diagram still contains
 		the first empty root node. In fact at this point we have two
 		revisions of the same document. The first is empty, the second
 		contains the single "One" word. The contents of each revision is
-		indicated at the top right of the diagram, revision A is still
-		empty and revision 2 contains the "One".</p>
+		indicated at the top right of the diagram, with one row per
+		revision and the contents of each revision with an indication of
+		which revision the elements of that revision were first added
+		to.</p>
 
 		<hr>
 		<img src="nodeTreeC.png" alt="Revision C">
 
-		<p>Revision C: We will now add a second word to the document,
-		"Two", after the first. A new root node is again created, and a
-		Split node is added as its single child this time. A split node is
-		an internal node and does not directly reference content, instead
-		it has two children; left and right children. An integer split
-		value is also kept, and it defines the position of the first
-		element of the right child. As we see in the diagram below, the
+		<p><b>Revision C</b>: We will now add a second word to the
+		document, "Two", after the first. A new root node is again
+		created, and a Split node is added as its single child this time.
+		A split node is an internal node and does not directly reference
+		content, instead it has two children nodes; known as its left
+		child and right child. An integer split value is also kept, and it
+		defines the position of the first element referenced by the right
+		child or any of its children. As we see in the diagram above, the
 		round circle indicate a split node, with "One" as its left child,
 		and "Two" as its right child. The split value of the node is shown
 		to be the value 4. This is the position of T character of the
 		right "Two" child. The "O" of "One" has the position 1.</p>
 
 		<p>One of the interesting aspects of the data structure is
-		starting to emerge. The third revision C is uses as much of the
-		previous revision as possible, so in this case we see that the
-		"One" of C's "OneTwo" content is actually shared with the previous
-		B region. The printout of the content for each revision at the top
-		right of the diagram shows that each revision is keeping the same
-		contents, even as further revisions are re-using some of their
-		contents.</p>
+		starting to emerge. The third revision C uses as much of the
+		previous revisions structure as possible, so in this case we see
+		that the "One" of C's "OneTwo" content is actually shared with the
+		previous B revision. The printout of the content for each revision
+		at the top right of the diagram shows that each revision is
+		keeping the same contents, even as further revisions are re-using
+		some of their contents.</p>
 
 		<hr>
 		<img src="nodeTreeD.png" alt="Revision D">
 
-		<p>Revision D: We will now add a third element to the end of the
-		document, "Three". Again a new root is created, together with a
-		split node as its child. The right child of this split is set to
-		the new "Three" value and a split value of 7 is stored. More
-		interesting is that the left child of the split points to the
-		split that we have previously created. We are now sharing content
-		and data structures of previous revisions. This hints at possible
-		space savings across multiple revisions of the same document.</p>
+		<p><b>Revision D</b>: We will now add a third element to the end
+		of the document, "Three". Again a new root is created, together
+		with a split node as its child. The right child of this split is
+		set to the new "Three" value and a split value of 7 is stored. The
+		left child connects into the split node of revision C. Again we
+		are reusing previous revision structures. With more complicated
+		revisions there is no limit to the number of levels of structure
+		that you might share with other revisions.</p>
 
 		<hr>
 		<img src="nodeTreeE.png" alt="Revision E">
 
-		<p>Revision E: We will add a fourth element, "Four", but this time
-		rather than appending to the end of the document, we will instead
-		insert this new element between "Two" and "Three". A new root node
-		and child split node is created. The left node connects into C's
-		child. The right child connects to a second split which it in turn
-		connects to the "Four" and "Three" contents. If you trace the leaf
-		nodes from left to right starting from the E root node you will
-			see that the desired document content is collected.</p>
+		<p><b>Revision E</b>: We will add a fourth element, "Four", but
+		this time rather than appending to the end of the document, we
+		will instead insert this new element between the "Two" and "Three"
+		content. A new root node and child split node is created. The left
+		node connects into C's child. The right child connects to a second
+		split which it in turn connects to the "Four" and "Three"
+		contents. If you trace the leaf nodes from left to right starting
+		from the E root node you will see that the desired document
+		content will be generated. Note that in this case the split node
+		from the revision D is not included in this later E revision.</p>
 
 		<hr>
 		<img src="nodeTreeF.png" alt="Revision F">
 
-		<p>Revision F: In this case we will try to remove one of the
-		existing elements for our next revision, in this case the word
+		<p><b>Revision F</b>: In this case we will try to remove one of
+		the existing elements for our next revision, in this case the word
 		"Two". Even though our new revision shouldn't contain "Two", we
-		want the previous revisions to still contain it. To implement this
-		we define a new root node and child split node. The split node
-		then connects to "One" on the left and the parent of "Four" and
-		"Three" on the right.</p>
+		want the previous revisions to keep their previous content, and so
+		still contain "Two". To implement this we define a new root node
+		and child split node. The split node then connects to "One" on the
+		left and the parent of "Four" and "Three" on the right. Tracing
+		the leaf elements left to right for F should produce the desired
+		content. The one difference from previous constructions is the +3
+		associated with the split 4 node that was created. This is used to
+		compensate for the deleted three characters with respect to the
+		positions of elements later in the tree. This will be discussed in
+		detail in later sections.</p>
+
+		<p>This concludes our little visual step through the creation of a
+		few revisions of our literary "numbers" document. We have shown
+		multiple revisions of a document being built up, older revisions
+		not being modified while newer revisions reuse as much of their
+		structure as possible. Primitive operations of insert and delete
+		have been shown.</p>
 
 
+<a name="ent_element-positions"></a>
 <h3>Element Positions</h3>
 
 		<p>One issue that we have only briefly dwelled on is how to use
 		the data structure that we have built up. The single case we have
 		concentrated on is retrieving the entire contents of a specific
 		revision of a document. This is achieved by walking all leafs of a
-		tree starting from the left most one.</p>
+		tree starting from the left most one and walking step-by-step to
+		the right most one..</p>
 
 		<p>Another primitive operation is to retrieve an element at a
-		specific position of a document, or a range elements from one
+		specific position in a document, or a range elements from one
 		position to another.</p>
 
 <h4>Example</h4>
@@ -202,9 +338,9 @@
 		<img src="nodeTreeF.png" alt="Example tree">
 
 		<p>Looking back at revision B we can see that retrieving the
-		element at position 1 is the character "O" (assuming 1-based
-		number scheme). This can be found by looking at the single child
-		of the B root, and then just a simple #at: request on the contens
+		element at position 1 produces the character "O" (assuming 1-based
+		numbering scheme). This can be found by looking at the single child
+		of the B root, and then just a simple #at: request on the contents
 		of that leaf node.</p>
 
 		<p>Retrieving the element at specified position is more
@@ -218,13 +354,14 @@
 		and knowing that the first element of the found "Two" content has
 		a global position of 4, then we can easily find the the second
 		character of its content, "w" is the character at the global
-		position of 5.</p>
+		position of 5, for revision C.</p>
 
 		<p>Moving onto finding the character at the 5th postion of
-		revision D, then we can follow a simple path. Starting at the D
+		revision D, then we can follow a similar path. Starting at the D
 		root, we can see that 5 is less than the split value of 7 for its
 		child, which will send us down its left branch. At that point 5
-		&gt;= 4 and so we end up at the "Two" leaf node again.</p>
+		&gt;= 4 and so we end up at the "Two" leaf node again, and the
+		letter "w".</p>
 
 		<p>The more interesting case is with revision F. Again we are
 		looking for the character at position 5. Starting at the F root,
@@ -235,33 +372,36 @@
 		position 5 that we had been looking for, so that when we arrive at
 		the end of the right branch we are now looking for the position 8
 		(5 + 3). As 8 &lt; 11, we take the left most branch and retrieve
-		the last but two character, "o".</p>
+		the last but second character, "o".</p>
 
 		<p>The displacement that we applied while navigating leafwards has
-		enabled the F revision to share the 11 sprit node from the E
+		enabled the F revision to share the 11 split node from the E
 		revision. This split node when defined for the E revision had a
 		global position of 11, as the F revision has deleted the "Two"
-		text before it, that nodes position within the F revision is
+		content before it, that nodes position within the F revision is
 		actually 9, but changing the split value of that node would then
-		break the E revision. By associating the displacement value with
-		the new split node added for the F revision, we are able to share
-		this node from E.</p>
+		break the E revision. We could have duplicated the original split
+		node for this revision, and update the split value with its new
+		value. Instead by associating the displacement value with the new
+		split node added for the F revision, we are able to reuse and so
+		share this node with revision E.</p>
 
 		<p>So the neat thing about the displacement idea is that even if
 		we insert and delete elements, later revisions can still share
 		split nodes from earlier revisions, even if the global positions
-		of those nodes now differes across the numerous revision that
-		share that node.</p>
+		of those nodes now differs across the numerous revisions that
+		share the node.</p>
 
 <h4>Root-ward walk</h4>
 
 		<p>When walking rootwards, from leaf to root, the inverse of the
 		displacement is applied. This enables you to learn the global
 		position from any element in a leaf node. Those of you on the ball
-		we will now realised that tracing a path up to a root is actually
-		now an involved issue, because a leaf could have a number of
-		roots. This is not a common problem with tree data structures! We
-		will investigate this issue later.</p>
+		will have realised by now that tracing a path up to a root is
+		actually an involved issue, because each node could have multiple
+		parents, and so a leaf node could have a number of roots. This is
+		not a common problem with tree data structures! We will
+		investigate this issue later.</p>
 
 <h4>Demo implementation</h4>
 
@@ -279,7 +419,8 @@
 
 			<li>Rather than a simple split value, Gold has a region that
 			defines all positions that can be found in its left
-			children.</li>
+			children. It considers the left and right nodes to be in and out
+			branches.</li>
 
 			<li>The displacement value is stored in a separate node of the
 			tree called the DspNode, rather than embedded within the split
@@ -288,7 +429,8 @@
 			node, and a similar displacement for Root nodes. Somehow this
 			seemed to end up with more code than the Gold implementation. At
 			the heart of it, it is unknown why Gold went with the separate
-			DspNode, and whether it should be copied.</li>
+			DspNode, and whether it is a critical feature that should be
+			duplicated.</li>
 
 			<li>As Gold supports more than integer positions, the
 			displacement value may also be a non-integer.</li>
@@ -296,28 +438,30 @@
 		</ul>
 
 
+<a name="ent_version-support"></a>
 <h3>Version support</h3>
 
 		<p>We ended off the above description of walking the nodes of a
-		revision tree, with the issue of walking from a leaf to its root.
-		Normally this is a very easy operation in tree data structures,
-		assuming suitable parent references. The complexity in this case
-		is obvious if you look at the "Three" leaf in the final diagram
-		for revision F. The "Three" leaf node actually has two parents,
-		one is the 7 split node associated with revision D, and the other
-		is the 11 split node associated with revisions E and F. Which of
-		the two parents should be followed?</p>
+		revision tree leaf-wards, with the issue of instead walking from a
+		leaf to its root. Normally this is a very easy operation in tree
+		data structures, assuming suitable parent references are kept. The
+		complexity in this case is obvious if you look at the "Three" leaf
+		in the final diagram for revision F. The "Three" leaf node
+		actually has two parents, one is the 7 split node associated with
+		revision D, and the other is the 11 split node associated with
+		revisions E and F. Which of the two parents should be
+		followed to find?</p>
 
 		<p>For the demo each non-leaf node includes a revision number
 		associated with the revision for which it was originally created.
 		Whenever one walks the tree root-wards, a desired revision is also
 		known which can be used to resolve the parent choice. So for
 		example, if we want to learn the global position of the first
-		character of "Three" for revision F, we want to walk root-ward
-		from its leaf node. There are two immediate parents, the 7 or 11
-		split nodes. We will take the 11 split node as that node was
-		created with revision E, which is closer to revision F than the D
-		of the 7 split node. At this point we again have two parent
+		character of "Three" for revision F, then we want to walk
+		root-ward from its leaf node. There are two immediate parents, the
+		7 or 11 split nodes. We will take the 11 split node as that node
+		was created with revision E, which is closer to revision F than
+		the D of the 7 split node. At this point we again have two parent
 		choices, and the 4 split node of revision F is obviously the
 		preferred route. At that point its single parent is the revision F
 		root and so we have reached our destination. Applying inverse
@@ -328,7 +472,7 @@
 
 		<p>A revision number is not a simple integer, but a branching
 		number with a format such as "1:4:1". The first revision is "1",
-		the second "2", and so on. If another revision is made from the
+		the second "2", and so on. If a second revision is derived from the
 		first revision, then that is known as "1:1:1" with the next on that
 		branch being "1:1:2".</p>
 
@@ -337,15 +481,17 @@
 		<p>Reviewing the diagram we can see that revision "2" has three
 		following revisions, "3", "2:1:1" and "2:2:1". A branch is
 		considered the path from the root revision "1" to the specified
-		revision. For example "1", "2", "2:1:1", "2:1:2", "2:1:2:1:1" an d
+		revision. For example "1", "2", "2:1:1", "2:1:2", "2:1:2:1:1" and
 		beyond form a branch.</p>
 
 		<p>We discussed earlier in this section navigating root-wards and
 		deciding which one of possibly multiple parents should be
 		followed. Given a desired revision we choose the parent whose
 		created revision is closest to the revision we are interested in.
-		The closest revision has to be on the same branch and then the
-		nearest revision before or equal to the desired revision.</p>
+		A revision has to be on the same branch as the desired revision to
+		be considered for navigation, and amongst all those that match
+		that criteria the nearest revision before or equal to the desired
+		revision is chosen.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
@@ -359,38 +505,44 @@
 			document editions that reference that node.</li>
 
 			<li>The concept of a revision number is not present, and instead
-			the ID of the edition itself can be used.</li>
+			the ID of the edition itself might be used.</li>
 
 			<li>Canopies also enable faster determination of whether a node
 			belongs to a revision or not, which for the demo would require
-			walking root-wards a significant distance.</li>
+			walking root-wards a significant distance. This kind of
+			operation is very useful in improving the performance of the
+			back-follow operation, which is used to find all the documents
+			and revisions that use a specific piece of content.</li>
 
 		</ul>
 
 
+<a name="ent_tree-balancing-by-splaying"></a>
 <h3>Tree Balancing by Splaying</h3>
 
 		<p>The advantage of a tree as a search data structure is that the
-		height of the tree is O(logN), where N is the number of leaves in
+		height of the tree is O(logN), where N is the number of nodes in
 		the tree. This feature only holds if a tree is balanced. For
 		example in the worst case nodes form a chain from the root with
-		children always being to the left. This will form an O(N) tree, or
-		effectively a linked list.</p>
+		children always being to the left. This will form an tree whose
+		height is O(N), or effectively a linked list.</p>
 
-		<p>The Ent appears to use the Splay Tree balancing method. This is
-		an amortised balancing technique, and so balances a tree across a
-		number of operations rather than after a single specific
+		<p>The Ent appears to use the Splay Tree method to balance itself.
+		This is an amortised balancing technique, and so balances a tree
+		across a number of operations rather than after a single specific
 		operation. This kind of balancing enables the cost of balancing to
-		be spread out over all operations, and it can adapt to a changing
-		pattern of accessing the tree over time.</p>
+		be spread out over many operations. It can also adapt the
+		structure of the tree to reflect the changing pattern of access to
+		the tree over time.</p>
 
 <h4>Brief summary of Splay tree algorithm</h4>
 
 		<p>The process proceeds by applying a splaying operation on every
-		access to the tree; for example find, inserts and deletes. When
+		access to the tree; this includes find, inserts and deletes. When
 		accessing a tree, the node that is to be effected is first found,
-		then the splaying operation will through a series of alternating
-		rotate operations pull that node towards the root of the tree.</p>
+		then the splaying operation will pull that node towards the root
+		of the tree by applying a series of rotation operations about the
+		node's parent.</p>
 
 		<img src="splay-rotate-right.png" alt="Rotate right">
 
@@ -398,19 +550,22 @@
 
 		<p>The two basic operations of the algorithm are rotate left and
 		rotate right. Both right and left rotations are shown above with
-		before and after. X marks the node that is to be rotated, and P is
-		the parent of X which X is going to be rotated about. A, B and C
-		represents sub-trees of any depth that are children of X and Y.
-		The most immediate point of interest is that the X node moves
-		root-wards up the tree.</p>
+		before and after states. X marks the node that is to be rotated,
+		and P is the parent of X which X is going to be rotated about. A,
+		B and C represents sub-trees of any depth that are children of X
+		and Y. The most immediate point of interest is that the X node
+		moves root-wards up the tree.</p>
 
-		<p>The algorithm sequences of left and right rotations, depending
-		on the path between the focused node and the root of the tree, to
-		pull the focused node to the root of the tree or one of its
-		immediate children. This pattern of rotations tends to bunch up
-		single chains of nodes producing a 'bushier' tree, and assuming
+		<p>The algorithm uses sequences of left and right rotations,
+		depending on the path between the focused node and the root of the
+		tree, to pull the focused node to the root of the tree or one of
+		its immediate children. This pattern of rotations tends to bunch
+		up single chains of nodes producing a 'bushier' tree, and assuming
 		locality of reference should reduce the access cost for succeeding
 		node references.</p>
+
+		<p>Choosing what type of rotation and about whom is defined using
+		the following recipe.</p>
 
 			<ul>
 				<li><tt>If X is the left child of the root, then rotate right
@@ -431,12 +586,13 @@
 
 <h4>Algorithm References</h4>
 
-		<p>Please investigate the following references for better
-			descriptions of the algorithm, analysis of its performance and
-			example implementations.</p>
+		<p>Please investigate the following references for a better
+		description of the algorithm, together with analysis of its
+		performance and example implementations.</p>
 
 		<ul>
-				<li><a href="http://doi.acm.org/10.1145/3828.3835">Self-adjusting binary trees</a> - Sleator &amp; Tarjan 1985 - Original academic paper on Splay trees</li>
+				<li>Self-adjusting binary trees - Sleator &amp; Tarjan 1985 -
+				Original academic paper on Splay trees [<a href="http://doi.acm.org/10.1145/3828.3835">acm</a>]</li>
 			<li><a href="http://www.cs.mcgill.ca/~rsinge/web251.html">Splay Trees</a> - Ron Singer - Overview of amortized analysis and splay tree operations.</li>
 			<li><a href="http://www.hut.fi/~ccandoli/botanica/algorithms/java/SplayTree.java">SplayTree.java</a> - Java implementation of splay trees.</li>
 			<li><a href="http://www.cs.caltech.edu/courses/cs134/cs134b/2002/labs/lab1/lab1.pdf">Splay trees - Implementation of a functional splay tree.</a></li>
@@ -447,24 +603,26 @@
 
 		<img src="dsp-navigate.png" alt="Navigation with displacements">
 
-		<p>Before investigating the effects of rotations on displacement,
-		a quick walk through the example tree that will be experimented
-		on. The three trees shown above are in fact the same tree, and
-		show three separate walk throughs, the first finding element at
-		position 1, the second position 2 and the third position 3. The
-		tree itself contains the string with three characters "XYZ". "X"
-		was originally added at position 9, "Y" at 11 and "Z" at 13. The
-		version of the document that we are now querying to only contains
-		those three characters.</p>
+		<p>Before investigating the effects of rotations on displacement
+		values, a quick walk through the example tree that will be
+		experimented on. The three trees shown above are in fact the same
+		tree, and depict three separate walk through from the root; the
+		first finding the element at position 1, the second position 2 and
+		the third position 3. The tree itself contains the string with
+		three characters "XYZ". "X" was originally added at position 9,
+		"Y" at 11 and "Z" at 13. The version of the document that we are
+		now querying is the result of deleting the original elements at
+		positions 1 through 8, 10, 12, and from 14 and upwards, so only
+		leaving these three characters.</p>
 
 		<p>If we following the centre trace, which shows the process of
 		finding the element at position 2. The Yellow line indicates the
-		steps followed. Starting with a desire to find the element at
-		position 2, we apply the displacement +4, so that we are now
-		looking for the element at 6. The 7 split node indicates we should
-		follow the left child, where we apply a displacement of +6, so
-		that we are now looking for the element at 9. The 9 split node
-		indicates we should follow the right child, where we apply a
+		path followed by the search. Starting with the goal to find the
+		element at position 2, we apply the displacement +4, so that we
+		are now looking for the element at 6. The 7 split node indicates
+		we should follow the left child, where we apply a displacement of
+		+3, so that we are now looking for the element at 9. The 9 split
+		node indicates we should follow the right child, where we apply a
 		displacement of +2, so that we are now looking for the element at
 		11. We finally arrive at the leaf and correctly find the "Y"
 		element. Additionally you can see that our original query for
@@ -477,16 +635,16 @@
 
 		<p>Thinking back to the Demo implementation of Split nodes, and
 		you will remember that a displacement is associated with left and
-		right children of the node. This feature is not part of standard
-		binary search tree and so we have to resolve the impact of
-		that.</p>
+		right children of those nodes. This feature is not part of the
+		standard binary search tree and so we will have to resolve the
+		impact of that on the splaying algorithm.</p>
 	
 		<img src="dsp-rotate-right.png" alt="Rotate right with displacements">
 
 		<img src="dsp-rotate-left.png" alt="Rotate left with displacements">
 
 		<p>The above diagram shows the impact of a rotation towards the
-		right, and below that a rotation towards the left. The second
+		right, and and below that a rotation towards the left. The second
 		example is actually a continuation of the result of the first, and
 		so after a rotate right, followed by a rotate left, we end up with
 		the original tree again.</p>
@@ -496,23 +654,29 @@
 		rotating the 9 split node towards the right. You can see in the
 		result that the 9 split node is now the parent and the previous 7
 		parent is now the child of the 9 node. The three nodes X, Y and Z
-		are still in the correct order, but we see that the Y leaf is now
-		the child of the 7 split rather than the 9 split. The original
-		tree includes a displacement for each arc, and these are labelled
-		starting at A for +4 at the top of the tree. In the resultant tree
-		the displacements are calculated to ensure that the positions 1, 2
-		and 3 will still lead to the characters "X", "Y" and "Z"
-		respectively. The calculations are shown using the labelled
-		displacements from the first. For example the displacement at the
-		top of the tree is now +7 and is the result of adding the A and B
-		labelled displacements from the original tree.</p>
+		are still in the same left to right order, but we see that the Y
+		leaf is now the child of the 7 split rather than the 9 split.</p>
+
+		<p>The original tree includes a displacement for each arc, and
+		these are labelled starting at A for the +4 at the top of the
+		tree. The author calculated a simple set of transformations for
+		each of the branches of the tree to ensure that requests will
+		produce the same answers for the tree produced by the rotation.
+		The intention is that the rotations should preserve the semantics
+		of tree, and simply improve the cost of navigation. Reviewing the
+		resulting tree, we can see that the positions 1, 2 and 3 still
+		lead to the characters "X", "Y" and "Z" respectively. The
+		calculations are shown using the labelled displacements from the
+		first. For example the displacement at the top of the tree is now
+		+7 and is the result of adding the A and B labelled displacements
+		from the original tree.</p>
 
 <h4>Handling Multiple Parents</h4>
 
 		<p>A second complexity enjoyed by the demo implementation that is
 		beyond the trees discussed in the splaying paper, is that a node
-		in these trees may have more than one parent. This is a very
-		significant difference!</p>
+		in an ent trees may have more than one parent. This is a very
+		significant difference from standard binary search trees!</p>
 
 		<img src="dsp-rotate-right-mixed.png" alt="Rotate right with multiple parents">
 
@@ -532,58 +696,70 @@
 		you will see something interesting. From the start we can see that
 		the 9 split node from the D revision is now the parent of the 7
 		split node which is actually associated with a later revision than
-		itself.</p>
+		itself. This breaks one of our assumptions that nodes created by
+		later revisions may reference nodes from older revisions, but
+		nodes created by older revisions may not reference nodes from
+		later revisions.</p>
 
 		<p>Tracing down from the D revision root node we still find that
 		position 1 finds "X" and position 2 finds "Y". But now we find
-		that there is a position 3 would find "Z". We have broken the
-		integrity of revision D as it can now includes Z in its content,
-		which it didn't before the operation.</p>
+		that position 3 would find "Z". We have broken the integrity of
+		revision D as it can now includes Z in its content, which it
+		didn't before the operation.</p>
 
 		<img src="dsp-rotate-right-duplicate.png" alt="Rotat right after duplication">
 
-		<p>The solution the Demo uses for this case would be to duplicate
-		the 9 split node before the rotation. This is indicated in the
-		diagram above, and you can see that the result preserves the
-		integrity of both revisions. Note that the D revision nodes are
-		now completely untouched.</p>
+		<p>The solution the Demo uses for both of these issues in this
+		case would be to duplicate the 9 split node before the rotation.
+		This is indicated in the diagram above, and you can see that the
+		result preserves the integrity of both revisions. Note that the D
+		revision nodes are now completely untouched by the operation.</p>
 
-		<p>This strategy of duplicating a node if it and another node from
-		a different revision are part of a rotation has an obvious
-		downside that we are re-using less of an earlier revision than
-		before. Over time this strategy would end up duplicating a
-		significant proportion of all nodes, and so the demo attempts to
-		minimise the number of rotations by not only rotating on inserts
-		and deletes rather than finds. This significantly degrades the
-		quality of the Splay tree algorithm, and wouldn't be acceptable
-		for a non-demo version of the software. The author hasn't analysed
-		the situation enough to be able to suggest an alternative strategy
-		without this limitation.</p>
+		<p>The general algorithm that is used is to duplicate a node if it
+		and another node involved in a rotation were created by different
+		revisions.</p>
+
+		<p>The obvious downside of this tactic is the cost of duplicating
+		a node. This turns us away from one of the goals of the data
+		structure which is to share as much as possible of the structure
+		between revisions. Over time this tactic could end up duplicating
+		a significant proportion of all nodes in the tree until there is
+		effectively a separate tree for each revision. The demo currently
+		ignores this issue as much as possible by just attempting to
+		minimise the number of rotations that occur by only rotating on
+		insert and delete operations rather than finds. This significantly
+		degrades the quality of the Splay tree algorithm for balancing the
+		tree, and wouldn't be acceptable for a non-demo version of the
+		software. The author hasn't analysed the situation enough to be
+		able to suggest an alternative strategy.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
-		<p>Udanax-Gold use of splaying inspired the demo use of it. The
-		details of Gold implementation are unknown to the author, but it
-		is clearly implemented in a significantly cleaner way using a
-		table driven mechanism. The use of canopies and separating
-		displacement values into their own nodes feels like it might side
-		step the mess that the Demo gets when handling multiple parents. A
-		closer analysis to the Gold implementation in action is going to
-		be critical in deciding whether splaying has any value in the long
-		term as the tree balancing algorithm.</p>
+		<p>Udanax-Gold use of splaying inspired the use of it for the
+		demo. The details of the Gold implementation are unknown to a very
+		shallow lever by the author, but it is clearly implemented in a
+		significantly cleaner way than that found in the demo. Part of the
+		Gold implementation uses an interesting table driven mechanism.
+		The use of canopies and separating displacement values into their
+		own nodes feels like it might side step the mess that the Demo
+		gets into when handling multiple parents. A closer analysis of the Gold
+		implementation in action is going to be critical in deciding
+		whether splaying has any value in the long term as the tree
+		balancing algorithm for alternative Abora implementations.</p>
 
 
+<a name="ent_insert-and-delete-algorithm"></a>
 <h3>Insert and Delete algorithm</h3>
 
 		<p>The earlier discussions over the use of the tree data structure
 		for sharing content between revisions glossed over the mechanisms
-		for deciding what nodes need to be created and who they connect
+		for deciding what nodes need to be created and to whom they connect
 		to.</p>
 
 		<p>The insert and delete algorithms both rely on the splaying
-		operation to pull the nearest node root wards to one of a small
+		operation to pull the nearest node root-wards to one of a small
 		number of known patterns. At that point a predefined set of
-		mutations can be applied.</p>
+		mutations can be applied to achieve the insert or delete.</p>
 
 <h4>Insert operation</h4>
 
@@ -598,6 +774,7 @@
 		this problem.</p>
 
 
+<a name="ent_transclusions"></a>
 <h3>Transclusions</h3>
 
 		<p>Transclusion enables the sharing of content by quoting from the
@@ -686,6 +863,7 @@
 		moment.</p>
 
 
+<a name="entnode-class-hierarchy"></a>
 <h3>EntNode class hierarchy</h3>
 
 		<p>The class hierarchy for the tree nodes is strongly inspired by
@@ -746,6 +924,7 @@
 		</ul>
 
 
+<a name="becontentelement-class-hierarchy"></a>
 <h3>BeContentElement class hierarchy</h3>
 
 		<p>The BeContentElement class hierarchy is a subset of the content
@@ -852,6 +1031,7 @@
 			ContentLeafs.</p>
 
 
+<a name="works"></a>
 <h3>Works</h3>
 
 		<p>Works define the identity for a document, and its edition
@@ -939,9 +1119,22 @@
 		</ul>
 
 
+<a name="clubs"></a>
 <h3>Clubs</h3>
 
+		<p>Clubs enable the classification of users and agents for
+			authorisation purposes.</p>
 
+		<p>Clubs are implemented as subclasses of Works. The demo makes no
+		use of clubs other than in association with endorsements, and then
+		only as an object with a well known identity.</p>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<p>TODO</p>
+
+
+<a name="editions"></a>
 <h3>Editions</h3>
 
 		<p>An edition forms effectively an immutable object, and
@@ -960,6 +1153,7 @@
 			can properly generate subsequent revision numbers.</p>
 
 
+<a name="differences"></a>
 <h3>Differences</h3>
 
 		<p>Given two documents, what are the similarities and the
@@ -1100,6 +1294,7 @@
 		the demo.</p>
 
 
+<a name="endorsements"></a>
 <h3>Endorsements</h3>
 
 		<p>An endorsement is a tag composed of a club and ID that can be
@@ -1199,6 +1394,7 @@
 		operations together with union and intersection operations.</p>
 
 
+<a name="hyperlinks"></a>
 <h3>Hyperlinks</h3>
 
 		<p>Considering the Demo is classified as a hypertext system, it
@@ -1323,11 +1519,93 @@
 
 		</ul>
 
+
+<a name="document-structures"></a>
 <h3>Document structures</h3>
 
 		<p>TODO: show how a Work and editions plus links could all fit
 			together to from a rich document</p>
 
+
+<a name="ids"></a>
+<h3>IDs</h3>
+
+		<p>Ids are associated with Works and Editions and act as a
+			permanent identification number for retrieving and comparison
+			purposes.</p>
+
+<h4>Implementation</h4>
+
+		<p>Ids are a relatively undeveloped area of the demo. A simple Id
+		wrapper class around an integer value is used, and is unique only
+		across the single system that the demo is running on. A number of
+		system defined ids are generated at start-up for critical system
+		clubs and identification for shared endorsements such as text and
+		hyperlinks. Once start-up is complete, ids are given out in a
+		monotonically increasing order.</p>
+
+		<p>A simple WorksStorage singleton is used to allow one to find
+		the work or edition associated with an Id. This instance is also
+		used as the root of the reference scheme that hold onto works.
+		Works can be explicitly added and removed from the works known by
+		the storage scheme.</p>
+
+<h4>Udanax-Gold implementation</h4>
+
+		<p>Ids in Gold are integrated into the wider coordinate-system, so
+		there are IdSpaces, Regions and such, with Ids being a position
+			within the space. An id is composed of the three aspects:</p>
+
+		<ul>
+				<li>backend server which its space was created on, or a
+				default system one<</li>
+			<li>spaceNumber which is the unique number of the space on that
+				surver, or a default global space</li>
+			<li>number is the unique position in this space.</li>
+		</ul>
+
+		<p>One obvious thing is that IDs can exist beyond a single
+		installation.</p>
+
+		<p>The author is not aware at the moment how Works can be found
+		from their ID. Also the referencing system in Gold is assumed to
+		support a full distributed garbage collection section where works
+		and editions are dropped when no longer referenced.</p>
+
+
+<a name="persistence"></a>
+<h3>Persistence</h3>
+
+		<p>The demo uses a very simple implementation of persistence of
+		contents. Its aim is to provide the absolute minimum to enable a
+		reasonable chance at experimenting and learning from the Demo
+		system as a user. The existing persistence mechanism does allow
+		documents to survive beyond editing sessions, but is weak on
+		runtime crashes and recovery from disk corruption, mutation of
+		data structures with newer versions of the application, and
+		finally reading and writing times are proportional to the size of
+		the entire database of documents.</p>
+
+		<p>Upgrading the persistence mechanism would be a critical step in
+		extending the scope of the current application from demo status to
+		something strong enough to be entrusted with valuable data.</p>
+
+<h4>Implementation</h4>
+
+		<p>The persistence mechanism is built on the native object
+		serialisation mechanism provide by @link:dolphin_smalltalk@. This
+		is similar to mechanisms supported by other Smalltalk
+		implementations and Java. Given an object it will convert the
+		content of that object and all the objects it references into a
+		stream of bytes, that may in turn be converted back into a graph
+		of objects that are equal to the original set. Special cases such
+		as handling singleton objects are supported by overriding the
+		object actually dumped, and running fix-up code when
+		de-serialising the byte stream.</p>
+
+		<p>TODO</p>
+
+<h4>Udanax-Gold implementation</h4>	
 
 <h3>Network</h3>
 
