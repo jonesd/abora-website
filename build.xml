@@ -57,7 +57,7 @@
 <!--** Update HTML files with navigation bars ********************-->
 <!--**************************************************************-->
 	
-	<target name="replacetemplate" depends="init">
+	<target name="replacetemplate" depends="init, bin">
 	<replace dir="${htdocs}">
 		<include name="**/*.html"/>
 		<exclude name="**/api/**"/>
@@ -187,6 +187,10 @@
 		<replacefilter token="@link:xoc@" property="xoc"/>
 		<replacefilter token="@link:xoc_videos@" property="xoc_videos"/>
 	</replace>
+	
+	<java classname="org.abora.website.tools.RecentMarkers" failonerror="true" classpath="build">
+		<arg path="${htdocs}/links.html"/>
+	</java>
   </target>
 
 
@@ -301,6 +305,17 @@
 	<exec executable="curl">
 		<arg line="http://cvs.sourceforge.net/cvstarballs/abora-cvsroot.tar.gz -o${tarball.dir}/abora-cvsroot.tar.gz"/>
 	</exec>
+</target>
+
+<!--**************************************************************-->
+<!--** Compile Tools *********************************************-->
+<!--**************************************************************-->
+
+<target name="bin" depends="init">
+	<javac srcdir="src"
+         destdir="build"
+         debug="on"
+	/>
 </target>
 
 <!--**************************************************************-->
