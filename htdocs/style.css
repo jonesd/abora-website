@@ -4,6 +4,8 @@ body { background-color: #FFFFFF; }
 
 .draft { background-image: url(draft.gif); }
 
+.new { color: white; background-color: red; }
+
 a:link { }
 a:visited {  }
 a:hover {background-color: #FAEBD7; }
