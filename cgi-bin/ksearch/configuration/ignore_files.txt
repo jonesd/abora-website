@@ -6,6 +6,7 @@
 
 */overview-frame.html
 */overview-tree.html
+*/overview-summary.html
 */allclasses-frame.html
 */allclasses-noframe.html
 */packages.html

@@ -1,0 +1,49 @@
+The following is not required for a working template but is added for your information
+You may delete all lines starting with if desired
+Added to page		Descriptions (*required items) 
+<!--cgi: header-->		*Search results header
+<!--cgi: subheader-->		Additional results information (+boolean term not found etc.)
+<!--cgi: searchtime-->	CPU time taken for search process
+<!--cgi: previous-->		Previous results pages link
+<!--cgi: navbar-->		*Results pages links
+<!--cgi: next-->		Next results pages link
+<!--cgi: help-->		Search Tips if requested (Must add this if you use <!--cgi: tips-->). The search title and results title also goes here
+<!--cgi: form_link-->		Internal Link to Search Form	(must have <a name="form"> link above form)
+<!--loop: results-->		*Start of results loop
+<!--item: rank-->		*Result number
+<!--item: url-->		*Result url	(for links to results pages)
+<!--item: display_url-->	*Result url	(for displayed urls that have highlighted terms)
+<!--item: title-->		*Result title
+<!--item: description-->	Result description
+<!--item: scoreA-->		*Matches, Score, Modification date, or File size (depends on sorting choice)
+<!--item: scoreB-->					""
+<!--item: scoreC-->					""
+<!--item: scoreD-->					""
+<!--end: results-->		*End of results loop
+<!--cgi: search_url-->	Url of search script for the search form
+<!--cgi: input_name-->	Input name for the search form text field
+<!--cgi: query_str-->		(previous) search query string for the search form text field
+<!--cgi: tips-->		'Tips' link when results are displayed and 'Back' link to previous page on Tips page (Must use <!--cgi: help-->)
+<!--cgi: results-->		Results shown on the page (example: Results 1-5 of 10)
+<!--cgi: current_page-->	Current page number
+<!--cgi: total_pages-->	Total number of pages
+<!--cgi: version-->		KSearch version number
+
+form menu options
+<!--cgi: add_plus-->	Option to add + to all non +/- boolean search terms/phrases (checkbox)
+<!--cgi: show_matches--> Option to highlight matches in results in context
+<!--cgi: subsearch-->	Option for searching within results (checkbox)
+<!--cgi: c-->		Option for case sensitive search (checkbox)
+<!--cgi: w-->		Option for searching whole words only (checkbox)
+<!--cgi: st-->	Option to include stop-terms and terms shorter than minimum length (checkbox)
+<!--cgi: b-->		Option to search body (checkbox; default)
+<!--cgi: t-->		Option to search titles (checkbox; default)
+<!--cgi: d-->		Option to search meta descriptions (checkbox; default)
+<!--cgi: k-->		Option to search meta keywords (checkbox)
+<!--cgi: au-->	Option to search meta authors (checkbox)
+<!--cgi: alt-->	Option to search alt text (checkbox)
+<!--cgi: l-->		Option to search links (checkbox)
+<!--cgi: u-->		Option to search url (checkbox)
+<!--cgi: sort-->	Pull down menu options for sorting choice
+<!--cgi: display-->	Pull down menu options for displaying the number of results per page
+<!--cgi: default-->	Option to restore default options.

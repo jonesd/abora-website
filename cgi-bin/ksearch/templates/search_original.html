@@ -1,0 +1,172 @@
+<html>
+<head>
+<title>KSearch <!--cgi: version--> - KScripts.com</title>
+<body bgcolor="#ffffff" link="#333366" vlink="#333366" alink="#333366">
+<a name="top"></a>
+<p>
+	<table border="0" cellpadding="5" cellspacing="0" bgcolor="antiquewhite" width="95%" align="center">
+		<td width="100%"><font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+			<!--cgi: header-->
+		</font></td>
+		<td valign=top align=right nowrap><font size=2 face="verdana, arial, helvetica, sans-serif"><b><!--cgi: form_link--> &nbsp; <!--cgi: tips--></b></font></td>
+	</table>
+</p>
+<p>
+	<center>
+	<table width="95%" cellpadding="5" cellspacing="0" border="0" align="center"><td> 
+		<table cellpadding="0" cellspacing="0" border="0" align="center"><td>
+			<font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+			<!--cgi: previous--> <!--cgi: navbar--> <!--cgi: next-->
+			</font>
+		</td></table>
+	</td></table>
+	</center>
+</p>
+<!--cgi: help-->
+	<table width="95%" border="0" align="center"><td>
+		<!--loop: results-->
+		<font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+		<dl><b><!--item: rank-->. &nbsp; <a href="<!--item: url-->"><!--item: title--></a></b>
+		<ul><dt><!--item: description-->
+		<font size="1" color="#000000" face="verdana, arial, helvetica, sans-serif">
+		<a href="<!--item: url-->"><!--item: display_url--></a><br>
+		<!--item: scoreA--> &nbsp; <!--item: scoreB--> &nbsp; <!--item: scoreC--> &nbsp; <!--item: scoreD-->
+		</font></dt></ul>
+		</dl>
+		</font>
+		<!--end: results-->
+	</td></table>
+<center>      
+<p>
+	<table width="95%" cellpadding="5" cellspacing="0" border="0" align="center"><td> 
+		<table cellpadding="0" cellspacing="0" border="0" align="center"><td>
+			<font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+			<!--cgi: previous--> <!--cgi: navbar--> <!--cgi: next-->
+			</font>
+		</td></table>
+	</td></table>
+</p>
+<a name="form">
+<p>
+	<table cellpadding="10" cellspacing="0" border="1"><td align="center">
+		<form action="<!--cgi: search_url-->" method="get" name="search">
+		<input type="text" size=35 name="<!--cgi: input_name-->" value="<!--cgi: query_str-->" onFocus="select(this);">
+		&nbsp; <INPUT type="submit" value="Search">
+		<font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif"><b> <!--cgi: add_plus--> &nbsp; <!--cgi: tips--></b></font>
+		<p>
+		<table border="0" cellpadding="5" cellspacing="0">
+			<tr><td valign=top>
+				<table border="0" cellpadding="1" cellspacing="0">
+					<tr><td align=left><font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif"><!--cgi: subsearch--></font></td>
+					<tr><td align=left><font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif"><!--cgi: c--></font></td>
+					<tr><td align=left><font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif"><!--cgi: w--></font></td>
+					<tr><td align=left><font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif"><!--cgi: st--></font></td>
+				</table></td>
+			<td valign=top>
+				<table border="0" cellpadding="3" cellspacing="0">
+					<tr><td valign="top" align="left">
+						<font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+						Sort by <select name="sort"><!--cgi: sort--></select>
+						</font>
+					</td>
+					<tr><td valign="top" align="left">
+						<font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+			               		Display <select name="display"><!--cgi: display--></select>
+						</font>
+					</td>
+				</table>
+			</td>
+			<tr><td align="left" colspan="2"><br><font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif"><b>Search Content</b></font></td>
+			<tr><td align="left" colspan="2">
+				<font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+				<!--cgi: b-->
+				<!--cgi: t-->
+				<!--cgi: u-->
+				<!--cgi: alt-->
+				<!--cgi: l-->
+				<!--cgi: default-->
+				</font>
+			</td>
+			<tr><td align="left" colspan="2">
+				<font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+				<!--cgi: d-->
+				<!--cgi: k-->
+				<!--cgi: au-->
+				</font>
+			</td>
+			<tr><td align="left" colspan="2">
+				<font color="#000000" size=2 face="verdana, arial, helvetica, sans-serif">
+				<!--cgi: show_matches-->
+				</font>
+			</td>
+		</table>
+		</p>
+		</form>
+	</td></table>
+</p>
+</center>
+<br>
+<p>
+	<table border="0" cellpadding="2" cellspacing="0" bgcolor="antiquewhite" width="95%" align="center">
+		<tr><td align="center"><font size="2" color="#000000" face="verdana, arial, helvetica, sans-serif"><!--cgi: results-->
+			&nbsp; &nbsp; Page <b><!--cgi: current_page--></b> of <b><!--cgi: total_pages--></b>
+			&nbsp; &nbsp; Powered by <a href="http://www.kscripts.com/scripts.html#ksearch">KSearch <!--cgi: version--></a> - 
+			<a href="http://www.kscripts.com/ksearch/faqs.html">FAQs</a></font>
+		</td>
+	</table>
+	<table width="95%" border="0" cellpadding="5" cellspacing="0">
+	<td align="right"><font size=2 color="#333366" face="verdana, arial, helvetica, sans-serif"><a href="#top"><b>Back to top</b></a></td>
+	</table>
+</p>
+</body>
+</html>
+
+##USAGE## The following is not required for a working template but is added for your information
+##USAGE## You may delete all lines starting with ##USAGE## if desired
+##USAGE## Added to page		Descriptions (*required items) 
+##USAGE## <!--cgi: header-->		*Search results header
+##USAGE## <!--cgi: subheader-->		Additional results information (+boolean term not found etc.)
+##USAGE## <!--cgi: searchtime-->	CPU time taken for search process
+##USAGE## <!--cgi: previous-->		Previous results pages link
+##USAGE## <!--cgi: navbar-->		*Results pages links
+##USAGE## <!--cgi: next-->		Next results pages link
+##USAGE## <!--cgi: help-->		Search Tips if requested (Must add this if you use <!--cgi: tips-->). The search title and results title also goes here
+##USAGE## <!--cgi: form_link-->		Internal Link to Search Form	(must have <a name="form"> link above form)
+##USAGE## <!--loop: results-->		*Start of results loop
+##USAGE## <!--item: rank-->		*Result number
+##USAGE## <!--item: url-->		*Result url	(for links to results pages)
+##USAGE## <!--item: display_url-->	*Result url	(for displayed urls that have highlighted terms)
+##USAGE## <!--item: title-->		*Result title
+##USAGE## <!--item: description-->	Result description
+##USAGE## <!--item: scoreA-->		*Matches, Score, Modification date, or File size (depends on sorting choice)
+##USAGE## <!--item: scoreB-->					""
+##USAGE## <!--item: scoreC-->					""
+##USAGE## <!--item: scoreD-->					""
+##USAGE## <!--end: results-->		*End of results loop
+##USAGE## <!--cgi: search_url-->	Url of search script for the search form
+##USAGE## <!--cgi: input_name-->	Input name for the search form text field
+##USAGE## <!--cgi: query_str-->		(previous) search query string for the search form text field
+##USAGE## <!--cgi: tips-->		'Tips' link when results are displayed and 'Back' link to previous page on Tips page (Must use <!--cgi: help-->)
+##USAGE## <!--cgi: results-->		Results shown on the page (example: Results 1-5 of 10)
+##USAGE## <!--cgi: current_page-->	Current page number
+##USAGE## <!--cgi: total_pages-->	Total number of pages
+##USAGE## <!--cgi: version-->		KSearch version number
+
+##USAGE## form menu options
+##USAGE## <!--cgi: add_plus-->	Option to add + to all non +/- boolean search terms/phrases (checkbox)
+##USAGE## <!--cgi: show_matches--> Option to highlight matches in results in context
+##USAGE## <!--cgi: subsearch-->	Option for searching within results (checkbox)
+##USAGE## <!--cgi: c-->		Option for case sensitive search (checkbox)
+##USAGE## <!--cgi: w-->		Option for searching whole words only (checkbox)
+##USAGE## <!--cgi: st-->	Option to include stop-terms and terms shorter than minimum length (checkbox)
+##USAGE## <!--cgi: b-->		Option to search body (checkbox; default)
+##USAGE## <!--cgi: t-->		Option to search titles (checkbox; default)
+##USAGE## <!--cgi: d-->		Option to search meta descriptions (checkbox; default)
+##USAGE## <!--cgi: k-->		Option to search meta keywords (checkbox)
+##USAGE## <!--cgi: au-->	Option to search meta authors (checkbox)
+##USAGE## <!--cgi: alt-->	Option to search alt text (checkbox)
+##USAGE## <!--cgi: l-->		Option to search links (checkbox)
+##USAGE## <!--cgi: u-->		Option to search url (checkbox)
+##USAGE## <!--cgi: sort-->	Pull down menu options for sorting choice
+##USAGE## <!--cgi: display-->	Pull down menu options for displaying the number of results per page
+##USAGE## <!--cgi: default-->	Option to restore default options.
