@@ -176,12 +176,14 @@
 		<include name="**/*.html"/>
 		<exclude name="**/api/**"/>
 		<exclude name="**/clover/**"/>
+		<replacefilter token="@link:abora_project@" property="abora_project"/>
 		<replacefilter token="@link:dolphin_smalltalk@" property="dolphin_smalltalk"/>
 		<replacefilter token="@link:ent_theory@" property="ent_theory"/>
 		<replacefilter token="@link:eric_drexler@" property="eric_drexler"/>
 		<replacefilter token="@link:intware@" property="intware"/>
 		<replacefilter token="@link:sunless_sea@" property="sunless_sea"/>
 		<replacefilter token="@link:ted_nelson@" property="ted_nelson"/>
+		<replacefilter token="@link:udanax_gold@" property="udanax_gold"/>
 		<replacefilter token="@link:xia@" property="xia"/>
 		<replacefilter token="@link:xoc@" property="xoc"/>
 		<replacefilter token="@link:xoc_videos@" property="xoc_videos"/>
