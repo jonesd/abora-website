@@ -7,13 +7,11 @@
       <meta	http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<link rel="stylesheet" type="text/css" href="../style.css" />
 
-	  <title>Dolphin Demo Technical Documentation</title>
+	  <title>Dolphin Demo Technical Report</title>
     </head>
 
-    <body class="draft">
-<!-- abora:header --><h1>Dolphin Demo Technical Documentation</h1><!-- abora:header_close -->
-
-		<p><font color="red">---- Document still being written ----</font></p>
+    <body>
+<!-- abora:header --><h1>Dolphin Demo Technical Report</h1><!-- abora:header_close -->
 
 		<table summary="">
 			<tr>
@@ -132,7 +130,7 @@
 
 		<p>Many thanks to you all.</p>
 
-		<p>David Jones. March 2003</p>
+		<p>David Jones. April 2003</p>
 
 
 <a name="ent-tree"></a>
@@ -189,9 +187,7 @@
 
 		<ul>
 			<li>@link:ent_theory@</li>
-			<li>TODO: ent transcript from sunless sea</li>
-			<li>TODO: collect ent page from sunless sea</li>
-			<li>TODO: relevant videos from sunless sea</li>
+			<li>@link:xoc_videos@</li>
 		</ul>
 
 
@@ -992,6 +988,8 @@
 		on my part for how this group of classes relates to the content
 		classes.</p>
 
+		<img src="entnode-hierarchy.png" alt="Class hierarchy">
+
 		<ul>
 			<li><b>EntNode</b> - Abstract super-class of all 
 				nodes that are present in an Ent tree.<br>&nbsp;&nbsp;branch - revision number of edition that
@@ -1070,7 +1068,7 @@
 		<p>These classes are known as range elements in Udanax-Gold.</p>
 
 
-<a name="content-element-works"></a>
+<a name="content-element_works"></a>
 <h3><a href="#content-element">Content Elements</a> &gt; Works</h3>
 
 		<p>Works define the identity for a document, and its associated
@@ -1161,7 +1159,7 @@
 		</ul>
 
 
-<a name="content-element-clubs"></a>
+<a name="content-element_clubs"></a>
 <h3><a href="#content-element">Content Elements</a> &gt; Clubs</h3>
 
 		<p>Clubs enable the classification of users and agents for
@@ -1177,7 +1175,7 @@
 		at the moment.</p>
 
 
-<a name="content-element-editions"></a>
+<a name="content-element_editions"></a>
 <h3><a href="#content-element">Content Elements</a> &gt; Editions</h3>
 
 		<p>An edition holds the content for documents. It forms
@@ -1205,12 +1203,14 @@
 		represents.</p>
 
 
-<a name="content-element-becontentelement-class-hierarchy"></a>
+<a name="content-element_becontentelement-class-hierarchy"></a>
 <h3><a href="#content-element">Content Elements</a> &gt; BeContentElement class hierarchy</h3>
 
 		<p>The BeContentElement class hierarchy is a subset of the content
-			classes supported by Udanax-Gold. An instances of this class
-			specify the content of documents.</p>
+		classes supported by Udanax-Gold. An instances of this class
+		specify the content of documents.</p>
+
+		<img src="becontentelement-hierarchy.png" alt="Class hierarchy">
 
 		<ul>
 
@@ -1353,7 +1353,7 @@
 		<p>Once returned to the UI, the steps required to show this to the
 		user by painting are relatively simple.</p>
 
-		<p>TODO: show screen shot of demos rendering</p>
+		<img src="difference-small-2.png" alt="Difference in UI">
 
 		<p>For the case of painting a different background colour for each
 		similarity, it's just a case of walking the mappings and a
@@ -1383,8 +1383,6 @@
 		leafs. If there is a match, then the range of common elements
 		between the two is calculated and a suitable mapping created.</p>
 
-		<p>TODO: diagram showing the combining of mappings</p>
-
 		<p>Once all the mappings have been collected for the leafs of the
 		edition tree, then a further processing step is employed to
 		convert the mappings into a more coherent and convenient result
@@ -1393,6 +1391,81 @@
 		mapping. The actual algorithm used is potentially expensive, and
 		involves multiple passes over the collection of mappings until no
 		improvement in a processing round has been found.</p>
+
+<h4>Example</h4>
+
+		<p>We will step through a simple example to show the differencing
+		in action.</p>
+
+		<img src="difference-small-0.png" alt="Base edition">
+
+		<p>
+		<tt>[1, 45) =&gt; [1, 45)</tt>
+
+		<p>To start with the base text in the edition. This is just the
+		text 'There was an old man who lived by the sea.'</p>
+
+		<p>Looking at the visual representation shown by the demo we can
+		see the current text on the left, and the base text that it is
+		being compared against on the right. As both texts are the same
+		edition there are no changes, and this is indicated by the same
+		background colour behind all the characters of both texts. When a
+		background colour is being shown that means those characters
+		represent the same content elements. Note that the grey square
+		over the first character of the text is current character position
+		in the text editor and can be ignored.</p>
+
+		<p>Below the image is the actual mapping information that is
+		returned by the server and drives the UI rendering. In this case
+		it is saying that positions 1 through shy of 45 of the new text
+		map to 1 through shy of 45 of the base edition.</p>
+
+		<img src="difference-small-1.png" alt="Simple insertion changes">
+
+		<p>
+		<tt>[1, 7) =&gt; [1, 7)</tt><br>
+		<tt>[14, 51) =&gt; [7, 44)</tt><br>
+		<tt>[76, 77) =&gt; [44, 45)]</tt>
+
+		<p>At this point a number of modifications are made to the
+		original edition, and that new edition is compared again with the
+		original edition to produce a new rendering of the
+		differences.</p>
+
+		<p>In this case 'really', ' and fished all day long' and ' The'
+		were added as three separate insert operations. Looking at the
+		rendering, we can see that the new text has a white background to
+		indicate that this text is not present at all in the base edition.
+		You can also see that the original text now has three different
+		background colours being shown; blue, pink and green. The tactic
+		here is that every contiguous section of text has its own colour,
+		so it is easier to trace back changes between the two editions.
+		Note that the thin vertical strip between the two text editions
+		helps to connect the similarities by drawing filled lines between
+		the two.</p>
+
+		<p>Looking at the mapping information below the image we can see
+		the three separate similar content regions that each gain their
+		own colour in the rendering.</p>
+
+		<img src="difference-small-2.png" alt="Copying and further insertion changes">
+
+		<p>
+		<tt>[1, 7) =&gt; [1, 7)</tt><br>
+		<tt>[14, 51) =&gt; [7, 44)</tt><br>
+		<tt>[76, 77) =&gt; [44, 45)]</tt><br>
+		<tt>[82, 90) =&gt; [14, 22)]</tt>
+		
+		<p>The final set of changes adds the new text ' was so happy.',
+		but also transcludes the content 'old man' before the new text.
+		The blue 'old man' shows this near the bottom of the left text,
+		and connects back to base edition text.</p>
+
+		<p>Looking at the mapping information below the image we can see
+		the same mappings as before, with the addition of the fourth line
+		that is the transcluded 'old man' section. This results in two
+		mappings onto the original 'old man' section in the base
+		edition.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
@@ -1787,10 +1860,233 @@
 <h3>Programmers API</h3>
 
 		<p>The intention of any production grade version of the software
-		that might be built out of this demo is to provide a server, some
-		example clients and a well defined programming API for others to
-		create client applications from. The API is not worked out, but is
-		basically the content element classes, endorsements and IDs.</p>
+		that might eventually be built out of this demo is to provide a
+		server, some example clients and a well defined programming API
+		for others to create client applications from. The API is not
+		worked out, but is basically the content element classes,
+		endorsements and IDs. The current unpolished, in-progress,
+		preliminary version of the API as used in the demo will be used
+		for the rest of this chapter.</p>
+
+<h4>Example</h4>
+
+		<p>A small non-sense client example using the rough current API
+		will be shown. The example was written against a slightly newer
+		version of the demo than the one presently released. This has
+		basically the same core but splits the demo into client and server
+		sections with a TCP/IP network connection between the two. This
+		accounts for the somewhat strange FeEdition and other FeBlah
+		classes referenced. Pretty much the same code should work with the
+		released code just by stripping off the Fe from class
+		references.</p>
+
+<pre class="st-code"><code>| originalEdition work1 work2 work3 edition1 edition2  edition3 mapping |
+originalEdition := FeEdition <span class="st-message">contents:</span> <span class="st-literal">'1234567890'</span> <span class="st-message">asAboraContent</span>.
+work1 := FeWork <span class="st-message">edition:</span> originalEdition.
+
+Transcript <span class="st-message">show:</span> <span class="st-literal">'1-1) '</span>, work1 <span class="st-message">edition printString</span>, <span class="st-literal">' '</span>,
+	work1 <span class="st-message">edition contents asAboraText</span>; <span class="st-message">cr</span>.
+</code></pre>
+
+		<p>This setup code initialises the contents of a FeEdition, which
+		in turn will create a tied Edition content element on the back-end
+		side. The new edition is then set as the current contents of a new
+		work during its construction.</p>
+
+		<p>The text literal contents is sent asAboraContent to convert it
+		into a form suitable for the back-end before being used. This
+		idiom is used in a number of places in the following code, and it
+		is hoped tht the requirement for this will be negated once a
+		suitable FeTextEdition wrapper is integrated better.</p>
+
+		<p><code>1-1) a FeEdition(id=an Id(4002)) 1234567890</code></p>
+
+		<p>The transcript output from running this first snippet simply
+		gives the id that was assigned to the edition on the server, and
+		shows the current contents of the work.</p>
+
+<pre class="st-code"><code><span class="st-comment">"Gain exclusive revision control for work1"</span>
+work1 <span class="st-message">grab</span>.
+</code></pre>
+
+		<p>We must lock the newly created work so that we exclusively have
+		the right to revise it with new contents. We may revise more than
+		once if required. Others can still get the content for a work, and
+		can be informed every time a new revision is made if they want to
+		keep up to date with changes.</p>
+
+<pre class="st-code"><code><span class="st-comment">"modify text content and revise work to new content"</span>
+edition1 := originalEdition <span class="st-message">append:</span> <span class="st-literal">'abc'</span> <span class="st-message">asAboraContent</span>.
+edition1 := edition1 <span class="st-message">removeFrom:</span> <span class="st-literal">4</span> <span class="st-message">extent:</span> <span class="st-literal">2</span>.
+edition1 := edition1 <span class="st-message">insert:</span> <span class="st-literal">'def'</span> <span class="st-message">asAboraContent at:</span> <span class="st-literal">3</span>.
+work1 <span class="st-message">revise:</span> edition1.
+
+Transcript <span class="st-message">show:</span> <span class="st-literal">'1-2) '</span>, work1 <span class="st-message">edition printString</span>, <span class="st-literal">' '</span>,
+	work1 <span class="st-message">edition contents asAboraText</span>; <span class="st-message">cr</span>.
+</code></pre>
+
+		<p>We will now revise the work to point at some new content. The
+		new content is the result of appending, removing and finally
+		insert text into the original edition. Each modification
+		operation returns a reference to a new edition, as editions are
+		immutable each modification operation always returns a new edition
+		that contains the result of the operation, leaving the original
+		the untouched.</p>
+
+		<p><code>1-2) a FeEdition(id=an Id(4007)) 12def367890abc</code></p>
+
+		<p>The transcript output confirms the work holds a new edition,
+		and we can see the updated content following the three
+		modifications.</p>
+
+<pre class="st-code"><code><span class="st-comment">"Create a new work by transcluding part of first works content"</span>
+edition2 := FeEdition <span class="st-message">empty</span>.
+edition2 := edition2 <span class="st-message">transcludeEdition:</span> edition1 <span class="st-message">from:</span> <span class="st-literal">3</span> <span class="st-message">extent:</span> <span class="st-literal">8</span> <span class="st-message">to:</span> <span class="st-literal">1</span>.
+work2 := FeWork <span class="st-message">edition:</span> edition2.
+
+Transcript <span class="st-message">show:</span> <span class="st-literal">'2-1) '</span>, work2 <span class="st-message">edition printString</span>, <span class="st-literal">' '</span>,
+	work2 <span class="st-message">edition contents asAboraText</span>; <span class="st-message">cr</span>.
+</code></pre>
+
+		<p>This time rather than modifying the existing work, we will
+		create a new work whose contents are transcluded from a subset of
+		work1's content.</p>
+
+		<p><code>2-1) a FeEdition(id=an Id(4012)) def36789</code></p>
+
+		<p>The result of the transclusion operation, with a new edition
+		holding onto some of the same content elements under covers as
+		work1.</p>
+
+<pre class="st-code"><code><span class="st-comment">"finds the differences between the work2 and the original edition"</span>
+mapping := edition2 <span class="st-message">sharedWith:</span> originalEdition.
+
+Transcript <span class="st-message">show:</span> <span class="st-literal">'Diffs) '</span>, mapping <span class="st-message">printString</span>; <span class="st-message">cr</span>.
+</code></pre>
+
+		<p>Now that we have made a series of modifications, followed by a
+		transclusion of part of the results of that, we would now like to
+		find how much of the transcluding edition2 is shared with the
+		originalEdition.</p>
+
+		<p><code>Diffs) a SortedCollection(#(IntegerRegion(pos=4, extent=1) IntegerRegion(pos=3, extent=1)) #(IntegerRegion(pos=5, extent=4) IntegerRegion(pos=6, extent=4)))</code></p>
+
+		<p>The results are a series of pairs of regions, the first element
+		of the pair indicating the region of edition 2, and the second
+		element of the pair indicating to where that maps onto the
+		originalEdition. We can see the results indicate that the '3' and
+		'6789' characters from edition2 are present in the
+		originalEdition.</p>
+
+<pre class="st-code"><code><span class="st-comment">"Create a link from a subset of edition1"</span>
+edition3 := FeEdition <span class="st-message">contents:</span> <span class="st-literal">'Test comment'</span> <span class="st-message">asAboraContent</span>.
+ref1 := FeSingleRef <span class="st-message">createOn:</span> edition1 <span class="st-message">from:</span> <span class="st-literal">3</span> <span class="st-message">extent:</span> <span class="st-literal">5</span>.
+ref2 := FeSingleRef <span class="st-message">createOn:</span> edition3 <span class="st-message">from:</span> <span class="st-literal">1</span> <span class="st-message">extent:</span> edition3 <span class="st-message">count</span>.
+link := FeHyperLink <span class="st-message">createWithAll:</span> (Array <span class="st-message">with:</span> ref1 <span class="st-message">with:</span> ref2).
+work3 := FeWork <span class="st-message">edition:</span> link <span class="st-message">edition</span>.
+
+Transcript <span class="st-message">show:</span> <span class="st-literal">'3-1) '</span>, work3 <span class="st-message">edition printString</span>, <span class="st-literal">' '</span>,
+	work3 <span class="st-message">edition contents printString</span>; <span class="st-message">cr</span>.
+</code></pre>
+
+		<p>We will now create a simple link from some of the text in work1
+		to a new work. First a reference edition is made to the source
+		characters from edition1, and a second reference edition is made
+		to the destination which is a new edition defined for the purpose.
+		Under the covers a transclusion of the specified content is made
+		to form the connection. Finally the two references are connected
+		together with a hyperLink, which is then set as the contents of a
+		new work.</p>
+
+		<p><code>3-1) a FeEdition(id=an Id(4022)) #(a FeEdition(id=an Id(4018)) a FeEdition(id=an Id(4020)))</code></p>
+
+		<p>The result is not particularly obvious, but shows the link
+		edition, and its contents of the two reference editions.</p>
+
+<pre class="st-code"><code><span class="st-comment">"Find all editions that transclude any of the contents of a subset of edition1"</span>
+transclusions1 := originalEdition <span class="st-message">transclusions</span>.
+Transcript <span class="st-message">show:</span> <span class="st-literal">'Trans-1) '</span>, transclusions1 <span class="st-message">printString</span>; <span class="st-message">cr</span>.
+
+transclusions2 := originalEdition <span class="st-message">transclusionsFilteredBy:</span> (Array <span class="st-message">with:</span>
+	SystemIds <span class="st-message">singleRefEndorsement</span>).
+Transcript <span class="st-message">show:</span> <span class="st-literal">'Trans-2) '</span>, transclusions2 <span class="st-message">printString</span>; <span class="st-message">cr</span>.
+</code></pre>
+
+		<p>An interesting operation is to find what other editions
+		transclude any of the same contents as a specified edition. The
+		above code first finds all of the transclusions from the
+		originalEdition, and then does the same but filters the results to
+		only include those transcluding editions that have endorsement
+		that matches link references. It is possible to also perform the
+		operation for only a subset of an editions contents if a finer
+		granularity is needed.</p>
+
+		<p><code>Trans-1) an IdentitySet(a FeEdition(id=an Id(4005)) a FeEdition(id=an Id(4018)) a FeEdition(id=an Id(4007)) a FeEdition(id=an Id(4012)) a FeEdition(id=an Id(4006)))</code></p>
+		<p><code>Trans-2) an IdentitySet(a FeEdition(id=an Id(4018)))</code></p>
+
+		<p>The results from the first transclusion test identify the
+		editions of the three works that we defined earlier as their
+		editions all include at least some character from the
+		originalEdition content. There are two additional editions
+		indicated, which are the temporary editions created during the
+		earlier append and remove operations for work1. Currently the Ent
+		tree root nodes includes a back-reference to their edition, and
+		this is what is keeping those editions hanging around.</p>
+
+		<p>The second set of results list just the first reference edition
+		that we created for the hyperlink. It is possible to filter by
+		more than one type of endorsement at a time, so we could find all
+		links that are corrections if we wanted to for example.</p>
+
+<pre class="st-code"><code><span class="st-comment">"Revise work1 again and investigate revision history"</span>
+edition1 := edition1 <span class="st-message">append:</span> <span class="st-literal">'ghij'</span> <span class="st-message">asAboraContent</span>.
+work1 <span class="st-message">revise:</span> edition1.
+
+Transcript <span class="st-message">show:</span> <span class="st-literal">'Revisions-1)'</span>, work1 <span class="st-message">revisions contents printString</span>; <span class="st-message">cr</span>.
+work1 <span class="st-message">revisions contents do:</span> [:frozen |
+	Transcript <span class="st-message">show:</span> frozen <span class="st-message">printString</span>, <span class="st-literal">' '</span>, frozen <span class="st-message">revisionTime printString</span>, <span class="st-literal">' '</span>,
+		frozen <span class="st-message">edition contents asAboraText</span>; <span class="st-message">cr</span>].
+</code></pre>
+
+		<p>We will further revise work1, and then investigate the history
+		of previous revisions of the work. A history of revisions is kept
+		as an edition, that includes a timestamp of when the revision
+		occurred as well as the content at that time.</p>
+
+		<p>The revise operation is similar to the commit operation in CVS,
+		and indicates that a updated coherent revision of the document has
+		been reached, and is considered suitable for others to use. The
+		editions returned after individual modification operations are
+		effectively private to the user and so the author can make many
+		changes over the course days if they like knowing that no-one can
+		see these interim changes.</p>
+
+		<p>Tricks with temporary works transcluding contents can be used
+		to allow a group of reviewers for example to see new revisions
+		privately, until a suitable point has been reached that the public
+		in general would benefit from a new revision of the original work
+		being made available to them.</p>
+
+		<p><code>Revisions-1)#(a FeWork(id=an Id(4116)) a FeWork(id=an Id(4134)))<br>
+a FeWork(id=an Id(4116)) 17:47:10, 19 April 2003 1234567890<br>
+a FeWork(id=an Id(4134)) 17:47:11, 19 April 2003 12def367890abc</code></p>
+
+		<p>The first line shows that the works revision is an edition
+		holding two frozen works. The following lines show each of those
+		frozen works in turn, indicating that some context information
+		such as the time of revision have been kept, plus the edition
+		contents for that revision.</p>
+
+<pre class="st-code"><code><span class="st-comment">"Release exclusive control of work1"</span>
+work1 <span class="st-message">releaseGrab</span>.
+</code></pre>
+
+		<p>Finally we will release our lock onto work1, so that others may
+		revise the work if necessary. If someone wants to modify the works
+		content while it is being locked, then they can create a new work
+		and transclude the contents of the locked work until it is
+		released, where upon they can merge back any changes into the main
+		work.</p>
 
 <!-- abora:footer -->
 $Id$
