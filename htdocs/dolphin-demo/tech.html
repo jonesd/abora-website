@@ -57,8 +57,6 @@
 			<li><a href="#hyperlinks">Hyperlinks</a></li>
 			<li><a href="#ids">Ids</a></li>
 			<li><a href="#persistence">Persistence</a></li>
-
-			<li><a href="#network">Network</a></li>
 			<li><a href="#document-structures">Document structures</a></li>
 			<li><a href="#programmers-api">Programmers API</a></li>
 		</ul>
@@ -1535,30 +1533,31 @@
 		has taken us a long time to reach a description of the
 		implementation of the hyperlink that one would assume was a
 		primitive operation of the software. In fact hyperlinks are
-		implemented using transclusions. I find this particularly
-		interesting.</p>
+		implemented using transclusions.</p>
 
 		<p>There are a number of aspects of hyperlinks as present in
 		Udanax-Gold, and mostly implemented in the demo, that prove to be
 		interesting in comparison with the standard implementation as
-		supported by html.</p>
+		supported by HTML.</p>
 
 		<ul>
 
 			<li>Fine grained links, that apply down to single
-				characters</li>
+				characters.</li>
 
-			<li>Typed links</li>
+			<li>Typed links.</li>
 
-			<li>Links external to original document</li>
+			<li>Links external to original document.</li>
 
-			<li>Links accurately survive document modifications</li>
+			<li>Links accurately survive document modifications.</li>
 
-			<li>Traversal of links in all directions</li>
+			<li>Traversal of links in all directions.</li>
 
-			<li>No limits to number of end-ponts to link</li>
+			<li>No limits to number of end-points to link.</li>
 
-			<li>Links apply to coordinate-spaces (not in demo)</li>
+			<li>Links to other links.</li>
+
+			<li>Links support general coordinate-spaces (not in demo).</li>
 
 		</ul>
 
@@ -1575,52 +1574,58 @@
 		<p>As no new primitive constructs are needed to implement
 		hyperlinks they technically don't need to be part of the server,
 		but for convenience they are present as part of a number of
-		edition wrappers used by front-end clients.</p>
+		edition wrappers provided for front-end clients.</p>
 
 		<ul>
-			<li><b>HyperLink</b> edition whose contents is a collection of
+			<li><b>HyperLink</b> edition whose content is a collection of
 				SingleRef editions. HyperLink editions are tagged with a
-				specific endorsement owned by the System Admin club.</li>
+				specific endorsement owned by the System Admin club to
+				indicate its nature.</li>
 			<li><b>SingleRef</b> edition which defines one of the end-points
 				for a HyperLink and is implemented by transcluding content
 				from another edition. SingleRef editions are tagged with a
-				specific endorsement owned by the System Admin club.</li>
+				specific endorsement owned by the System Admin club to
+				indicate its nature.</li>
 		</ul>
 
 		<p>The other presence on the server for hyperlinks is a series of
-		pre-defined endorsements owned by the System Admin club.</p>
+		pre-defined endorsements owned by the System Admin club that
+		enable sharing of links between different font-end clients.</p>
 
 <h4>Example</h4>
 
 		<p>As an example, imagine that we want to write a comment that
 		corrects a mistake in a document that was written by someone else.
 		In this case we would have a starting edition that contained the
-		text of the original text. Now we would like to make a comment
-		connected to the relevant a part of the original text that
-		corrects the mistake. So we create a new edition that contains the
-		text of our comment. We would then have to connect the comment
-		into the original. we create one SingleRef that transcludes the
-		original text that we believe contains the mistake. A second
-		SingleRef is created that contains our comment edition. Finally we
-		create a HyperLink that transclused the first SingleRef that
-		locates the original mistake. and also the second SingleRef
-		locating our comment. We would also like to tag the comment as
-		being a correction of the original text. This is achieved by
-		endorsing the HyperLink using the predefined ID for
-		corrections.</p>
+		text of the original text that we may not have the authority to
+		directly modify. Now we would like to make a comment that can be
+		connected to the relevant part of the original text to suggest a
+		correction for the mistake.</p>
+
+		<p>So we create a new edition that contains the text of our
+		comment. We then have to connect that comment into the original
+		text, so we create one SingleRef that transcludes the original
+		text that we believe contains the mistake. A second SingleRef is
+		created that contains our comment edition. Finally we create a
+		HyperLink that transcludes the first SingleRef that locates the
+		original mistake. and also the second SingleRef locating our
+		comment. We would also like to tag our comment as being a possible
+		correction of the original text. This is achieved by endorsing the
+		HyperLink using the predefined ID for a correction link type.</p>
 
 		<img src="hyperlink.png" alt="Hyperlink example">
 
 		<p>Now during the display of the original text, the client
 		software can request all the comments that have been made on the
 		text, especially mistakes, corrections and contradictory opinions.
-		This is achieved by requesting all the content that trancludes the
-		original text, and only includes those editions that are links of
-		a suitable type. Our comment would be found, and as it was marked
-		as a correction the reader decides to investigates. One of the
-		ways that this could be shown would be highlight the questionable
-		original text, and shown beside it the comment, so we can see
-		precisely what is being corrected.</p>
+		This is achieved by requesting all the content that transcludes
+		the original text, but filtering the results to those editions
+		that are links of suitable declared types. Our comment would be
+		found, and as it was marked as a correction the reader decides to
+		investigates. One of the ways that this could be shown would be to
+		highlight the questionable original text, and shown beside it the
+		comment, so the author can see precisely what is being faulted
+		together with a possible correction.</p>
  
 <h4>Udanax-Gold implementation</h4>
 
@@ -1632,24 +1637,25 @@
 		<ul>
 
 			<li>Udanax-Gold builds up a class hierarchy around the
-			FeSingleRef with a FeHyperRef abstract parent, and a FeMultiRef
-			sibling that holds a set of HyperRefs. It would be assumed that
-			this allows one to build a more complicated structure of
-			links.</li>
+			FeSingleRef with a FeHyperRef abstract superclass, and a
+			FeMultiRef sibling that holds a set of HyperRefs. It would be
+			assumed that this allows one to build a more complicated
+			structure of end-points making up a link.</li>
 
-			<li>The type of the link is directly referenced from the hyper
-			link, in addition to any endorsement references. This enables an
-			inheritance-like mechanism to be adopted for the types.</li>
+			<li>The type of the link is directly referenced from the
+			hyperlink, in addition to any endorsement references. This
+			enables an inheritance-like mechanism to be adopted for the
+			types.</li>
 
-			<li>Udanax-Gold uses named references to sub-editions, where as
-			the demo just relies on the ordering of sub-editions if
+			<li>Udanax-Gold uses named references to sub-editions, where the
+			demo just relies on the ordering of sub-editions if
 			necessary.</li>
 
-			<li>Paths and original contexts of frozen works are used to help
-			with the changing shape of documents as editions are replaced
-			over time. The author has only a fuzzy understanding of this,
-			but appears to be an important aspect of reliable hyper link
-			usage.</li>
+			<li>Paths and frozen works as original contexts are used to
+			handle the changing structure of documents as editions are
+			replaced over time. The author has only a fuzzy understanding of
+			this, but appears to be an important aspect of reliable
+			hyperlink usage over time.</li>
 
 		</ul>
 
@@ -1658,8 +1664,8 @@
 <h3>IDs</h3>
 
 		<p>Ids are associated with Works and Editions and act as a
-			permanent identification number for retrieving and comparison
-			purposes.</p>
+		permanent identification number for retrieval and comparison
+		purposes.</p>
 
 <h4>Implementation</h4>
 
@@ -1673,26 +1679,27 @@
 
 		<p>A simple WorksStorage singleton is used to allow one to find
 		the work or edition associated with an Id. This instance is also
-		used as the root of the reference scheme that hold onto works.
-		Works can be explicitly added and removed from the works known by
-		the storage scheme.</p>
+		used as the root of the reference scheme that holds onto works.
+		Works can be explicitly added and removed from the storage.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
-		<p>Ids in Gold are integrated into the wider coordinate-system, so
-		there are IdSpaces, Regions and such, with Ids being a position
-			within the space. An id is composed of the three aspects:</p>
+		<p>Ids in Udanax-Gold are integrated into the wider
+		coordinate-system, so there are IdSpaces, regions and such, with
+		Ids being a position within the space. An id is composed of the
+		three aspects:</p>
 
 		<ul>
 				<li>backend server which its space was created on, or a
-				default system one<</li>
+				default system one.</li>
 			<li>spaceNumber which is the unique number of the space on that
-				surver, or a default global space</li>
-			<li>number is the unique position in this space.</li>
+				server, or a default global space.</li>
+			<li>number is the unique position within this space.</li>
 		</ul>
 
 		<p>One obvious thing is that IDs can exist beyond a single
-		installation.</p>
+		installation of the server, so enabling remote documents to be
+		requested, referenced and modified.</p>
 
 		<p>The author is not aware at the moment how Works can be found
 		from their ID. Also the referencing system in Gold is assumed to
@@ -1705,25 +1712,27 @@
 
 		<p>The demo uses a very simple implementation of persistence for
 		contents. Its aim is to provide the absolute minimum to enable a
-		reasonable experience for experimenting and learning about the Demo
-		system for users. The existing persistence mechanism does allow
-		documents to survive beyond editing sessions, but is weak on
-		runtime crashes and recovery from disk corruption, mutation of
-		data structures with newer versions of the application, and
-		finally reading and writing times are proportional to the size of
-		the entire database of documents.</p>
+		reasonable experience for experimenting and learning about the
+		Demo system for users. The existing persistence mechanism does
+		allow documents to survive beyond editing sessions, but is weak in
+		regard to surviving runtime crashes and recovery from disk
+		corruption, mutation of data structures associated with newer
+		versions of the application, and finally reading and writing times
+		are proportional to the size of the entire database of documents
+		rather than the atomic change.</p>
 
 		<p>Upgrading the persistence mechanism would be a critical step in
 		extending the scope of the current application from demo status to
-		something strong enough to be entrusted with valuable data.</p>
+		something strong enough to be entrusted with valuable
+		information.</p>
 
 <h4>Implementation</h4>
 
-		<p>The persistence mechanism is built on the native object
+		<p>The persistence mechanism are built on the native object
 		serialisation mechanism provide by @link:dolphin_smalltalk@. This
-		is similar to mechanisms supported by other Smalltalk
+		is similar to mechanisms available for other Smalltalk
 		implementations and also Java. Given an object it will convert the
-		content of that object and the graph of all the objects it
+		contents of that object and the graph of all the objects it
 		references into a stream of bytes. That stream of bytes may in
 		turn be converted back into a graph of objects that are equal to
 		the original set. Special cases such as handling singleton objects
@@ -1732,10 +1741,11 @@
 
 		<p>Persisting of objects only occurs during the shut-down of the
 		system and on explicit request by user. The system is locked up
-		while the persisting is happening. All objects referenced by the
-		works storage are dumped out in a single action, and placed in a
-		<tt>workstorage.abora</tt> file. A single backup of the existing
-		file is kept in a <tt>workstorage.abora.OLD</tt> file.
+		while the persisting is happening, so interrupting service to
+		clients. All objects referenced by the works storage are dumped
+		out in a single action, and placed in a <tt>workstorage.abora</tt>
+		file. A single backup of the existing file is kept in a
+		<tt>workstorage.abora.OLD</tt> file.
 
 <h4>Udanax-Gold implementation</h4>	
 
@@ -1744,37 +1754,43 @@
 		author also assumes there is a transaction style system based
 		around the <tt>DiskManager consistent</tt> idiom. There is
 		additionally a lot of effort around grouping related objects
-		together apparently to pick up advantages around clustering disk
-		data into pages.</p>
-
-
-<a name="network"></a>
-<h3>Network</h3>
-
-		<p>TODO: Server loop</p>
-		<p>TODO: FrontEnd/BackEnd object split</p>
-		<p>TODO: Client caching</p>
+		together apparently to pick up possible performance advantages
+		from clustering data into the same and consecutive disk pages.</p>
 
 
 <a name="document-structures"></a>
 <h3>Document structures</h3>
 
-		<p>TODO: show how a Work and editions plus links could all fit
-			together to from a rich document</p>
+		<p>Applications built on the backend capabilities each have
+		different needs for the documents that they use to organise data
+		into coherent units of information. These will be built from
+		works, editions and other content elements. This enables a lot of
+		flexibility in composing these elements in various ways. In what
+		ways might this be applied?</p>
+
+		<p>The simple document structure used by the demo is to have one
+		work per document. The work contains an edition, whose first
+		element is a text edition holding the text contents of the
+		document. The second and subsequent elements hold any hyperlink
+		editions owned by this work.</p>
+
+		<p>More complicated document structures are possible. For example
+		one edition per paragraph or chapter of a document. Individual
+		external references could be stored one per edition to allow easy
+		inclusion or referencing from other locations. Udanax-Gold uses
+		the Work additionally as a check-point for authorisation, so more
+		private sections of a document could be 'locked' behind a
+		work.</p>
 
 
 <a name="programmers-api"></a>
 <h3>Programmers API</h3>
 
-		<p>Attention needs to be drawn to the visibility of objects and
-			structures in the system from the point of view of a consumer of
-			the programming API. The programmer of a front-end application
-			that uses the demo API talks in terms of content elements,
-			endorsements and objects of that ilk. Under the covers that are
-			entirely oblivious to the Ent data structure and things such as
-			ContentLeafs.</p>
-
-		<p>TODO: example usage of API</p>
+		<p>The intention of any production grade version of the software
+		that might be built out of this demo is to provide a server, some
+		example clients and a well defined programming API for others to
+		create client applications from. The API is not worked out, but is
+		basically the content element classes, endorsements and IDs.</p>
 
 <!-- abora:footer -->
 $Id$
