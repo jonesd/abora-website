@@ -18,6 +18,8 @@
 	<property name="sourceforge.server" value ="shell.sourceforge.net"/>
 	
 	<property name="base.url" value="/"/>
+	
+	<property name="tarball.dir" location="../sf.tarballs"/>
    
   <target name="init">
     <tstamp/>
@@ -193,5 +195,12 @@
 			<arg line="${sourceforge.user}@${sourceforge.server} cd /home/groups/a/ab/abora/cgi-bin/ksearch; ./indexer.pl" />
 		</exec>
 	</target>
+
+<target name="tarball.download" depends="init">
+	<move file="${tarball.dir}/abora-cvsroot.tar.gz" tofile="${tarball.dir}/abora-cvsroot.previous.tar.gz"/>
+	<exec executable="curl">
+		<arg line="http://cvs.sourceforge.net/cvstarballs/abora-cvsroot.tar.gz -o${tarball.dir}/abora-cvsroot.tar.gz"/>
+	</exec>
+</target>
 
 </project>
