@@ -1060,12 +1060,12 @@
 <a name="content-element"></a>
 <h3>Content Elements</h3>
 
-		<p>Content elements are the elements of the content held by
-		editions. We have covered the holders of primitive data and
-		collections in the discussion of what ent leafs represent. There
-		are a number of more interesting examples of these elements,
-		including the edition content element which enables composite
-		contents to be built up.</p>
+		<p>Content elements are the individual items making up the content
+		held by an edition. We have covered the holders of primitive data
+		and collections in the discussion of what ent leafs represent.
+		There are a number of other more interesting examples of these
+		elements, including the edition content element which enables
+		composite contents to be built up.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
@@ -1075,8 +1075,8 @@
 <a name="content-element-works"></a>
 <h3><a href="#content-element">Content Elements</a> &gt; Works</h3>
 
-		<p>Works define the identity for a document, and its edition
-		provides its contents.</p>
+		<p>Works define the identity for a document, and its associated
+		current edition provides its contents.</p>
 
 <h4>Revising a work</h4>
 
@@ -1085,38 +1085,40 @@
 		attempt to modify the contents of the edition results in a new
 		edition that incorporates the existing content and the desired
 		change. A work must then be <b>revised</b> to reference the
-		updated edition.</p>
+		updated edition if the new content is going to be considered its
+		current content.</p>
 
 		<p>Revising a work to a new edition requires one to have
-		previously gained a <b>lock</b> to the work. This gives one the
+		previously gained a <b>lock</b> on the work. This gives one the
 		exclusive rights to revise the work as many times as one likes
-		while the lock is held. The unlock operation gives up the revise
-		right for others to take. A unlock automatically occurs when
-		either the front-ends reference to the work is lost, or the
-		connection from the front-end to the server on which the work is
-		stored is lost.</p>
+		while the lock is still held. The unlock operation gives up the
+		revise right, and enables others to take it instead. An unlock
+		automatically occurs when either the front-ends reference to the
+		work is lost, or the connection from the front-end to the server
+		on which the work is stored is lost.</p>
 
-		<p>This limitation of a single work modifier at a time on the face
-		of it seems to be a little restrictive. For example a user could
-		lock a Work for the majority of the day, restricting any other
-		user of the system from modifying it during that time. This
-		problem is side stepped in a very interesting way. A work is
-		simply the identity for a document, with its content held by its
-		associated edition. Any number of works may reference the same
-		edition, so this allows a second writer to create a new temporary
-		work on the original edition of the first work which they can then
-		edit freely. Once the lock on the original work is released, they
-		can then gain the lock and merge in any changes from their edition
-		as need be.</p>
+		<p>The limitation of allowing only a single modifier of a work at
+		any time on the face of it seems to be a little restrictive. For
+		example a user could lock a Work for the majority of the day,
+		restricting any other user of the system from modifying it during
+		that time. This problem is side stepped in a very interesting way.
+		A work is simply the identity for a document, with its content
+		held by its associated edition. Any number of works may reference
+		the same edition, so this allows a second concurrent modifier to
+		create a new temporary work on the original edition of the first
+		work which they can then edit freely. Once the lock on the
+		original work is released, they can then gain the lock and merge
+		in any changes from their edition as need be. Or they may even
+		continue to use the new work if that branch is ok.</p>
 
 <h4>Histories and frozen works</h4>
 
-		<p>A work can be frozen which toggles it into a permantent
+		<p>A work can be frozen which toggles it into a permanent
 		read-only state. Once frozen it will not allow itself to be
 		revised to hold a different edition as its contents. As editions
 		are effectively immutable, that safeguards the works content from
-		changing. Even in a frozen state, the works list of endorsement
-		can still be modified.</p>
+		ever changing. Even in a frozen state, the works list of
+		endorsement can still be modified.</p>
 
 		<p>A work can store a list of previous revisions of itself. These
 		are frozen works so their content can not be changed. The history
@@ -1126,7 +1128,7 @@
 <h4>Identity</h4>
 
 		<p>The work holds an ID object which uniquely identifies the work
-			on this machine.</p>
+		on the current server machine.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
@@ -1142,14 +1144,15 @@
 			assumes that recording histories is off by default to reduce the
 			space overhead.</li>
 
-			<li>Freezing of Works is accomplished in Gold by deleting the
-			works edit club, so removing the authority to make changes from
-			any authority. The demo does not support the concept of clubs
-			yet, and so a direct <code>isFrozen</code> flag is used.</li>
+			<li>Freezing of Works is accomplished in Udanax-Gold by deleting the
+			work's edit club, so removing the authority to make changes by
+			any party. The demo does not support the concept of clubs yet,
+			and so a direct <code>beFrozen</code> and <code>isFrozen</code>
+			messages are supported.</li>
 
 			<li>In Udanax-Gold a front-end can request to be notified when a
 			work is revised. As the support for front-ends is not complete
-			yet in the demo, this feature is not in place.</li>
+			yet in the demo, this feature has not been added yet.</li>
 
 			<li>The demo only allows a simple list of frozen works making up
 			the history of a work. It is not known at this point if
@@ -1172,15 +1175,17 @@
 
 <h4>Udanax-Gold implementation</h4>
 
-		<p>TODO</p>
+		<p>The author has only a shallow appreciation of the club system
+		at the moment.</p>
 
 
 <a name="content-element-editions"></a>
 <h3><a href="#content-element">Content Elements</a> &gt; Editions</h3>
 
-		<p>An edition forms effectively an immutable object, and
-		modifications to its contents will result in a new edition
-		containing the original contents and the modifications.</p>
+		<p>An edition holds the content for documents. It forms
+		effectively an immutable object, and modifications to its contents
+		will result in a new edition containing the original contents and
+		the change returned.</p>
 
 		<p>The contents that an edition holds can be both collections of
 		simple data elements such as characters, or it can form a
@@ -1189,9 +1194,17 @@
 <h4>Revision Number</h4>
 
 		<p>The edition holds a revision number for itself, and is able to
-			respond with the next valid revision number after itself. It
-			records the highest revision number it has given out so that it
-			can properly generate subsequent revision numbers.</p>
+		respond with the next valid revision number after itself. It
+		records the highest revision number it has given out so that it
+		can properly generate subsequent revision numbers. This enables a
+		tree of further revisions based on the current edition to be
+		generated.</p>
+
+<h4>Ent</h4>
+
+		<p>An edition holds an exclusive reference to the root node of the
+		ent tree that connects to the content elements that the edition
+		represents.</p>
 
 
 <a name="content-element-becontentelement-class-hierarchy"></a>
@@ -1202,29 +1215,40 @@
 			specify the content of documents.</p>
 
 		<ul>
+
 			<li><b>BeContentElement</b> - Abstract super class of content
-				elements.<br>&nbsp;&nbsp;parents - un-ordered collection of
-				ent leaf nodes that represent this element as their content.
+			elements.<br>&nbsp;&nbsp;parents - un-ordered collection of ent
+			leaf nodes that represent this element as their content.
+
 			<ul>
+
 			<li><b>BeCollectionHolder</b> - Holder of multiple elements,
-				each of which is a primitive data
-				element.<br>&nbsp;&nbsp;collection - ordered collection of
-				primitive data elements</li>
+			each of which is a primitive data
+			item.<br>&nbsp;&nbsp;collection - ordered collection of
+			primitive data items</li>
+
 			<li><b>BeDataHolder</b> - Holder of a single primitive data
-				element.<br>&nbsp;&nbsp;value - primitive data element.</li>
+			element.<br>&nbsp;&nbsp;value - primitive data item.</li>
+
 			<li><b>BeEdition</b> - Represents the contents of a single
-				edition of a work. References a single RootNode which is the
-				root of the ent tree that holds its actual
-				contents.<br>&nbsp;&nbsp;root - the RootNode that holds the
-				edition contents.<br>&nbsp;&nbsp;branch - the revision number
-				used to tag its own tree nodes.<br>&nbsp;&nbsp;works - BeWorks
-			that have this edition as their contents.<br>&nbsp;&nbsp;...more...</li>
+			edition of a work. References a single RootNode which is the
+			root of the ent tree that holds its actual
+			contents.<br>&nbsp;&nbsp;root - the RootNode that holds the
+			edition contents.<br>&nbsp;&nbsp;branch - the revision number
+			used to tag its own tree nodes.<br>&nbsp;&nbsp;works - BeWorks
+			that have this edition as their
+			content.<br>&nbsp;&nbsp;...more...</li>
+
 			<li><b>BeWork</b> - identity of a document, and also the point
-				of access control to the content.<br>&nbsp;&nbsp;edition -
-				single BeEdition that holds the works content.<br>&nbsp;&nbsp;...more...
+			of access control to the content.<br>&nbsp;&nbsp;edition -
+			single BeEdition that holds the works
+			content.<br>&nbsp;&nbsp;...more...
+
 			<ul>
+
 			<li><b>BeClub</b> - work that defines the members of group with
-				access to a work.</li>
+			access to a work.</li>
+
 			</ul>
 		</li>
 		</ul>
@@ -1244,12 +1268,12 @@
 
 			<li>Missing BePlaceholder class. The implementation of the Demo
 			simply hasn't progressed far enough to make use of this. A place
-			holder is very interesting idea and is a critical enabler of
-			some of the interesting features of Gold. It acts as a stand in
-			for a future content element that currently isn't available yet.
-			For example the actual element hasn't been returned yet as the
-			result of a search, or may not even exist yet for long running
-			searches.</li>
+			holder is very interesting idea and is a critical enabler for
+			some of the interesting features of Udanax-Gold. It acts as a
+			stand in for a future content element that currently isn't
+			available yet or not known yet. For example the actual element
+			hasn't been returned yet as the result of a search, or may not
+			even exist yet for long running searches.</li>
 
 		</ul>
 
