@@ -32,3 +32,6 @@ td, th { vertical-align: top; }
 
 a.screenshot:link, a.screenshot:visited { color: #ffffff; none; }
 a.screenshot:hover { color: #FAEBD7; none; }
+
+.feedback1 {border-left: 0.5em solid #CFC; padding-left: 0.5em; font-size: smaller; }
+.feedback-meta { font-style: italic; }
