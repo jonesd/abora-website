@@ -1,6 +1,6 @@
 h1,h2,h3 { color: black; border-bottom: 2pt solid #000000; }
 
-body { background-color: #FFFFFF; }
+body { background-color: #303030; font-size: smaller; }
 
 .draft { background-image: url(draft.gif); }
 
@@ -18,5 +18,7 @@ body { background-color: #FFFFFF; }
 .advert * { display: none; }
 
 .url { font-family: Courier, monospace; }
+
+td, th { vertical-align: top; }
 
 a:link, a:visited, a:hover { color: #000000; text-decoration: none; }

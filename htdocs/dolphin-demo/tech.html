@@ -647,6 +647,7 @@
 <h4>Reviewing Displacement Navigation</h4>
 
 		<img src="dsp-navigate.png" alt="Navigation with displacements">
+		<img src="dsp-navigate2.png" alt="">
 
 		<p>Before investigating the effects of rotations on displacement
 		values, we will start with a quick walk through the example tree
@@ -2016,7 +2017,7 @@ Transcript <span class="st-message">show:</span> <span class="st-literal">'1-2) 
 		operation returns a reference to a new edition, as editions are
 		immutable each modification operation always returns a new edition
 		that contains the result of the operation, leaving the original
-		the untouched.</p>
+		untouched.</p>
 
 		<p><code>1-2) a FeEdition(id=an Id(4007)) 12def367890abc</code></p>
 
@@ -2088,7 +2089,7 @@ Transcript <span class="st-message">show:</span> <span class="st-literal">'3-1) 
 		<p>The result is not particularly obvious, but shows the link
 		edition, and its contents of the two reference editions.</p>
 
-<pre class="st-code"><code><span class="st-comment">"Find all editions that transclude any of the contents of a subset of edition1"</span>
+<pre class="st-code"><code><span class="st-comment">"Find all editions that transclude any of the contents of edition1"</span>
 transclusions1 := originalEdition <span class="st-message">transclusions</span>.
 Transcript <span class="st-message">show:</span> <span class="st-literal">'Trans-1) '</span>, transclusions1 <span class="st-message">printString</span>; <span class="st-message">cr</span>.
 
@@ -2130,7 +2131,8 @@ work1 <span class="st-message">revise:</span> edition1.
 
 Transcript <span class="st-message">show:</span> <span class="st-literal">'Revisions-1)'</span>, work1 <span class="st-message">revisions contents printString</span>; <span class="st-message">cr</span>.
 work1 <span class="st-message">revisions contents do:</span> [:frozen |
-	Transcript <span class="st-message">show:</span> frozen <span class="st-message">printString</span>, <span class="st-literal">' '</span>, frozen <span class="st-message">revisionTime printString</span>, <span class="st-literal">' '</span>,
+	Transcript <span class="st-message">show:</span> frozen <span class="st-message">printString</span>, <span class="st-literal">' '</span>,
+		frozen <span class="st-message">revisionTime printString</span>, <span class="st-literal">' '</span>,
 		frozen <span class="st-message">edition contents asAboraText</span>; <span class="st-message">cr</span>].
 </code></pre>
 
