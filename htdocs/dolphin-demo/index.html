@@ -1,10 +1,12 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+            "http://www.w3.org/TR/html4/loose.dtd">
 
   <html>
 
     <head>
       <meta	http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link rel="stylesheet" type="text/css" href="../style.css" />
+
 	  <title>Dolphin Demo</title>
     </head>
 
@@ -44,14 +46,21 @@
 
 		<h3>Known Problems</h3>
 		<ul>
-				<li>System slows down significantly for text longer than a few pages
-  Prime problem here is just my un-optimized text editor implementation.</li>
-		    <li>Infrequent balancing of Ent tree by Splaying, as my splaying
-  implementation currently duplicates too many internal SplitNodes.</li>
-		<li>Leaf nodes are split too often in Ent, eg on creating a link that
-  doesn't match existing leaf boundaries.</li>
-		<li>UI for defining and following Links is very poor and limiting.</li>
+			<li>System slows down significantly for text longer than a few
+			pages Prime problem here is just my un-optimized text editor
+			implementation.</li>
 
+		  <li>Infrequent balancing of Ent tree by Splaying, as my splaying
+		  implementation currently duplicates too many internal
+		  SplitNodes.</li>
+
+			<li>Leaf nodes are split too often in Ent, eg on creating a link
+			that doesn't match existing leaf boundaries.</li>
+
+			<li>UI for defining and following Links is very poor and
+			limiting.</li>
+
+		</ul>
 
 <!-- abora:footer -->
 $Id$

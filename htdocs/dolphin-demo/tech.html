@@ -1,17 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+            "http://www.w3.org/TR/html4/loose.dtd">
 
   <html>
 
     <head>
       <meta	http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link rel="stylesheet" type="text/css" href="../style.css" />
+
 	  <title>Dolphin Demo Technical Documentation</title>
     </head>
 
-    <body>
-<!-- abora:header -->
-      <h1>Dolphin Demo Technical Documentation</h1>
-<!-- abora:header_close -->
+    <body class="draft" bgcolor="#FFFFFF">
+<!-- abora:header --><h1>Dolphin Demo Technical Documentation</h1><!-- abora:header_close -->
 
 		<p><font color="red">---- Document still being written ----</font></p>
 
@@ -41,14 +41,12 @@
 		employer, @link:intware@. Many thanks.</p>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>References</h3>
-</td></tr></table>
 
 		<p>The authors knowledge of the Ent data structure derives from
 		two papers plus repeated fumbling readings of the published
 		Udanax-Gold source code. The papers I found to be most helpful can
-		be found at the Sunless-Sea website.<p>
+		be found at the Sunless-Sea website.</p>
 
 		<ul>
 			<li>@link:xia@</li>
@@ -56,9 +54,7 @@
 		</ul>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Data Structure Requirements</h3>
-</td></tr></table>
 
 		<p>The core of the implementation is a limited version of the Ent
 		data structure at the heart of Udanax-Gold. As mentioned above
@@ -80,9 +76,7 @@
 		</ul>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Base Implementation</h3>
-</td></tr></table>
 
 		<p>The contents of a document and the structure defining the
 		different versions and links between content are split into two
@@ -102,7 +96,7 @@
 		a document by adding and removing content to it.</p>
 
 		<hr>
-		<img src="nodeTreeA.png">
+		<img src="nodeTreeA.png" alt="Revision A">
 
 		<p>Revision A: We can start with an empty document. This is
 		constructed from just a single root node, with no children. We
@@ -115,7 +109,7 @@
 		colour and ascending letter for each revision in turn.</p>
 
 		<hr>
-		<img src="nodeTreeB.png">
+		<img src="nodeTreeB.png" alt="Revision B">
 
 		<p>Revision B: We will now add some content to the document, in
 		this case the word "One". A new root node is created that is
@@ -132,7 +126,7 @@
 		empty and revision 2 contains the "One".</p>
 
 		<hr>
-		<img src="nodeTreeC.png">
+		<img src="nodeTreeC.png" alt="Revision C">
 
 		<p>Revision C: We will now add a second word to the document,
 		"Two", after the first. A new root node is again created, and a
@@ -156,7 +150,7 @@
 		contents.</p>
 
 		<hr>
-		<img src="nodeTreeD.png">
+		<img src="nodeTreeD.png" alt="Revision D">
 
 		<p>Revision D: We will now add a third element to the end of the
 		document, "Three". Again a new root is created, together with a
@@ -168,7 +162,7 @@
 		space savings across multiple revisions of the same document.</p>
 
 		<hr>
-		<img src="nodeTreeE.png">
+		<img src="nodeTreeE.png" alt="Revision E">
 
 		<p>Revision E: We will add a fourth element, "Four", but this time
 		rather than appending to the end of the document, we will instead
@@ -180,7 +174,7 @@
 			see that the desired document content is collected.</p>
 
 		<hr>
-		<img src="nodeTreeF.png">
+		<img src="nodeTreeF.png" alt="Revision F">
 
 		<p>Revision F: In this case we will try to remove one of the
 		existing elements for our next revision, in this case the word
@@ -191,9 +185,7 @@
 		"Three" on the right.</p>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Element Positions</h3>
-</td></tr></table>
 
 		<p>One issue that we have only briefly dwelled on is how to use
 		the data structure that we have built up. The single case we have
@@ -207,7 +199,7 @@
 
 <h4>Example</h4>
 
-		<img src="nodeTreeF.png">
+		<img src="nodeTreeF.png" alt="Example tree">
 
 		<p>Looking back at revision B we can see that retrieving the
 		element at position 1 is the character "O" (assuming 1-based
@@ -285,28 +277,26 @@
 
 		<ul>
 
-				<li>Rather than a simple split value, Gold has a region that
-				defines all positions that can be found in its left
-				children.</li>
+			<li>Rather than a simple split value, Gold has a region that
+			defines all positions that can be found in its left
+			children.</li>
 
-		<li>The displacement value is stored in a separate node of the
-		tree called the DspNode, rather than embedded within the split
-		node. This gives a lot more flexibility. The author went with the
-		simpler technique of embedding the displacement in the Split node,
-		and a similar displacement for Root nodes. Somehow this seemed to
-		end up with more code than the Gold implementation. At the heart
-		of it, it is unknown why Gold went with the separate DspNode, and
-		whether it should be copied.</li>
+			<li>The displacement value is stored in a separate node of the
+			tree called the DspNode, rather than embedded within the split
+			node. This gives a lot more flexibility. The author went with
+			the simpler technique of embedding the displacement in the Split
+			node, and a similar displacement for Root nodes. Somehow this
+			seemed to end up with more code than the Gold implementation. At
+			the heart of it, it is unknown why Gold went with the separate
+			DspNode, and whether it should be copied.</li>
 
-		<li>As Gold supports more than integer positions, the displacement
-		value may also be a non-integer.</li>
+			<li>As Gold supports more than integer positions, the
+			displacement value may also be a non-integer.</li>
 
 		</ul>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Version support</h3>
-</td></tr></table>
 
 		<p>We ended off the above description of walking the nodes of a
 		revision tree, with the issue of walking from a leaf to its root.
@@ -342,7 +332,7 @@
 		first revision, then that is known as "1:1:1" with the next on that
 		branch being "1:1:2".</p>
 
-		<img src="branching-number.png">
+		<img src="branching-number.png" alt="Branching revision numbers">
 
 		<p>Reviewing the diagram we can see that revision "2" has three
 		following revisions, "3", "2:1:1" and "2:2:1". A branch is
@@ -364,9 +354,9 @@
 
 		<ul>
 
-				<li>Gold supports the concepts of Canopies which enable a
-				number of features, one of which is associating a node with
-				all the document editions that reference that node.</li>
+			<li>Gold supports the concepts of Canopies which enable a number
+			of features, one of which is associating a node with all the
+			document editions that reference that node.</li>
 
 			<li>The concept of a revision number is not present, and instead
 			the ID of the edition itself can be used.</li>
@@ -378,9 +368,7 @@
 		</ul>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Tree Balancing by Splaying</h3>
-</td></tr></table>
 
 		<p>The advantage of a tree as a search data structure is that the
 		height of the tree is O(logN), where N is the number of leaves in
@@ -404,9 +392,9 @@
 		then the splaying operation will through a series of alternating
 		rotate operations pull that node towards the root of the tree.</p>
 
-		<img src="splay-rotate-right.png">
+		<img src="splay-rotate-right.png" alt="Rotate right">
 
-		<img src="splay-rotate-left.png">
+		<img src="splay-rotate-left.png" alt="Rotate left">
 
 		<p>The two basic operations of the algorithm are rotate left and
 		rotate right. Both right and left rotations are shown above with
@@ -424,24 +412,22 @@
 		locality of reference should reduce the access cost for succeeding
 		node references.</p>
 
-		<tt>
 			<ul>
-				<li>If X is the left child of the root, then rotate right
-				about Parent.</li>
-				<li>If X is the right child of the root, then rotate left
-				about Parent.</li>
-			  <li>If X and its Parent are both left children, then rotate
-				right about Parent followed by a rotate right about X.</li>
-			  <li>If X and its Parent are both right children, then rotate
-				left about Parent followed by a rotate left about X.</li>
-			  <li>If X is a right child and its Parent is a left child, then
+				<li><tt>If X is the left child of the root, then rotate right
+				about Parent.</tt></li>
+				<li><tt>If X is the right child of the root, then rotate left
+				about Parent.</tt></li>
+			  <li><tt>If X and its Parent are both left children, then rotate
+				right about Parent followed by a rotate right about X.</tt></li>
+			  <li><tt>If X and its Parent are both right children, then rotate
+				left about Parent followed by a rotate left about X.</tt></li>
+			  <li><tt>If X is a right child and its Parent is a left child, then
 				rotate left about Parent follow by a rotate right about original
-				Grand parent.</li>
-			  <li>If X is a left child and its Parent is a right child, then
+				Grand parent.</tt></li>
+			  <li><tt>If X is a left child and its Parent is a right child, then
 				rotate right about Parent follow by a rotate left about original
-				Grand parent.</li>
+				Grand parent.</tt></li>
 		</ul>
-	</tt>
 
 <h4>Algorithm References</h4>
 
@@ -459,7 +445,7 @@
 
 <h4>Reviewing Displacement Navigation</h4>
 
-		<img src="dsp-navigate.png">
+		<img src="dsp-navigate.png" alt="Navigation with displacements">
 
 		<p>Before investigating the effects of rotations on displacement,
 		a quick walk through the example tree that will be experimented
@@ -495,9 +481,9 @@
 		binary search tree and so we have to resolve the impact of
 		that.</p>
 	
-		<img src="dsp-rotate-right.png">
+		<img src="dsp-rotate-right.png" alt="Rotate right with displacements">
 
-		<img src="dsp-rotate-left.png">
+		<img src="dsp-rotate-left.png" alt="Rotate left with displacements">
 
 		<p>The above diagram shows the impact of a rotation towards the
 		right, and below that a rotation towards the left. The second
@@ -528,7 +514,7 @@
 		in these trees may have more than one parent. This is a very
 		significant difference!</p>
 
-		<img src="dsp-rotate-right-mixed.png">
+		<img src="dsp-rotate-right-mixed.png" alt="Rotate right with multiple parents">
 
 		<p>We are again going to show a rotate right operation, but this
 		time the 9 split node has two parents. One is the root node for
@@ -554,7 +540,7 @@
 		integrity of revision D as it can now includes Z in its content,
 		which it didn't before the operation.</p>
 
-		<img src="dsp-rotate-right-duplicate.png">
+		<img src="dsp-rotate-right-duplicate.png" alt="Rotat right after duplication">
 
 		<p>The solution the Demo uses for this case would be to duplicate
 		the 9 split node before the rotation. This is indicated in the
@@ -587,9 +573,7 @@
 		term as the tree balancing algorithm.</p>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Insert and Delete algorithm</h3>
-</td></tr></table>
 
 		<p>The earlier discussions over the use of the tree data structure
 		for sharing content between revisions glossed over the mechanisms
@@ -614,9 +598,7 @@
 		this problem.</p>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Transclusions</h3>
-</td></tr></table>
 
 		<p>Transclusion enables the sharing of content by quoting from the
 		original source. Transclusion is a primitive function of the
@@ -648,7 +630,7 @@
 		a single character "X". We can draw another tree diagram as we
 		have numerous times above.</p>
 
-		<img src="transclude-single.png">
+		<img src="transclude-single.png" alt="Trancluding single element">
 
 		<p>The second diagram is peeling back the conceptual skin of the X
 		leaf node on the first, to reveal that the leaf node actually
@@ -687,7 +669,7 @@
 		tree, but it would reference the same BeContentHolder instance and
 		so have access to the 17 characters.</p>
 
-		<img src="transclude-multiple.png">
+		<img src="transclude-multiple.png" alt="Transcluding multiple elements">
 
 		<p>What if another document simply wanted to transclude the
 		"Aardvark" section of the phrase. In that case again a new
@@ -703,9 +685,8 @@
 		reference are somewhat of a mystery to the author at the
 		moment.</p>
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
+
 <h3>EntNode class hierarchy</h3>
-</td></tr></table>
 
 		<p>The class hierarchy for the tree nodes is strongly inspired by
 			the Udanax-Gold implementation but includes some
@@ -716,15 +697,15 @@
 		<ul>
 			<li><b>EntNode</b> - Abstract super-class of all 
 				nodes that are present in an Ent tree.<br>&nbsp;&nbsp;branch - revision number of edition that
-				created this node</li>
+				created this node
 			<ul>
 			<li><b>ChildNode</b> - Abstract super-class for all nodes that can be
-			children of others.<br>&nbsp;&nbsp;parents - list of parent EntNodes</li>
+			children of others.<br>&nbsp;&nbsp;parents - list of parent EntNodes
 			<ul>
 			<li><b>LeafNode</b> - Abstract super-class for all nodes that
 				can be leafs of the tree. These nodes holds the contents of
 				the tree with 0 or more elements.<br>&nbsp;&nbsp;startPosition
-			- Global position of revision this node was originally created in.</li>
+			- Global position of revision this node was originally created in.
 			<ul>
 			<li><b>CollectionLeaf</b> - Leaf node that references a subset
 				of the element of a BeCollectionHolder.<br>&nbsp;&nbsp;collectionHolder - BeCollectionHolder
@@ -765,9 +746,7 @@
 		</ul>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>BeContentElement class hierarchy</h3>
-</td></tr></table>
 
 		<p>The BeContentElement class hierarchy is a subset of the content
 			classes supported by Udanax-Gold. An instances of this class
@@ -776,7 +755,7 @@
 		<ul>
 			<li><b>BeContentElement</b> - Abstract super class of content
 				elements.<br>&nbsp;&nbsp;parents - un-ordered collection of
-				ent leaf nodes that represent this element as their content.</li>
+				ent leaf nodes that represent this element as their content.
 			<ul>
 			<li><b>BeCollectionHolder</b> - Holder of multiple elements,
 				each of which is a primitive data
@@ -793,7 +772,7 @@
 			that have this edition as their contents.<br>&nbsp;&nbsp;...more...</li>
 			<li><b>BeWork</b> - identity of a document, and also the point
 				of access control to the content.<br>&nbsp;&nbsp;edition -
-				single BeEdition that holds the works content.<br>&nbsp;&nbsp;...more...</li>
+				single BeEdition that holds the works content.<br>&nbsp;&nbsp;...more...
 			<ul>
 			<li><b>BeClub</b> - work that defines the members of group with
 				access to a work.</li>
@@ -809,23 +788,24 @@
 			Udanax-Gold.</p>
 
 		<ul>
-				<li>Udanax-Gold uses the term BeRangeElements rather than
+
+			<li>Udanax-Gold uses the term BeRangeElements rather than
 			BeContentElements. Content seems a little better
-				description.</li>
+			description.</li>
+
 			<li>Missing BePlaceholder class. The implementation of the Demo
-				simply hasn't progressed far enough to make use of this. A
-				place holder is very interesting idea and is a critical
-				enabler of some of the interesting features of Gold. It acts
-				as a stand in for a future content element that currently
-				isn't available yet. For example the actual element hasn't
-				been returned yet as the result of a search, or may not even
-				exist yet for long running searches.</li>
+			simply hasn't progressed far enough to make use of this. A place
+			holder is very interesting idea and is a critical enabler of
+			some of the interesting features of Gold. It acts as a stand in
+			for a future content element that currently isn't available yet.
+			For example the actual element hasn't been returned yet as the
+			result of a search, or may not even exist yet for long running
+			searches.</li>
+
 		</ul>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Extra Ent Udanax-Gold features</h3>
-</td></tr></table>
 
 		<p>The Demo implementation is focused on a simple domain of
 		contiguous integers starting from 1. The UG implementation extends
@@ -859,9 +839,7 @@
 		<p>TODO: Placeholders</p>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>API Level Objects</h3>
-</td></tr></table>
 
 		<p>TODO: Move this to a better place</p>
 
@@ -874,9 +852,7 @@
 			ContentLeafs.</p>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Works</h3>
-</td></tr></table>
 
 		<p>Works define the identity for a document, and its edition
 		provides its contents.</p>
@@ -963,14 +939,10 @@
 		</ul>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Clubs</h3>
-</td></tr></table>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Editions</h3>
-</td></tr></table>
 
 		<p>An edition forms effectively an immutable object, and
 		modifications to its contents will result in a new edition
@@ -988,9 +960,7 @@
 			can properly generate subsequent revision numbers.</p>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Differences</h3>
-</td></tr></table>
 
 		<p>Given two documents, what are the similarities and the
 		differences between them? This is a feature supported by word
@@ -1130,9 +1100,7 @@
 		the demo.</p>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Endorsements</h3>
-</td></tr></table>
 
 		<p>An endorsement is a tag composed of a club and ID that can be
 		associated with an edition on club. It is the primitive means to
@@ -1167,7 +1135,7 @@
 
 <h4>Example</h4>
 
-		<img src="endorsements.png">
+		<img src="endorsements.png" alt="Example endorsements">
 
 		<p>More to show the diagrammatic style that will be used to
 		indicate endorsements, than for any great revelation, the above
@@ -1231,9 +1199,7 @@
 		operations together with union and intersection operations.</p>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Hyperlinks</h3>
-</td></tr></table>
 
 		<p>Considering the Demo is classified as a hypertext system, it
 		has taken us a long time to reach a description of the
@@ -1313,7 +1279,7 @@
 		endorsing the HyperLink using the predefined ID for
 		corrections.</p>
 
-		<img src="hyperlink.png">
+		<img src="hyperlink.png" alt="Hyperlink example">
 
 		<p>Now during the display of the original text, the client
 		software can request all the comments that have been made on the
@@ -1357,17 +1323,13 @@
 
 		</ul>
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Document structures</h3>
-</td></tr></table>
 
 		<p>TODO: show how a Work and editions plus links could all fit
 			together to from a rich document</p>
 
 
-<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Network</h3>
-</td></tr></table>
 
 		<p>TODO: Server loop</p>
 		<p>TODO: FrontEnd/BackEnd object split</p>

@@ -1,11 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+            "http://www.w3.org/TR/html4/loose.dtd">
 
   <html>
 
     <head>
       <meta	http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	<meta	name=keywords content="Abora,Xanadu,Xanalogical,Udana-Gold,Hypertext,Java,Smalltalk,Dolphin Smalltalk">
+		<link rel="stylesheet" type="text/css" href="../style.css" />
+
 	  <title>Udanax-Gold2Java</title>
     </head>
 
@@ -46,17 +48,11 @@
 
 		<img alt="Translation Process" src="process.png">
 
-<!-- ------------------------------------------------- -->
-<!-- ------------------------------------------------- -->
+<!-- ================================================= -->
+<!-- ================================================= -->
 
 <a name="udanax-gold"></a>
-<table width="100%" bgcolor="antiquewhite">
-	<tr>
-	  <td>
-						<h3>Udanax-Gold</h3>
-				</td>
-			</tr>
-		</table>
+<h3>Udanax-Gold</h3>
 
 		<p>The <b>Udanax-Gold</b> sub-component contains the source code
 		which is the input to the translator.
@@ -111,17 +107,12 @@ Collection of X++ (the XOC dialect of C++) source which has proven
 			in the CVS section  of Jeff Rush's website.<br>
 <a href="http://www.sunless-sea.net">http://www.sunless-sea.net</a></p>
 
-<!-- ------------------------------------------------- -->
-<!-- ------------------------------------------------- -->
+
+<!-- ================================================= -->
+<!-- ================================================= -->
 
 <a name="translator"></a>
-<table width="100%" bgcolor="antiquewhite">
-	<tr>
-	  <td>
 <h3>Translator</h3>
-				</td>
-			</tr>
-		</table>
 
 <p>The Translator is a small Java app to automatically translate from the
 <b>Udanax-Gold</b> Smalltalk(ish) source code into (approximate) Java. The
@@ -174,37 +165,37 @@ under the <tt>org.abora.gold</tt> Java package. </p>
 		of auto-translation should be passed separately through an
 		automatic tidying process.</p>
 
-		<table bgcolor="#ffff99" border="1" width="100%">
+		<table bgcolor="#ffff99" border="1" width="100%" summary="">
 			<tr bgcolor="#e6e64c">
 					<th width="50%">Smalltalk Source</th>
 					<th width="50%">Java Translation</th>
 				</tr>
 
 				<tr>
-					<td valign="top"><tt><pre><b>test</b><br>	one and: [two]!</pre></tt></td>
-					<td valign="top"><tt><pre>public void <b>test</b>() {<br>	one && (two);<br>}</pre></tt></td>
+					<td valign="top"><pre><tt><b>test</b><br>	one and: [two]!</tt></pre></td>
+					<td valign="top"><pre><tt>public void <b>test</b>() {<br>	one &amp;&amp; (two);<br>}</tt></pre></td>
 				</tr>
 
 				<tr>
-					<td valign="top"><tt><pre><b>test</b>
+					<td valign="top"><pre><tt><b>test</b>
 	(one = two)
 		ifTrue: [^one]
-		ifFalse: [^two]!</pre></tt></td>
-					<td valign="top"><tt><pre>public void <b>test</b>() {
+		ifFalse: [^two]!</tt></pre></td>
+					<td valign="top"><pre><tt>public void <b>test</b>() {
 	<b>if</b> (one == two) {
 		<b>return</b> one;
 	} <b>else</b> {
 		<b>return</b> two;
 	}
-}</pre></tt></td>
+}</tt></pre></td>
 				</tr>
 
 				<tr>
-					<td valign="top"><tt><pre><b>test</b>
-	one two three: four and: 55!</pre></tt></td>
-					<td valign="top"><tt><pre>public void <b>test</b>() {
+					<td valign="top"><pre><tt><b>test</b>
+	one two three: four and: 55!</tt></pre></td>
+					<td valign="top"><pre><tt>public void <b>test</b>() {
 	one.two().threeAnd(four, 55);
-}</pre></tt></td>
+}</tt></pre></td>
 				</tr>
 
 		</table>
@@ -300,18 +291,12 @@ on what should be happening - for example class attributes such as ON.CLIENT</li
 		<li>Tidying up the code!</li>
 		</ul>
 
-<!-- ------------------------------------------------- -->
-<!-- ------------------------------------------------- -->
+<!-- ================================================= -->
+<!-- ================================================= -->
 
 
 <a name="abora-gold"></a>
-<table width="100%" bgcolor="antiquewhite">
-	<tr>
-	  <td>
 <h3>Abora-Gold</h3>
-				</td>
-			</tr>
-		</table>
 
 
 <p>Abora-Gold is just my name for the combination of auto and manual

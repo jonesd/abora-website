@@ -1,0 +1,9 @@
+h1,h2,h3 { color: black; background-color: #FAEBD7;  }
+
+body { background-color: #FFFFFF; }
+
+.draft { background-image: url(draft.gif); }
+
+a:link { }
+a:visited {  }
+a:hover {background-color: #FAEBD7; }

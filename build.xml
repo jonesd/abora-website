@@ -63,32 +63,33 @@
 		<exclude name="**/api/**"/>
 		<replacetoken><![CDATA[<!-- abora:header -->]]></replacetoken>
 		<replacevalue><![CDATA[
-      <table width="100%" bgcolor="antiquewhite">
-	<tr>
-	  <td>
-]]></replacevalue>
+<!--      <table width="100%" bgcolor="#FAEBD7" valign="middle" summary="">
+	<tr bgcolor="#FAEBD7" valign="middle"> 
+	<td> -->
+<!-- <div style="background-color: #FAEBD7;"> -->
+<!-- <div style="float:left; background-color: #FAEBD7; width: 100%; margin-bottom:0;" align="left">
+		-->]]></replacevalue>
 	</replace>
-
 
 	<replace dir="${htdocs}">
 		<include name="**/*.html"/>
 		<exclude name="**/api/**"/>
 		<replacetoken><![CDATA[<!-- abora:header_close -->]]></replacetoken>
-		<replacevalue><![CDATA[
-		</td>
-	  <td align="right">
-	  <FORM ACTION="http://www.abora.org/cgi-bin/ksearch/ksearch.cgi" METHOD="GET" NAME="search">
+		<replacevalue><![CDATA[<!-- </td>
+	  <td align="right"> -->
+<!-- </div>
+<div align="right"> -->
+<!--	  <FORM ACTION="http://www.abora.org/cgi-bin/ksearch/ksearch.cgi" METHOD="GET" NAME="search">
 <INPUT TYPE="text" NAME="terms">
 	  <INPUT TYPE="submit" VALUE="Search">
-</FORM>
-	  
-	 	  </td>
-	   </tr>
-      </table>
-	
-	<table width="100%">
+</FORM> -->
+<!-- </td></tr></table> -->
+<!-- </div> -->
+<!-- </div> -->
+
+	<table width="100%" summary="">
 		<tr>
-		<td valign="top"><table width="100%">
+		<td valign="top"><table width="100%" summary="">
 		<tr><td>
 ]]></replacevalue>
 	</replace>
@@ -100,14 +101,12 @@
 		<replacevalue><![CDATA[
 		</td></tr></table>
 		<td valign="top" width="1%">
-		<table width="100%">
+		<table width="100%" summary="">
 		<tr><td align="right">
 			<b>Abora&nbsp;Project</b><br>
 			<a href="/index.html">Home</a><br>
 			<a href="/features.html">Features</a><br>
 			<a href="/screenshots.html">Screenshots</a><br>
-<!--			<a href="features.html">Features</a><br> -->
-<!--			<a href="why.html">Why</a><br> -->
 			<a href="/author.html">Author</a><br>
 			<a href="/acknowledgements.html">Thanks</a><br>
 			<a href="/links.html">Links</a><br>
@@ -138,14 +137,21 @@
 	  		<a href="/dolphin-demo/index.html">Overview</a><br>
 	  		<a href="/dolphin-demo/tech.html">Tech&nbsp;Docs</a><br>
 	  	</td></tr>
+	  	<tr><td align="right">
+	  		&nbsp;<br>
+	  			  <form action="http://www.abora.org/cgi-bin/ksearch/ksearch.cgi" method="GET" name="search">
+<input type="text" name="terms" size="10"><br>
+	  <input type="submit" value="Search">
+</form>
+	  	</td></tr>
 		</table>
 		</td></tr>
 		</table>
 		
-	<hr bgcolor="antiquewhite">
+	<hr bgcolor="#FAEBD7">
 	
-      <table width="100%">
-	<tr><td><font color="gray">
+      <table width="100%" summary="">
+	<tr><td><font color="#808080">
 		Copyright 2002-2003 <a href="mailto:david_jones@night.dircon.co.uk">David G Jones</a>. All rights reserved<br>
 ]]></replacevalue>
 	</replace>
@@ -178,10 +184,25 @@
 
 
 <!--**************************************************************-->
+<!--** Tidy HTML output ******************************************-->
+<!--**************************************************************-->
+
+  <target name="tidy" depends="init">
+  	<exec executable="tidy.exe" failonerror="true">
+  		<arg value="-errors"/>
+  		<arg value="${htdocs}/*.html"/>
+  		<arg value="${htdocs}/abora-white/*.html"/>
+  		<arg value="${htdocs}/dolphin-demo/*.html"/>
+   		<arg value="${htdocs}/udanax-gold2java/*.html"/>
+  	</exec>
+  </target>
+
+
+<!--**************************************************************-->
 <!--** Distribute; collect, update docs **************************-->
 <!--**************************************************************-->
 
-  <target name="dist" depends="clean, compile, collect, replacetemplate"
+  <target name="dist" depends="clean, compile, collect, replacetemplate, tidy"
         description="generate the distribution" >
   </target>
 
