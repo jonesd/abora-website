@@ -42,6 +42,21 @@
 
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
+<h3>References</h3>
+</td></tr></table>
+
+		<p>The authors knowledge of the Ent data structure derives from
+		two papers plus repeated fumbling readings of the published
+		Udanax-Gold source code. The papers I found to be most helpful can
+		be found at the Sunless-Sea website.<p>
+
+		<ul>
+			<li>@link:xia@</li>
+			<li>@link:ent_theory@</li>
+		</ul>
+
+
+<table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Data Structure Requirements</h3>
 </td></tr></table>
 
@@ -1124,14 +1139,23 @@
 		filter out the results at the application level. Endorsements can
 		be used to define the type of content.</p>
 
-<h4>API</h4>
+<h4>Implementation</h4>
 
 		<p>Endorsements are introduced to an edition or club with the
 		<code>endorse:</code> message, and removed with the
 		<code>revoke:</code> message. The collection of endorsements
 		associated with the content acts as Set, so duplicates are not
 		kept. The Endorsement class is a simple information holder holding
-		a pair of IDs.</p>
+		a pair of IDs. The first ID is that of a club, and the second can
+		be of anything. One possibility for the second id is to be that of
+		a work or edition that describes the endorsement for human
+		readers.</p>
+
+		<p>A number of endorsements are built into the system to define
+		server supplied edition wrappers types such as FeHyperLink. These
+		are associated with built in system clubs. Any client is also able
+		to create their own endorsements, and they would probably use the
+		club of their author or user.</p>
 
 		<p>Endorsements are also used to filter out results of requests,
 		specifically <code>transclusionsFilteredBy:</code> and related
@@ -1140,6 +1164,31 @@
 		according to the supplied list of endorsements. This operation can
 		be useful to find all the hyperlinks referencing this document for
 		example.</p>
+
+<h4>Example</h4>
+
+		<img src="endorsements.png">
+
+		<p>More to show the diagrammatic style that will be used to
+		indicate endorsements, than for any great revelation, the above
+		diagram shows a block of text in an edition with a number of
+		endorsements.</p>
+
+		<ul>
+
+			<li>The <b>Text</b> endorsement is a system supplied endorsement
+			to indicate the type of content that the edition holds. A
+			front-end may then load that into a text editor for
+			viewing.</li>
+
+			<li>The <b>English translation</b> endorsement is one that the
+			author just made up to indicate that this actually a translation
+			of the original Don Quixote. In practice the English translation
+			endorsement might be better as an <i>English</i> endorsement,
+			and a hyper link between this translation and the original with
+			a type of translation.</li>
+
+		</ul>
 
 <h4>Issues</h4>
 
@@ -1154,9 +1203,21 @@
 		cryptographic signature calculated from the contents of the
 		document at the time.</p>
 
-		<p>A second issue is with revoking an endorsement. Udanax-Gold
-		seems to simply remove the reference, though there is a note that
-		something better should be attempted in the future.</p>
+		<p>A second issue is with removing an endorsement, which is
+		described as revoking an endorsement. Udanax-Gold seems to simply
+		remove the reference, though there is a note that something better
+		should be attempted in the future.</p>
+
+		<p>A third issue is to build up a reasonable collection of
+		endorsements to try and minimise any duplication of meaning. One
+		area for definition would be using mime-types for defining the
+		contents of the edition. The second ID of the endorsement could be
+		to the text name of the mime-type; "text/plain" for example.</p>
+
+		<p>A further issue is why introduce the concept of endorsements,
+		in a way that just appear to be limited version of links, but with
+		a fixed format with a low overhead, and tied into the filtering
+		mechanism for results. Is that it?</p>
 
 <h4>Udanax-Gold implementation</h4>
 
@@ -1195,37 +1256,106 @@
 
 			<li>Links external to original document</li>
 
-			<li>Links accurately survive document versions</li>
+			<li>Links accurately survive document modifications</li>
+
+			<li>Traversal of links in all directions</li>
+
+			<li>No limits to number of end-ponts to link</li>
 
 			<li>Links apply to coordinate-spaces (not in demo)</li>
 
-			<li>TODO: more</li>
-
 		</ul>
-
-<h4>API</h4>
-
-		<p>Hyperlinks are used from clients and are implemented as edition
-			wrappers.</p>
-
-		<p>As an example, imagine that we want to write a comment that
-			corrects a mistake in a document that was written by someone
-			else.</p>
- 
-		<p>TODO: schematic diagram</p>
 
 <h4>Implementation</h4>
 
+		<p>Hyperlinks are constructed from more primitive elements of the
+		system; editions and transclusions. Transclusions are used to
+		define the end-points of the link, and a structure of editions is
+		used to connect the multiple end-points into a single hyperlink
+		edition. Endorsements are used to tag the types of the editions
+		required for the structure, and also used to indicate the type of
+		the link.</p>
 
-		<p>TODO: show implementation</p>
+		<p>As no new primitive constructs are needed to implement
+		hyperlinks they technically don't need to be part of the server,
+		but for convenience they are present as part of a number of
+		edition wrappers used by front-end clients.</p>
 
+		<ul>
+			<li><b>HyperLink</b> edition whose contents is a collection of
+				SingleRef editions. HyperLink editions are tagged with a
+				specific endorsement owned by the System Admin club.</li>
+			<li><b>SingleRef</b> edition which defines one of the end-points
+				for a HyperLink and is implemented by transcluding content
+				from another edition. SingleRef editions are tagged with a
+				specific endorsement owned by the System Admin club.</li>
+		</ul>
+
+		<p>The other presence on the server for hyperlinks is a series of
+		pre-defined endorsements owned by the System Admin club.</p>
+
+<h4>Example</h4>
+
+		<p>As an example, imagine that we want to write a comment that
+		corrects a mistake in a document that was written by someone else.
+		In this case we would have a starting edition that contained the
+		text of the original text. Now we would like to make a comment
+		connected to the relevant a part of the original text that
+		corrects the mistake. So we create a new edition that contains the
+		text of our comment. We would then have to connect the comment
+		into the original. we create one SingleRef that transcludes the
+		original text that we believe contains the mistake. A second
+		SingleRef is created that contains our comment edition. Finally we
+		create a HyperLink that transclused the first SingleRef that
+		locates the original mistake. and also the second SingleRef
+		locating our comment. We would also like to tag the comment as
+		being a correction of the original text. This is achieved by
+		endorsing the HyperLink using the predefined ID for
+		corrections.</p>
+
+		<img src="hyperlink.png">
+
+		<p>Now during the display of the original text, the client
+		software can request all the comments that have been made on the
+		text, especially mistakes, corrections and contradictory opinions.
+		This is achieved by requesting all the content that trancludes the
+		original text, and only includes those editions that are links of
+		a suitable type. Our comment would be found, and as it was marked
+		as a correction the reader decides to investigates. One of the
+		ways that this could be shown would be highlight the questionable
+		original text, and shown beside it the comment, so we can see
+		precisely what is being corrected.</p>
+ 
 <h4>Udanax-Gold implementation</h4>
 
-		<p>TODO: MultiRefs.</p>
+		<p>The basic mechanism and edition structure was inspired from
+			Udanax-Gold, but in direct comparison the demo is much simpler and
+			suffers a number of weaknesses and limitations against the
+			original Udanax-Gold implementation.</p>
 
-		<p>TODO: use of named items rather than fixed locations</p>
+		<ul>
 
-		<p>TODO: supports multiple/inherited types</p>
+			<li>Udanax-Gold builds up a class hierarchy around the
+			FeSingleRef with a FeHyperRef abstract parent, and a FeMultiRef
+			sibling that holds a set of HyperRefs. It would be assumed that
+			this allows one to build a more complicated structure of
+			links.</li>
+
+			<li>The type of the link is directly referenced from the hyper
+			link, in addition to any endorsement references. This enables an
+			inheritance-like mechanism to be adopted for the types.</li>
+
+			<li>Udanax-Gold uses named references to sub-editions, where as
+			the demo just relies on the ordering of sub-editions if
+			necessary.</li>
+
+			<li>Paths and original contexts of frozen works are used to help
+			with the changing shape of documents as editions are replaced
+			over time. The author has only a fuzzy understanding of this,
+			but appears to be an important aspect of reliable hyper link
+			usage.</li>
+
+		</ul>
 
 <table bgcolor="antiquewhite" width="100%"><tr><td>
 <h3>Document structures</h3>
@@ -1243,20 +1373,6 @@
 		<p>TODO: FrontEnd/BackEnd object split</p>
 		<p>TODO: Client caching</p>
 
-
-<table bgcolor="antiquewhite" width="100%"><tr><td>
-<h3>References</h3>
-</td></tr></table>
-
-		<p>The authors knowledge of the Ent data structure derives from
-		two papers plus repeated fumbling readings of the published
-		Udanax-Gold source code. The papers I found to be most helpful can
-		be found at the Sunless-Sea website.<p>
-
-		<ul>
-			<li>@link:xia@</li>
-			<li>@link:ent_theory@</li>
-		</ul>
 
 <!-- abora:footer -->
 $Id$
