@@ -6,6 +6,11 @@ body { background-color: #FFFFFF; }
 
 .new { color: white; background-color: red; }
 
+.st-code { background-color: #F5F5DC; }
+.st-message { color: #0000CD; }
+.st-literal { color: #C71585; }
+.st-comment { color: #008000; font-style: italic; }
+
 a:link { }
 a:visited {  }
 a:hover {background-color: #FAEBD7; }
