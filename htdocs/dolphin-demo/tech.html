@@ -764,12 +764,13 @@
 		<p>The earlier discussions over the use of the tree data structure
 		for sharing content between revisions glossed over the mechanisms
 		for deciding what nodes need to be created and to whom they
-		connect.</p>
+		connect when content is added or removed.</p>
 
 		<p>The insert and delete algorithms both rely on the splaying
 		operation to pull the nearest node root-wards to one of a small
-		number of known patterns. At that point a predefined set of
-		mutations can be applied to achieve the insert or delete.</p>
+		number of known states that can he handled. At that point a
+		predefined set of mutations can be applied to achieve the insert
+		or delete.</p>
 
 <h4>Insert operation</h4>
 
@@ -777,11 +778,24 @@
 		be inserted before or in the middle of is found, and its parent is
 		splayed towards the top of the tree.</p>
 
+		<img src="splay-top-first-last.png" alt="Result of splaying to top
+				 of first and last leaf nodes">
+
+		<img src="splay-top-normal.png" alt="Result of splaying to top
+				 of normal leaf nodes">
+
+		<p>In practice the parent node will only become the child of the
+		trees root if the leaf is the first or last element in the entire
+		tree. Otherwise the parent will be the grand-child of the root,
+		with the leaf being the centre facing child. These cases are
+		indicated in the diagrams above, where the leaf node with a black
+		box is the focus of the splaying operation.</p>
+
 		<img src="insert-before.png" alt="Insert before first node in tree">
 
 		<p>If the existing leaf node happens to be the first leaf node in
 		the tree and the new content is going to be inserted before it,
-		then a simplified insert mechanism can be used. This creates a
+		then a simplified insert operation can be used. This creates a
 		single split node as a child of the revisions new root, the left
 		child of the split is connected to the leaf representing the new
 		content, and the right child to the child of the previous root
@@ -790,49 +804,56 @@
 		<img src="insert-after.png" alt="Insert after last node in tree">
 
 		<p>A similar simplified strategy can also be used if the new
-		content is good to be appended to the end of the tree. This
-		creates a single split node as a child of the revisions new root,
-		the left child of the split is connected to child of the previous
-		root node, and the right child is connected to the leaf
-		representing the new content.</p>
+		content is going to be appended to the end of the tree. A single
+		split node is created as a child of the revisions new root, the
+		left child of the split is connected to child of the previous root
+		node, and the right child is connected to the leaf representing
+		the new content.</p>
 
-		<p>In the case of the CollectionLeaf which is an optimisation for
-		representing an array of primitive values, if the insert operation
-		is found to apply to a position within its content, then the leaf
-		will have to be split into two new leafs, with the start of the
-		second leaf matching the position at which the new content will be
-		inserted. A new split node will take the place of the existing
-		collection loaf node, and will connect to the new leaf nodes. This
-		operation will modify the nodes used in existing revisions, but it
-		preserves the existing semantics. Once this splitting is
-		completed, the insert operation continues against the new right
-		leaf.</p>
+		<p>In the case of the CollectionLeaf, which is an optimisation for
+		representing an array of primitive values with a single leaf node,
+		if the insert operation is found to apply to a position within its
+		content, then the leaf will have to be split into two new leafs,
+		with the start of the second leaf matching the position at which
+		the new content will be inserted. A new split node will take the
+		place of the existing collection loaf node, and will connect to
+		the two new leaf nodes. This operation will modify the nodes used in
+		existing revisions, but it preserves the existing semantics. Once
+		this splitting is completed, the insert operation continues
+		against the new right child leaf node.</p>
 
 		<p>The final case is the insert immediately before an existing
-		leaf, and that leaf is neither the first or last in the entire
+		leaf, and that leaf is neither the first nor last in the entire
 		tree for that revision. There may be two patterns of node
-		structure at this point. The node which we will insert before is
-		either the left child of the parent or the right. For simplicity
-		we re-splay in the case of being the right child. The end result
-		is that we can be confident of the pattern of nodes which we are
-		going to be inserting into.</p>
+		structure at this point as a result of splaying to the top. The
+		node which we will insert before is either the left child of the
+		parent or the right. For code simplicity we re-splay in the case
+		of this being the right child, to translate it into being the left
+		child. The end result is that we can be confident of the pattern
+		of nodes which we are going to be inserting into.</p>
 
 		<img src="insert-normal.png" alt="Standard insert operation in tree">
 
 		<p>In this case you can see from the diagram above that two new
 		split nodes are created to allow the insert of the new leaf, and a
-		tie in with nodes.</p>
+		tie in with existing nodes. The first split node is the child of
+		the root, and its left child connects to the left child of the
+		previous root node. The right child connects to the second new
+		split node, whose left child is the leaf representing the new
+		content, and its right child connects to the right child of the
+		previous right node.</p>
 
 <h4>Delete operation</h4>
 
 		<p>First the parent of the leaf node that is to be deleted is
-		splayed towards the top of the tree.</p>
+		splayed towards the top of the tree, so that we reach one of the
+		states shown above.</p>
 
 		<p>Similar to the insert operation, for simplicity the standard
-		delete operation has only been implemented for one side of the
-		tree. If the node to be deleted is a right child of its, parent
-		then a second splaying occurs to force the child to be a left
-		child.</p>
+		delete operation has only been implemented for one orientation of
+		the leaf node. If the node to be deleted is a right child of its
+		parent, then a second splaying occurs to force the child to be a
+		left child.</p>
 
 		<img src="delete-normal.png" alt="Standard delete operation in tree">
 
@@ -852,7 +873,7 @@
 		and then updating the split information to take into account the
 		deleted content. Back to the diagram we see that the duplicated 7
 		split node is removed, and replaced by a reference to the original
-		Three leaf, which is the sibling of the delete Two leaf. Finally
+		Three leaf, which is the sibling of the deleted Two leaf. Finally
 		the displacement values for the duplicated 4 split node is updated
 		to take into account the missing content from the new
 		revision.</p>
@@ -866,51 +887,60 @@
 <a name="ent_transclusions"></a>
 <h3><a href="#ent-tree">Ent</a> &gt; Transclusions</h3>
 
-		<p>Transclusion enables the sharing of content by quoting from the
-		original source. Transclusion is a primitive function of the
-		implementation, which even hyperlinks are created from.</p>
+		<p>Transclusion enables the sharing of content by quoting directly
+		from the original source. Transclusion is a primitive function of
+		the implementation, which even hyperlinks are manufactured
+		from.</p>
 
 		<p>Transclusions are implemented under the covers by making use of
 		a layer of indirection between the leaves of an Ent tree and the
 		actual content. A content element contains a collection of parent
 		leaf nodes belonging to possibly different document trees that it
-		is a member of. This allows some content to belong to multiple
-		documents, or that multiple documents quote the same content.</p>
+		is a member of. This allows the same content to belong to multiple
+		documents, revisions, and be quoted more than once within the same
+		document.</p>
 
 		<p>Reviewing the Transclusion summary from the first paragraph of
-		this section, we see "...by quoting from the original source". In
-		fact in the current implementation there is no distinction between
-		the document that originally contained a reference to the content
-		and subsequent references. A missing feature from Udanax-Gold
-		would be storing the owner of the content, which would either by
-		the author or the owner/publisher.</p>
+		this section, we see "...by quoting directly from the original
+		source". In fact in the current implementation there is no
+		distinction between the document that originally contained a
+		reference to the content and subsequent document that reference
+		it. A missing feature from Udanax-Gold would be storing the owner
+		of the content, which would either by the author or the
+		owner/publisher.</p>
 
-		<p>The UI for the Demo specifies a transclusion operation by
-		altering the behaviour of the copy-and-paste action. When pasting,
-		rather than just inserting a copy of the text that was initially
-		copied, instead the original text is quoted.</p>
+		<p>The UI for the Demo allows a transclusion operation to be
+		defined by altering the behaviour of the copy-and-paste action.
+		When pasting, rather than just inserting a copy of the text that
+		was initially copied, instead the original text is quoted. This
+		assumes the text was copied from the demo, in the case of the text
+		being copied from another application then the paste is simply a
+		normal paste and new content will be created in the tree.</p>
 
 <h4>ContentLeaf implementation</h4>
 
-		<p>Lets first consider a simple case. A document revision holding
+		<p>Lets first consider the simple case. A document revision holding
 		a single character "X". We can draw another tree diagram as we
-		have numerous times above.</p>
+		have done numerous times previously in this document to depict this.</p>
 
 		<img src="transclude-single.png" alt="Trancluding single element">
 
-		<p>The second diagram is peeling back the conceptual skin of the X
-		leaf node on the first, to reveal that the leaf node actually
-		doesn't hold the "X" character, but in turn references a
-		BeDataHolder object holding the "X" character. The value of this
-		indirection is that the same "X" character can be included
-		(transcluded) other times in the same document revision, other
-		revisions or even other documents. In all cases the leaf node
-		representing "X" will reference the same BeDataHolder.</p>
+		<p>The second section of this diagram is peeling back the
+		conceptual skin of the X leaf node of the first, to reveal that
+		the leaf node  doesn't actually hold the "X" character, but just
+		references a BeDataHolder object holding the "X" character. The
+		benefit of this indirection is that the same "X" character can be
+		included (transcluded) other times in the same document revision,
+		other revisions or even other documents. In all cases the leaf
+		node representing "X" will reference the same BeDataHolder.</p>
 
 		<p>BeDataHolders include a collection of parents, which are all
 		the leaf nodes that reference it and so represent its contents.
 		This enables you to find all revisions and documents that
-		transclude this contents.</p>
+		transclude this contents. This appears to be known as the
+		back-follow operation in Udanax-Gold, and enables useful front-end
+		features such as finding all the other documents that quote from
+		yours.</p>
 
 		<p>The example has so far considered simple content such as a
 		character, but later on we will find that the content leaf can
@@ -923,43 +953,46 @@
 		<p>The CollectionLeaf is an optimisation for the ContentLeaf.
 		Imagine the user adds the phrase "Aaron A Aardvark" in one
 		operation. Creating 17 leaf nodes and 17 BeDataHolders each
-		holding a single character of the phrase would be a performance
-		disaster. CollectionLeaf and its paired BeContentHolder content
-		element is an attempt to reduce the overhead. In this case a
-		single CollectionLeaf leaf node would be created, that would
-		reference a single BeContentHolder that would holder the 17
-		characters as a single String object.</p>
+		holding just a single character of the phrase would be a
+		performance disaster. CollectionLeaf and its paired
+		BeColectionHolder content element is an attempt to reduce this
+		overhead. In the "Aaron A Aardvark" case a single CollectionLeaf
+		leaf node would be created, that would reference a single
+		BeCollectionHolder that would holder the 17 characters within a
+		single String object.</p>
 
 		<p>If the same contents was transcluded to a different document, a
 		new CollectionLeaf would be created that would be added to its ent
-		tree, but it would reference the same BeContentHolder instance and
-		so have access to the 17 characters.</p>
+		tree, but it would reference the same BeCollectionHolder instance
+		and so have access to the 17 characters.</p>
 
 		<img src="transclude-multiple.png" alt="Transcluding multiple elements">
 
 		<p>What if another document simply wanted to transclude the
-		"Aardvark" section of the phrase. In that case again a new
+		"Aardvark" section of the phrase? In that case again a new
 		CollectionLeaf would be created that would be added to its ent
-		tree, and it would reference the same BeContentHolder, but would
-		record that is was only interested in a region of the entire
-		contents of the holder, positions 9 to 16 inclusive.</p>
+		tree, and it would reference the same BeCollectionHolder. The
+		collection leaf though would record that is was only interested in
+		a region of the entire contents of the holder, positions 9 to 16
+		inclusively.</p>
 
 <h4>Udanax-Gold implementation</h4>
 
 		<p>The Udanax-Gold equivalents for the ContentLeaf and
 		CollectionLeaf classes and the content element classes that they
-		reference are somewhat of a mystery to the author at the
-		moment.</p>
+		reference are somewhat of a mystery to the author at the moment.
+		These leaf classes seem to go by the name Loafs and various
+		subclasses.</p>
 
 
 <a name="ent_entnode-class-hierarchy"></a>
 <h3><a href="#ent-tree">Ent</a> &gt; EntNode class hierarchy</h3>
 
 		<p>The class hierarchy for the tree nodes is strongly inspired by
-			the Udanax-Gold implementation but includes some
-			simplifications, especially for the Leaf classes as a result of
-			a lack of knowledge on my part for how this group of classes
-			relates to the content classes.</p>
+		the Udanax-Gold implementation but includes some simplifications,
+		especially for the Leaf classes as a result of a lack of knowledge
+		on my part for how this group of classes relates to the content
+		classes.</p>
 
 		<ul>
 			<li><b>EntNode</b> - Abstract super-class of all 
@@ -969,45 +1002,56 @@
 			<li><b>ChildNode</b> - Abstract super-class for all nodes that can be
 			children of others.<br>&nbsp;&nbsp;parents - list of parent EntNodes
 			<ul>
+
 			<li><b>LeafNode</b> - Abstract super-class for all nodes that
-				can be leafs of the tree. These nodes holds the contents of
-				the tree with 0 or more elements.<br>&nbsp;&nbsp;startPosition
-			- Global position of revision this node was originally created in.
+			can be leafs of the tree. These nodes represent the contents of
+			the tree with 0 or more elements.<br>&nbsp;&nbsp;startPosition -
+			Global position in revision this node was originally created at.
+
 			<ul>
+
 			<li><b>CollectionLeaf</b> - Leaf node that references a subset
-				of the element of a BeCollectionHolder.<br>&nbsp;&nbsp;collectionHolder - BeCollectionHolder
-			that actually contains the elements that this leaf node
-				represents.<br>&nbsp;&nbsp;collectionRegion - which of the
-				collectionHolders elements does this node represent. This is a
-			simple region defining the first and last index considered part
-				of the region.</li>
+			of the elements of a
+			BeCollectionHolder.<br>&nbsp;&nbsp;collectionHolder -
+			BeCollectionHolder that actually contains the elements that this
+			leaf node represents.<br>&nbsp;&nbsp;collectionRegion - which of
+			the collectionHolders elements does this node represent. This is
+			a simple region defining the first and last index considered
+			part of the leaf.</li>
+
 			<li><b>ContentLeaf</b> - Leaf node that references a
-				BeContentElement considered as a single
-				element. This could be a BeDataHolder holding a single
-				Character or something more interesting such as a BeEdition.<br>&nbsp;&nbsp;contentElement - BeContentElement holding
-				the single element that the leaf represents. </li>
+			BeContentElement considered as a single element. This could be a
+			BeDataHolder holding a single Character object or something more
+			interesting such as a BeEdition.<br>&nbsp;&nbsp;contentElement -
+			BeContentElement holding the single element that the leaf
+			represents. </li>
+
 		  </ul>
 		  </li>
+
       <li><b>SplitNode</b> - Internal node of the tree that has two
-			children known as left and right.<br>&nbsp;&nbsp;split - integer
-		split value which is the position of the first element available
-			from its right child.<br>&nbsp;&nbsp;left - ChildNode child
-			considered its left child.<br>&nbsp;&nbsp;leftDsp - integer
-			displacement value applied to the current position when
-			traversing to the left child.<br>&nbsp;&nbsp;right - ChildNode child
-			considered its right child.<br>&nbsp;&nbsp;rightDsp - integer
-			displacement value applied to the current position when
-			traversing to the right child.</li>
+      children known as its left child and right
+      child.<br>&nbsp;&nbsp;split - integer split value which is the
+      position of the first element available from its right
+      child.<br>&nbsp;&nbsp;left - ChildNode considered its left
+      child.<br>&nbsp;&nbsp;leftDsp - integer displacement value
+      applied to the current position when traversing to the left
+      child.<br>&nbsp;&nbsp;right - ChildNode considered its right
+      child.<br>&nbsp;&nbsp;rightDsp - integer displacement value
+      applied to the current position when traversing to the right
+      child.</li>
 		  </ul>
+
 		  <li><b>RootNode</b> - Internal node at the top of the tree that
-			holds a single child. Roots are considered if the child has not
-			been set yet. BeEditions hold a reference to a single RootNode
-			which is considered the root of the contents it
-			represents.<br>&nbsp;&nbsp;edition - back link to the BeEdition
-			that root holds contents for (Cant remember if this is here only
-			for debug purposes...).<br>&nbsp;&nbsp;child -
-			single ChildNode of the root, may be null.<br>&nbsp;&nbsp;dsp - integer displacement value
-			applied to the current position when traversing to the child.</li>
+		  holds a single child. BeEditions hold a reference to a single
+		  RootNode which is considered the root of the contents it
+		  represents.<br>&nbsp;&nbsp;edition - back link to the BeEdition
+		  that root holds contents for (Cant remember if this is here only
+		  for debug purposes...).<br>&nbsp;&nbsp;child - single ChildNode
+		  of the root, may be null if the tree has no
+		  content.<br>&nbsp;&nbsp;dsp - integer displacement value applied
+		  to the current position when traversing to the child.</li>
+
 		  </ul>
 		</li>
 		</ul>
