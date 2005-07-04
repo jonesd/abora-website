@@ -12,6 +12,9 @@
 	<property name="htdocs" location="${build}/htdocs"/>
 
 	<property name="white.dir" location="../abora-white"/>
+	<property name="udanax-gold2java.dir" location="../udanax-gold2java"/>
+	<property name="translator.dir" location="${udanax-gold2java.dir}/translator"/>
+	<property name="abora-gold.dir" location="${udanax-gold2java.dir}/abora-gold"/>
 
 	<property name="sourceforge.dir" value="/home/groups/a/ab/abora"/>
 	<property name="sourceforge.user" value="dgjones"/>
@@ -20,6 +23,10 @@
 	<property name="base.url" value="/"/>
 	
 	<property name="tarball.dir" location="../sf.tarballs"/>
+	
+	<tstamp>
+		<format property="timestamp" pattern="yyyyMMMMdd-HHmmss"/>
+	</tstamp>
 
 
 <!--**************************************************************-->
@@ -121,6 +128,21 @@
 			<a href="http://sourceforge.net/mail/?group_id=64700">Lists</a><br>
 			<a href="http://sourceforge.net/project/showfiles.php?group_id=64700">Downloads</a><br>
 	  </td></tr>
+		  	<tr><td align="right">
+		  		<b>UGold2Java</b><br>
+		  		<a href="/udanax-gold2java/index.html">Overview</a><br>
+	  		<a href="/udanax-gold2java/translator/junit_report/index.html">JUnit</a>/<a href="/udanax-gold2java/translator/findbugs/index.html">FindBugs</a><br>
+	  		<a href="/udanax-gold2java/translator/clover/index.html">Clover</a>/<a href="/udanax-gold2java/translator/clover_historical/historical.html">History</a><br>
+			<br>
+		  		<a href="/udanax-gold2java/abora-gold/api/index.html">Gold&nbsp;JavaDoc</a><br>
+	  		<a href="/udanax-gold2java/abora-gold/junit_report/index.html">JUnit</a>/<a href="/udanax-gold2java/abora-gold/findbugs/index.html">FindBugs</a><br>
+	  		<a href="/udanax-gold2java/abora-gold/clover/index.html">Clover</a>/<a href="/udanax-gold2java/abora-gold/clover_historical/historical.html">History</a><br>
+		  	</td></tr>
+	  	<tr><td align="right">
+	  		<b>Dolphin&nbsp;Demo</b><br>
+	  		<a href="/dolphin-demo/index.html">Overview</a><br>
+	  		<a href="/dolphin-demo/tech.html">Tech&nbsp;Report</a>
+	  	</td></tr>
 	  <tr><td align="right">
 	  		<b>Abora-White</b><br>
 	  		<a href="/abora-white/index.html">Overview</a><br>
@@ -129,16 +151,6 @@
 	  		<a href="/abora-white/api/index.html">JavaDoc</a><br>
 	  		<a href="/abora-white/junit/html/index.html">JUnit&nbsp;Report</a><br>
 	  		<a href="/abora-white/clover/index.html">Clover</a>/<a href="/abora-white/clover-historical/historical.html">History</a><br>
-	  	</td></tr>
-	  	<tr><td align="right">
-	  		<b>Dolphin&nbsp;Demo</b><br>
-	  		<a href="/dolphin-demo/index.html">Overview</a><br>
-	  		<a href="/dolphin-demo/tech.html">Tech&nbsp;Report</a>
-	  	</td></tr>
-	  	<tr><td align="right">
-	  		<b>UGold2Java</b><br>
-	  		<a href="/udanax-gold2java/index.html">Overview</a><br>
-	  		<a href="/udanax-gold2java/abora-gold/api/index.html">Gold&nbsp;JavaDoc</a><br>
 	  	</td></tr>
 	  	<tr><td align="right">
 	  			  <form action="http://www.abora.org/cgi-bin/ksearch/ksearch.cgi" method="GET" name="search">
@@ -235,7 +247,9 @@
 <!--** Locally Collect docs and metrics from subprojects *********-->
 <!--**************************************************************-->
 
-<target name="collect" depends="init">
+<target name="collect" depends="collect.abora-white, collect.translator, collect.abora-gold"/>
+	
+<target name="collect.abora-white" depends="init">
 	<echo/>
 	<echo message="***********************************************************"/>
 	<echo message="** Collect docs from abora-white                         **"/>
@@ -251,12 +265,37 @@
 	<copy todir="${htdocs}/abora-white">
 		<fileset dir="${white.dir}/build/docs"/>
 	</copy>
+</target>  
 	
-	<delete dir="${htdocs}/udanax-gold2java/abora-gold/api"/>
-	<copy todir="${htdocs}/udanax-gold2java/abora-gold/api">
-		<fileset dir="../udanax-gold2java/abora-gold/doc/api"/>
+<target name="collect.abora-gold" depends="init">
+	<echo/>
+	<echo message="***********************************************************"/>
+	<echo message="** Collect docs from abora-gold                          **"/>
+	<echo message="***********************************************************"/>
+	<echo/>
+	<delete dir="${htdocs}/udanax-gold2java/abora-gold"/>
+	<copy todir="${htdocs}/udanax-gold2java/abora-gold">
+		<fileset dir="../udanax-gold2java/abora-gold/docs"/>
 	</copy>
 </target>  
+
+	<target name="collect.translator" depends="init">
+		<echo/>
+		<echo message="***********************************************************"/>
+		<echo message="** Collect docs from ug2java translator                  **"/>
+		<echo message="***********************************************************"/>
+		<echo/>
+<!--		<ant antfile="${white.dir}/build.xml" target="dist" dir="${white.dir}" inheritAll="false">
+			<property name="clover.includesource" value="false"/>
+		</ant> -->
+		<echo/>
+		<echo message="***********************************************************"/>
+		<echo/>
+		<delete dir="${htdocs}/udanax-gold2java/translator"/>
+		<copy todir="${htdocs}/udanax-gold2java/translator">
+			<fileset dir="${translator.dir}/docs"/>
+		</copy>
+	</target>  
 
 
 <!--**************************************************************-->
@@ -304,9 +343,8 @@
 <!--**************************************************************-->
 
 <target name="tarball.download" depends="init">
-	<move file="${tarball.dir}/abora-cvsroot.tar.gz" tofile="${tarball.dir}/abora-cvsroot.previous.tar.gz"/>
 	<exec executable="curl">
-		<arg line="http://cvs.sourceforge.net/cvstarballs/abora-cvsroot.tar.gz -o${tarball.dir}/abora-cvsroot.tar.gz"/>
+		<arg line="http://cvs.sourceforge.net/cvstarballs/abora-cvsroot.tar.bz2 -o${tarball.dir}/abora-cvsroot-${timestamp}.tar.bz2"/>
 	</exec>
 </target>
 
@@ -328,6 +366,7 @@
 <!--**************************************************************-->
 
 <target name="updatewebsite" depends="init,compile,replacetemplate,uploadNoReplace"/>
+<target name="updatelocal" depends="init,compile,replacetemplate"/>
 
 <!--**************************************************************-->
 </project>

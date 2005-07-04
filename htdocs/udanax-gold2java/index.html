@@ -117,11 +117,7 @@ Collection of X++ (the XOC dialect of C++) source which has proven
 <h3>Translator</h3>
 
 <p>The Translator is a small Java app to automatically translate from the
-<b>Udanax-Gold</b> Smalltalk(ish) source code into (approximate) Java. The
-end result will <b>not</b> be compilable (currently ~5000 compilation
-problems), but may prove useful for non-Smalltalk users who are
-interested in reading the Udanax-Gold code and also forms the basis of my
-Abora-White project.</p>
+<b>Udanax-Gold</b> Smalltalk(ish) source code into Java.</p>
 
 <p>Translating from Smalltalk source code to Java code is normally a
 very difficult proposition as Smalltalk source does not include
@@ -134,6 +130,10 @@ a perfect match for X++, one example is the stricter handling of
 statics in Java and the inability to have an instance and static
 method of the same class with the same signature.</p>
 			
+<p>The Abora-White project was the result of an earlier run of the translator,
+which only produced semi-compilable java code, which was then "finished" by hand.
+As the translator can now produce compilable code for the majority of the Smalltalk
+source, the Abora-White project is now deprecated.</p>
 
 <h4>Using the Translator</h4>
 
