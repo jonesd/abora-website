@@ -85,11 +85,13 @@
 				</a></td>
 
 		<td><b>Udanax-Gold2Java</b> <font color="gray">[<font
-		color="green">In Progress</font> 2001,2003,2005]</font><br>Small throw-away
-		command line application to auto-translate the Udanax-Gold
-		Smalltalk source into approximate Java. The result has 1000's of
-		compilation problems, but it is the basis for the Abora-White
-		work.<br> <a href="udanax-gold2java/index.html">Overview</a> - <a
+		color="green">In Progress</font> 2001,2003,2005]</font><br>Command line
+		application to auto-translate the Udanax-Gold
+		Smalltalk source into Java source code. The resulting Java code is compilable, and
+		a small number of tests run, but it is still a long way from being a production grade
+		system. The generated Java, with hand crafted supporting code, is being called
+		Abora-Gold for the moment until a final name is resolved.<br>
+		<a href="udanax-gold2java/index.html">Overview</a> - <a
 		href="udanax-gold2java/abora-gold/api/index.html">Abora-Gold
 		JavaDoc</a> - <a
 		href="http://sourceforge.net/project/showfiles.php?group_id=64700&amp;release_id=140660">Download
@@ -124,13 +126,16 @@
 				</a></td>
 
 				<td><b>Abora-White</b> <font color="gray">[<font
-				color="#FFA500">Paused</font> 2003]</font><br>Java port of the
-				Udanax-Gold server. Starting from the erroneous automated
-				translation result of Udanax-Gold2Java, the goal is for a
-				compilable, working version that aligns with standard Java
-				idioms. Work is underway to incrementally port components of
-				the original, write JUnit tests, JavaDoc and overview
-				documentation.<br><a
+		color="red">Aborted</font> 2003]</font><br>Another java port of the
+				Udanax-Gold server. This started from the result of a far earlier
+				version of the Udanax-Gold2Java translator, that at the time only 
+				generated "approximate" java (7000+ compliation errors). Starting from
+				this non-working Java code, the goal was to create a compilable, working
+				version that aligned with standard Java idioms. With the significant
+				progress subsequently made with the Udanax-Gold2Java translator, the
+				Abora-White project has been abandoned. The hand code test cases, and
+				porting of the primitive array classes may still be useful for the
+				translator.<br><a
 				href="abora-white/index.html">Overview</a> - <a
 				href="abora-white/porting.html">Port Details</a> - <a
 				href="http://sourceforge.net/project/showfiles.php?group_id=64700&amp;release_id=146834">Download
