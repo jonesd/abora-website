@@ -248,6 +248,9 @@
 <!--**************************************************************-->
 
 <target name="collect" depends="collect.abora-white, collect.translator, collect.abora-gold"/>
+
+	<target name="abora-gold" depends="gen.abora-gold, collect.abora-gold"/>
+	<target name="translator" depends="gen.translator, collect.translator"/>
 	
 <target name="collect.abora-white" depends="init">
 	<echo/>
@@ -266,7 +269,29 @@
 		<fileset dir="${white.dir}/build/docs"/>
 	</copy>
 </target>  
-	
+
+	<target name="gen.abora-gold" depends="init">
+		<ant antfile="${abora-gold.dir}/build.xml" dir="${abora-gold.dir}" inheritAll="false">
+			<property name="clover.includesource" value="false"/>
+			<property name="basedir" value="${abora-gold.dir}"/>
+			<target name="with.clover"/>
+			<target name="clean"/>
+			<target name="test"/>
+		</ant>
+		<ant antfile="${abora-gold.dir}/build.xml" dir="${abora-gold.dir}" inheritAll="false">
+			<property name="clover.includesource" value="false"/>
+			<property name="basedir" value="${abora-gold.dir}"/>
+			<target name="clover.historypoint"/>
+			<target name="clover.html"/>
+		</ant>
+		<ant antfile="${abora-gold.dir}/build.xml" dir="${abora-gold.dir}" inheritAll="false">
+			<property name="clover.includesource" value="false"/>
+			<property name="basedir" value="${abora-gold.dir}"/>
+			<target name="clean"/>
+			<target name="findbugs"/>
+		</ant>
+	</target>  
+
 <target name="collect.abora-gold" depends="init">
 	<echo/>
 	<echo message="***********************************************************"/>
@@ -295,6 +320,28 @@
 		<copy todir="${htdocs}/udanax-gold2java/translator">
 			<fileset dir="${translator.dir}/docs"/>
 		</copy>
+	</target>  
+
+	<target name="gen.translator" depends="init">
+		<ant antfile="${translator.dir}/build.xml" dir="${translator.dir}" inheritAll="false">
+			<property name="clover.includesource" value="false"/>
+			<property name="basedir" value="${translator.dir}"/>
+			<target name="with.clover"/>
+			<target name="clean"/>
+			<target name="test"/>
+		</ant>
+		<ant antfile="${translator.dir}/build.xml" dir="${translator.dir}" inheritAll="false">
+			<property name="clover.includesource" value="false"/>
+			<property name="basedir" value="${translator.dir}"/>
+			<target name="clover.historypoint"/>
+			<target name="clover.html"/>
+		</ant>
+		<ant antfile="${translator.dir}/build.xml" dir="${translator.dir}" inheritAll="false">
+			<property name="clover.includesource" value="false"/>
+			<property name="basedir" value="${translator.dir}"/>
+			<target name="clean"/>
+			<target name="findbugs"/>
+		</ant>
 	</target>  
 
 
