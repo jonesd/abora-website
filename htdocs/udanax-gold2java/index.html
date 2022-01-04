@@ -143,7 +143,7 @@ present in this directory.</p>
 <p>Once you have Java JDK 1.4+, Ant 1.5.1+, JUnit 3.8.1 set up, just run
 the following from the command line:</p>
 
-<tt>&gt; <b>ant</b></tt>
+<code><b>ant</b></code>
 
 <p>You should see some logging info summarising the walk through of a
 number of source Smalltalk files, and a larger number of generated
@@ -214,14 +214,14 @@ transformations.</p>
 <p>The JUnit tests are present in the <tt>org.abora.ug2java.tests.TestWriteMethod</tt>
 class, and can be run courtesy of ant:</p>
 
-<tt>&gt; <b>ant test</b></tt>
+<code> <b>ant test</b></code>
 
 
 		<p><tt>TranslateSmalltalk.main(...)</tt> is the entry point of the
 		application taking an output directory, and one or more source
 		Smalltalk files to process.</p>
 
-		<tt>&gt; <b>java org.abora.ug2java.TranslateSmalltalk outputDir udanax-top.st</b></tt>
+		<tt> <b>java org.abora.ug2java.TranslateSmalltalk outputDir udanax-top.st</b></tt>
 
 		<p>The Smalltalk files are stored in a version of the classic
 		Smalltalk Chunk format which effectively has a sequence of chunks
@@ -273,7 +273,7 @@ improvements :-)</p>
 
 <ul>
 		<li>Bugs trying to find beginning of expression</li>
-		<li>Bracketting if/while expressions</li>
+		<li>Bracketing if/while expressions</li>
 		<li>Convert more of the block cases; DiskManager.consistent, forEach,
 etc</li>
 		<li>Use Java abstract method/class support</li>
